@@ -30,7 +30,7 @@ function typewrite(el: HTMLElement) {
   let i = 0, last = 0;
   // A typist's rhythm: slower after spaces and punctuation, never perfectly even.
   const gap = (ch: string) => speed * (/[\s·—,.]/.test(ch) ? 2.2 : 0.7 + Math.random() * 0.6);
-  let wait = 300;
+  let wait = 300 + Number(el.dataset.typeDelay ?? 0);
   const step = (now: number) => {
     if (!last) last = now;
     if (now - last >= wait) {

@@ -14,7 +14,7 @@ const price = (p: number) => `£${p.toFixed(2)}`;
     <header class="section-head">
       <div class="title">
         <p class="kicker" data-type>No. 02 — The menu</p>
-        <h2 id="menu-title" class="ink">Made here, every morning</h2>
+        <h2 id="menu-title" data-type data-type-speed="45">Made here, every morning</h2>
       </div>
       <p>Breakfast until 11:30, then lunch until we close. Ask at the counter about allergens.</p>
     </header>
@@ -58,7 +58,7 @@ const price = (p: number) => `£${p.toFixed(2)}`;
     padding: var(--space-4) var(--space-5);
     background: var(--wash); border-bottom: 1px solid var(--line);
   }
-  .ico { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 9px; background: var(--orange); color: var(--ink); flex: none; }
+  .ico { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 9px; background: var(--orange); color: var(--on-fill); flex: none; }
   .note { font-size: 13.5px; color: var(--muted); margin-top: 2px; }
   dl { margin: 0; padding: var(--space-2) var(--space-5) var(--space-4); }
   .menu-row { display: grid; grid-template-columns: 1fr auto; align-items: end; padding: 12px 0; border-bottom: 1px solid var(--line); }

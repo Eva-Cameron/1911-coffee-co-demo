@@ -74,15 +74,27 @@ const jsonLd = {
     pointer-events: none;
     z-index: 0;
   }
-  .ribbon path { fill: none; stroke: var(--orange); stroke-width: 28; stroke-linecap: round; }
+  .ribbon path { fill: none; stroke: var(--oak); stroke-width: 28; stroke-linecap: round; }
   .frame {
     position: relative;
     z-index: 1;
     max-width: 1280px;
     margin: 24px auto;
     border-radius: var(--radius-card);
-    background: var(--cream);
+    background: var(--cream) url("/pattern.svg") 0 0 / 260px 260px;
     overflow: hidden;
+    isolation: isolate;
+  }
+  /* Paper grain over the pattern, drawn in SVG noise: no image request */
+  .frame::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: .22;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .37 0 0 0 0 .15 0 0 0 0 .04 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
   @media (max-width: 767px) {
     .frame { margin: 0; border-radius: 0; }

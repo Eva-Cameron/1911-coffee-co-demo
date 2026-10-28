@@ -1,27 +1,34 @@
 :root {
-  /* Brand */
-  --orange: #E07B39;      /* fills & blocks only — never text on cream (2.6:1) */
-  --orange-hover: #D46E2E;/* ink on it 5.35:1 */
-  --ember: #A44C17;       /* accent text & links: 5.79:1 on white, 5.07:1 on cream */
-  --ember-tint: #FBEADD;  /* ember on it 4.94:1 */
-  --oak: #B9874F;         /* decorative only */
+  /*
+   * Burnt orange throughout. Every surface is a shade of burnt orange and all text is cream,
+   * so the token names keep their jobs: --cream is the frame ground, --ink is the text.
+   */
+
+  /* Fills: buttons, icon chips, tags. Text on them uses --on-fill. */
+  --orange: #FFE3C7;      /* apricot fill; --on-fill on it 9.8:1 */
+  --orange-hover: #FFF3E4;
+  --on-fill: #5E250A;
+  --ember: #FFE2B8;       /* accent text & links: 4.9:1 on frame, 5.9:1 on panels */
+  --ember-tint: #7A3011;  /* ember on it 7.4:1 */
+  --oak: #C9672F;         /* decorative only */
 
   /* Surfaces */
-  --cream: #F6EFE4;       /* the frame: the shop's cups and walls */
-  --paper: #FFFFFF;       /* cards and panels */
-  --wash: #FBF8F3;        /* subtle inset areas */
+  --cream: #A3461A;       /* the frame: burnt orange */
+  --paper: #923D16;       /* cards and panels, a shade deeper */
+  --wash: #873814;        /* inset areas */
+  --deep: #5E250A;        /* page edge and footer */
 
   /* Text */
-  --ink: #16130F;         /* 18.5:1 on white, 16.2:1 on cream */
-  --muted: #544C44;       /* 8.4:1 on white, 7.4:1 on cream */
-  --charcoal: var(--ink); /* footer ground and body background */
+  --ink: #FFF3E4;         /* 5.6:1 on frame, 6.6:1 on panels, 11:1 on deep */
+  --muted: #F7DCC4;       /* 4.6:1 on frame, 5.5:1 on panels */
+  --charcoal: var(--deep); /* footer ground and body background */
 
   /* Lines and depth */
-  --line: rgb(22 19 15 / .10);
-  --line-strong: rgb(22 19 15 / .18);
-  --shadow-card: 0 1px 2px rgb(22 19 15 / .06), 0 2px 8px rgb(22 19 15 / .05);
-  --shadow-lift: 0 2px 4px rgb(22 19 15 / .06), 0 12px 28px rgb(22 19 15 / .12);
-  --shadow-photo: 0 2px 4px rgb(22 19 15 / .08), 0 16px 36px rgb(22 19 15 / .18);
+  --line: rgb(255 243 228 / .16);
+  --line-strong: rgb(255 243 228 / .32);
+  --shadow-card: 0 1px 2px rgb(40 14 2 / .18), 0 2px 8px rgb(40 14 2 / .14);
+  --shadow-lift: 0 2px 4px rgb(40 14 2 / .2), 0 12px 28px rgb(40 14 2 / .3);
+  --shadow-photo: 0 2px 4px rgb(40 14 2 / .25), 0 16px 36px rgb(40 14 2 / .4);
 
   /* Status */
   --open: #1D6B3A;  --open-tint: #E2F2E7;
@@ -42,12 +49,12 @@
   --space-6: 40px;
   --space-7: 64px;
 
-  /* One family, varied only by weight and size; mono for labels, prices and times */
-  --font-sans: 'Bricolage Grotesque Variable', ui-sans-serif, system-ui, sans-serif;
+  /* Typewriter throughout: Courier Prime for everything */
+  --font-sans: 'Courier Prime', 'Courier New', Courier, ui-monospace, monospace;
   --font-mark: var(--font-sans);
   --font-display: var(--font-sans);
   --font-body: var(--font-sans);
-  --font-type: 'IBM Plex Mono', ui-monospace, monospace;
+  --font-type: var(--font-sans);
 
   --ease-out: cubic-bezier(.32, .72, 0, 1);
   --ease-stamp: cubic-bezier(.2, 1.4, .4, 1);
@@ -56,7 +63,7 @@
   --hairline-plate: var(--paper);
   --hairline-hi: var(--ember);
   --hairline-edge: var(--ink);
-  --hairline-mid: #5E564D;
-  --hairline-lo: #B9AFA3;
+  --hairline-mid: #F2C7A2;
+  --hairline-lo: #C7774A;
   --hairline-stroke: 1.4;
 }
