@@ -1,9 +1,10 @@
 ---
 import { Picture } from "astro:assets";
 import story from "../assets/photos/story.jpg";
+import Icon from "./Icon.astro";
 ---
 <section id="story" class="story section" aria-labelledby="story-title">
-  <div class="wrap grid">
+  <div class="wrap grid card">
     <figure class="photo" data-reveal>
       <Picture src={story} alt="Placeholder for a photo of Joseph behind the oak counter" widths={[600, 1000]} sizes="(max-width: 767px) 100vw, 480px" formats={["avif", "webp"]} loading="lazy" />
     </figure>
@@ -14,15 +15,29 @@ import story from "../assets/photos/story.jpg";
       <p>Since 2019, Joseph and the team have been pouring coffee and cooking breakfast behind the hand-painted orange front at 28–30 Queen Street.</p>
       <p>Everything on the counter is baked in the morning, the breakfast is sourced as close to Amble as we can manage, and the coffee in the cups is the same coffee in the bags on the shelf.</p>
       <p class="sign type" data-type>— Joseph, 1911 Coffee Co.</p>
+      <ul class="facts">
+        <li><Icon name="storefront" size={18} /><span><strong>Since 2019</strong>Queen Street</span></li>
+        <li><Icon name="leaf" size={18} /><span><strong>Local</strong>Sourced nearby</span></li>
+        <li><Icon name="dog" size={18} /><span><strong>Dogs</strong>Welcome inside</span></li>
+      </ul>
     </div>
   </div>
 </section>
 <style>
-  .grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--space-6); align-items: center; }
-  .photo { margin: 0; border-radius: var(--radius-photo); overflow: hidden; aspect-ratio: 4 / 5; box-shadow: var(--shadow-photo); rotate: -2deg; max-width: 460px; justify-self: end; }
+  .grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--space-6); align-items: center; padding: var(--space-5); }
+  .photo { margin: 0; border-radius: var(--radius-photo); overflow: hidden; aspect-ratio: 4 / 4.4; }
   .photo :global(img) { width: 100%; height: 100%; object-fit: cover; }
-  .copy { display: grid; gap: var(--space-3); max-width: 46ch; }
-  .copy h2 { margin-bottom: var(--space-2); }
-  .sign { color: var(--ember); font-size: 16px; }
-  @media (max-width: 767px) { .grid { grid-template-columns: 1fr; gap: var(--space-5); } .photo { rotate: 0deg; justify-self: stretch; max-width: none; } }
+  .copy { display: grid; gap: var(--space-3); justify-items: start; max-width: 60ch; }
+  .copy h2 { margin-bottom: var(--space-1); }
+  .copy > p:not(.kicker):not(.sign) { color: var(--muted); }
+  .sign { color: var(--ember); font-size: 14px; }
+  .facts { list-style: none; margin: var(--space-2) 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-2); width: 100%; }
+  .facts li { display: flex; gap: 10px; align-items: center; padding: 12px; border-radius: var(--radius-control); background: var(--wash); border: 1px solid var(--line); }
+  .facts :global(.icon) { color: var(--ember); flex: none; }
+  .facts span { display: grid; font-size: 13px; color: var(--muted); line-height: 1.3; }
+  .facts strong { color: var(--ink); font-size: 15px; font-weight: 680; }
+  @media (max-width: 767px) {
+    .grid { grid-template-columns: 1fr; gap: var(--space-5); padding: var(--space-3); }
+    .facts { grid-template-columns: 1fr; }
+  }
 </style>

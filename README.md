@@ -38,5 +38,5 @@ skill and open `figures/hairline-<name>.html`.
 - Every photo in `src/assets/photos/` and `public/og.jpg` (they are labelled "PHOTO TO COME").
 - The reviews (real quotes, with each reviewer's permission).
 - The opening hours, the menu and prices, the geo coordinates, and the social links.
-- The Our Story copy (marked DRAFT in `src/components/Story.astro`), the supplier names and the step-free access note.
+- The Our Story copy (marked DRAFT in `src/components/Story.astro`), the supplier names, the dog-friendly and step-free access notes.
 - The roundel, which is redrawn: swap it for the client's vector logo when it arrives.

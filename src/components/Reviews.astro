@@ -1,40 +1,54 @@
 ---
 import reviews from "../content/reviews.json";
+import Icon from "./Icon.astro";
 ---
-<section class="reviews section" aria-labelledby="reviews-title">
+<section id="reviews" class="reviews section" aria-labelledby="reviews-title">
   <div class="wrap">
     <header class="section-head">
-      <p class="kicker" data-type>No. 04 — Kind words</p>
-      <h2 id="reviews-title" class="ink">What people say</h2>
+      <div class="title">
+        <p class="kicker" data-type>No. 04 — Kind words</p>
+        <h2 id="reviews-title" class="ink">What people say</h2>
+      </div>
       <ul class="badges">
-        {reviews.badges.map((b) => <li><a class="type" href={b.href} rel="noopener">{b.score}★ · {b.label}</a></li>)}
+        {reviews.badges.map((b) => (
+          <li><a class="score" href={b.href} rel="noopener">
+            <span class="num"><Icon name="star" size={16} />{b.score}</span>
+            <span class="lbl">{b.label}</span>
+            <Icon name="arrow-up-right" size={16} class="out" />
+          </a></li>
+        ))}
       </ul>
     </header>
     <div class="quotes">
       {reviews.quotes.map((q, i) => (
-        <figure class="quote" data-reveal style={`--i:${i}`}>
-          <p class="stars" role="img" aria-label={`${q.stars} out of 5 stars`}>{"★".repeat(q.stars)}</p>
+        <figure class="quote card" data-reveal style={`--i:${i}`}>
+          <p class="stars" role="img" aria-label={`${q.stars} out of 5 stars`}>
+            {Array.from({ length: q.stars }, () => <Icon name="star" size={16} />)}
+          </p>
           <blockquote><p>{q.text}</p></blockquote>
-          <figcaption class="type">— {q.name}</figcaption>
+          <figcaption><span class="avatar" aria-hidden="true">{q.name[0]}</span>{q.name}</figcaption>
         </figure>
       ))}
     </div>
   </div>
 </section>
 <style>
-  .badges { list-style: none; padding: 0; margin: var(--space-2) 0 0; display: flex; flex-wrap: wrap; gap: var(--space-2); justify-content: center; }
-  .badges a {
-    display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px;
-    border-radius: var(--radius-pill); box-shadow: inset 0 0 0 1.5px var(--charcoal);
-    color: var(--charcoal); text-decoration: none; font-size: 15px;
+  .badges { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: var(--space-2); justify-content: flex-end; }
+  .score {
+    display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 12px 0 6px;
+    border-radius: var(--radius-control); background: var(--paper); border: 1px solid var(--line-strong);
+    box-shadow: var(--shadow-card); color: var(--ink); text-decoration: none; font-size: 14px;
+    transition: background .15s, box-shadow .15s;
   }
-  .badges a:hover { background: var(--cup); }
-  .quotes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-3); }
-  .quote { margin: 0; background: var(--cup); border-radius: 16px; padding: 28px; display: grid; gap: var(--space-3); align-content: start; }
-  .quote:nth-child(1) { rotate: -1deg; }
-  .quote:nth-child(3) { rotate: 1deg; }
-  .stars { color: var(--ember); letter-spacing: .15em; }
-  blockquote { margin: 0; font: 400 20px/1.35 var(--font-display); }
-  figcaption { font-size: 15px; }
-  @media (max-width: 767px) { .quotes { grid-template-columns: 1fr; } .quote { rotate: 0deg !important; } }
+  .score:hover { background: var(--wash); box-shadow: var(--shadow-lift); color: var(--ink); }
+  .num { display: inline-flex; align-items: center; gap: 4px; height: 32px; padding: 0 9px; border-radius: 7px; background: var(--ink); color: var(--cream); font-weight: 700; }
+  .num :global(.icon) { color: var(--orange); }
+  .score :global(.out) { color: var(--muted); }
+  .quotes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-4); }
+  .quote { margin: 0; padding: var(--space-5); display: grid; gap: var(--space-3); align-content: start; }
+  .stars { display: flex; gap: 2px; color: var(--orange); }
+  blockquote { margin: 0; font-size: 17px; line-height: 1.45; font-weight: 500; letter-spacing: -.005em; }
+  figcaption { display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 600; color: var(--muted); }
+  .avatar { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: var(--ember-tint); color: var(--ember); font-weight: 700; }
+  @media (max-width: 767px) { .quotes { grid-template-columns: 1fr; gap: var(--space-3); } .badges { justify-content: flex-start; } }
 </style>

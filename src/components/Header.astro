@@ -1,29 +1,29 @@
 ---
 import Roundel from "./Roundel.astro";
+import Icon from "./Icon.astro";
 const links = [
   { href: "#menu", label: "Menu" },
   { href: "#story", label: "Our Story" },
   { href: "#counter", label: "Suppliers" },
-  { href: "#gallery", label: "Gallery" },
+  { href: "#reviews", label: "Reviews" },
 ];
 ---
 <header class="header">
   <nav class="left" aria-label="Main">
     <ul>
-      {links.map((l) => <li><a class="caps" href={l.href}>{l.label}</a></li>)}
+      {links.map((l) => <li><a class="nav-link" href={l.href}>{l.label}</a></li>)}
     </ul>
   </nav>
 
   <a class="mark" href="/" aria-label="1911 Coffee Co., home">
-    <Roundel size={64} class="stamp" />
+    <Roundel size={60} class="stamp" />
   </a>
 
   <div class="right">
-    <a class="caps find" href="#find-us">Find us</a>
-    <a class="pill" href="#menu">Today's menu</a>
-    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="sheet">
-      <span class="caps">Menu</span>
-      <svg width="22" height="14" viewBox="0 0 22 14" aria-hidden="true"><path d="M1 1h20M1 7h20M1 13h20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" /></svg>
+    <a class="nav-link find" href="#find-us"><Icon name="map-pin" size={18} />Find us</a>
+    <a class="btn" href="#menu"><Icon name="coffee" size={18} />Today's menu</a>
+    <button class="btn btn--light menu-btn" type="button" aria-expanded="false" aria-controls="sheet">
+      <Icon name="list" weight="bold" size={20} />Menu
     </button>
   </div>
 </header>
@@ -31,16 +31,15 @@ const links = [
 <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="Site menu" hidden>
   <div class="sheet-top">
     <Roundel size={48} />
-    <button class="close" type="button">
-      <span class="caps">Close</span>
-      <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 2l12 12M14 2L2 14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" /></svg>
+    <button class="btn btn--light close" type="button">
+      <Icon name="x" weight="bold" size={18} />Close
     </button>
   </div>
   <ul>
-    {links.map((l, i) => <li style={`--i:${i}`}><a href={l.href}>{l.label}</a></li>)}
-    <li style="--i:4"><a href="#find-us">Find us</a></li>
+    {links.map((l, i) => <li style={`--i:${i}`}><a href={l.href}>{l.label}<Icon name="arrow-right" weight="bold" size={20} /></a></li>)}
+    <li style="--i:4"><a href="#find-us">Find us<Icon name="arrow-right" weight="bold" size={20} /></a></li>
   </ul>
-  <p class="type sheet-foot">28–30 Queen Street, Amble · <a href="tel:+441665710706">01665 710706</a></p>
+  <a class="btn sheet-call" href="tel:+441665710706"><Icon name="phone" size={18} />Call 01665 710706</a>
 </div>
 
 <style>
@@ -48,57 +47,56 @@ const links = [
     display: grid;
     grid-template-columns: 1fr auto 1fr;
     align-items: center;
-    height: 76px;
+    height: 72px;
     padding: 0 var(--space-5);
     position: relative;
     z-index: 5;
+    border-bottom: 1px solid var(--line);
   }
-  .left ul { display: flex; gap: 28px; list-style: none; margin: 0; padding: 0; }
-  .left a, .find { color: var(--charcoal); text-decoration: none; position: relative; padding-block: 14px; }
-  /* a typed underline: a run of short strokes that fills in from the left */
-  .left a::after, .find::after {
-    content: "";
-    position: absolute; left: 0; right: 0; bottom: 8px; height: 2px;
-    background: repeating-linear-gradient(90deg, var(--ember) 0 5px, transparent 5px 8px);
-    transform: scaleX(0); transform-origin: left;
-    transition: transform .45s steps(8, end);
+  .left ul { display: flex; gap: 4px; list-style: none; margin: 0; padding: 0; }
+  .nav-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    min-height: 40px; padding: 0 12px;
+    border-radius: var(--radius-control);
+    color: var(--ink); text-decoration: none;
+    font: 600 15px/1 var(--font-sans);
+    transition: background .15s, color .15s;
   }
-  .left a:hover::after, .find:hover::after { transform: scaleX(1); }
-  .mark { display: block; margin-top: 20px; border-radius: 50%; }
-  .right { display: flex; justify-content: flex-end; align-items: center; gap: var(--space-4); }
-  .menu-btn, .close {
-    display: none;
-    align-items: center; gap: 10px;
-    min-height: 44px; padding: 0 4px;
-    border: 0; background: none; color: var(--charcoal); cursor: pointer;
-  }
+  .nav-link:hover { background: rgb(22 19 15 / .07); color: var(--ink); }
+  .nav-link:active, .nav-link[aria-current] { background: rgb(22 19 15 / .12); }
+  .nav-link :global(.icon) { color: var(--ember); }
+  .mark { display: block; border-radius: 50%; }
+  .right { display: flex; justify-content: flex-end; align-items: center; gap: var(--space-2); }
+  .menu-btn { display: none; }
 
   .sheet {
     position: fixed; inset: 0; z-index: 50;
     background: var(--cream);
-    padding: var(--space-3);
-    display: flex; flex-direction: column;
+    padding: var(--space-4);
+    display: flex; flex-direction: column; gap: var(--space-5);
   }
   .sheet[hidden] { display: none; }
   .sheet-top { display: flex; justify-content: space-between; align-items: center; }
-  .sheet .close { display: inline-flex; }
-  .sheet ul { list-style: none; margin: var(--space-6) 0 auto; padding: 0; display: grid; gap: var(--space-3); }
+  .sheet ul { list-style: none; margin: 0 0 auto; padding: 0; display: grid; gap: var(--space-2); }
   .sheet li a {
-    font: 400 28px/1.2 var(--font-display);
-    color: var(--charcoal); text-decoration: none;
-    display: inline-block; padding-block: 6px;
+    display: flex; justify-content: space-between; align-items: center;
+    min-height: 56px; padding: 0 var(--space-4);
+    background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card);
+    box-shadow: var(--shadow-card);
+    font: 680 22px/1 var(--font-sans); letter-spacing: -.015em;
+    color: var(--ink); text-decoration: none;
   }
-  .sheet-foot { font-size: 14px; }
-  :global(.motion) .sheet:not([hidden]) li { animation: sheet-in .5s var(--ease-out) both; animation-delay: calc(var(--i) * 60ms); }
-  @keyframes sheet-in { from { opacity: 0; transform: translateY(12px); } }
+  .sheet li a :global(.icon) { color: var(--ember); }
+  .sheet li a:active { background: var(--wash); }
+  .sheet-call { width: 100%; min-height: 52px; }
+  :global(.motion) .sheet:not([hidden]) li { animation: sheet-in .4s var(--ease-out) both; animation-delay: calc(var(--i) * 45ms); }
+  @keyframes sheet-in { from { opacity: 0; transform: translateY(10px); } }
 
   @media (max-width: 1023px) {
-    .left { display: none; }
-    .find, .right .pill { display: none; }
+    .left, .find, .right > .btn:not(.menu-btn) { display: none; }
     .menu-btn { display: inline-flex; }
-    .header { grid-template-columns: auto 1fr; padding: 0 var(--space-3); height: 72px; }
-    .mark { margin-top: 0; }
-    .mark :global(svg) { width: 48px; height: 48px; }
+    .header { grid-template-columns: auto 1fr; padding: 0 var(--space-4); height: 68px; }
+    .mark :global(svg) { width: 46px; height: 46px; }
   }
 </style>
 
@@ -130,4 +128,14 @@ const links = [
     if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
     else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
   });
+
+  // Active state: the nav link for the section in view
+  const navLinks = [...document.querySelectorAll<HTMLAnchorElement>(".header .nav-link[href^='#']")];
+  const io = new IntersectionObserver((entries) => {
+    for (const e of entries) {
+      if (!e.isIntersecting) continue;
+      navLinks.forEach((a) => a.getAttribute("href") === "#" + e.target.id ? a.setAttribute("aria-current", "location") : a.removeAttribute("aria-current"));
+    }
+  }, { rootMargin: "-45% 0px -50% 0px" });
+  navLinks.forEach((a) => { const t = document.querySelector(a.getAttribute("href")!); if (t) io.observe(t); });
 </script>

@@ -1,26 +1,42 @@
 ---
 import menu from "../content/menu.json";
-const TAGS: Record<string, string> = { V: "Vegetarian", VG: "Vegan", GF: "Gluten free" };
+import Icon from "./Icon.astro";
+const TAGS: Record<string, { label: string; cls: string }> = {
+  V: { label: "Vegetarian", cls: "veg" },
+  VG: { label: "Vegan", cls: "vegan" },
+  GF: { label: "Gluten free", cls: "gf" },
+};
+const ICONS: Record<string, string> = { Brunch: "egg", Lunch: "fork-knife", Coffee: "coffee", Cakes: "cake" };
 const price = (p: number) => `£${p.toFixed(2)}`;
 ---
 <section id="menu" class="menu section" aria-labelledby="menu-title">
   <div class="wrap">
     <header class="section-head">
-      <p class="kicker" data-type>No. 02 — The menu</p>
-      <h2 id="menu-title" class="ink">Made here, every morning</h2>
+      <div class="title">
+        <p class="kicker" data-type>No. 02 — The menu</p>
+        <h2 id="menu-title" class="ink">Made here, every morning</h2>
+      </div>
       <p>Breakfast until 11:30, then lunch until we close. Ask at the counter about allergens.</p>
     </header>
+    <ul class="legend" aria-label="Dietary key">
+      {Object.entries(TAGS).map(([k, t]) => <li><span class={`tag ${t.cls}`}>{k}</span>{t.label}</li>)}
+    </ul>
     <div class="cols">
       {menu.map((s) => (
-        <section class="docket" aria-labelledby={`m-${s.section}`}>
-          <h3 id={`m-${s.section}`}>{s.section}</h3>
-          <p class="note type">{s.note}</p>
+        <section class="docket card" aria-labelledby={`m-${s.section}`}>
+          <header class="docket-head">
+            <span class="ico"><Icon name={ICONS[s.section] ?? "coffee"} size={20} /></span>
+            <div>
+              <h3 id={`m-${s.section}`}>{s.section}</h3>
+              <p class="note">{s.note}</p>
+            </div>
+          </header>
           <dl>
             {s.items.map((it, i) => (
               <div class="menu-row" style={`--i:${i}`}>
                 <dt>
                   <span class="name">{it.name}</span>
-                  {it.tags.map((t) => <abbr class="tag" title={TAGS[t]} aria-label={TAGS[t]}>{t}</abbr>)}
+                  {it.tags.map((t) => <abbr class={`tag ${TAGS[t].cls}`} title={TAGS[t].label}>{t}</abbr>)}
                 </dt>
                 <dd class="price type">{price(it.price)}</dd>
                 {it.desc && <dd class="desc">{it.desc}</dd>}
@@ -33,23 +49,32 @@ const price = (p: number) => `£${p.toFixed(2)}`;
   </div>
 </section>
 <style>
+  .legend { display: flex; flex-wrap: wrap; gap: var(--space-4); list-style: none; margin: 0 0 var(--space-4); padding: 0; font-size: 14px; color: var(--muted); }
+  .legend li { display: inline-flex; align-items: center; gap: 6px; }
   .cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); }
-  .docket { background: var(--cup); border-radius: var(--radius-card); padding: var(--space-5); }
-  .docket h3 { margin-bottom: 4px; }
-  .note { font-size: 14px; color: var(--ember); margin-bottom: var(--space-4); }
-  dl { margin: 0; display: grid; gap: var(--space-3); }
-  .menu-row { display: grid; grid-template-columns: 1fr auto; align-items: end; }
-  dt { font-weight: 600; display: flex; align-items: center; gap: 6px; }
-  dt::after { content: ""; flex: 1 0 24px; border-bottom: 2px dotted var(--oak); margin: 0 8px 6px; align-self: flex-end; }
-  .price { margin: 0; font-variant-numeric: tabular-nums; font-size: 17px; }
-  .desc { grid-column: 1 / -1; margin: 2px 0 0; font-size: 14px; color: #5A534B; max-width: 46ch; }
-  .tag {
-    display: inline-grid; place-items: center; min-width: 26px; height: 20px; padding: 0 5px;
-    border: 1.5px solid var(--charcoal); border-radius: var(--radius-pill);
-    font: 600 10px/1 var(--font-mark); letter-spacing: .06em; text-decoration: none;
+  .docket { padding: 0; overflow: hidden; }
+  .docket-head {
+    display: flex; align-items: center; gap: var(--space-3);
+    padding: var(--space-4) var(--space-5);
+    background: var(--wash); border-bottom: 1px solid var(--line);
   }
+  .ico { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 9px; background: var(--orange); color: var(--ink); flex: none; }
+  .note { font-size: 13.5px; color: var(--muted); margin-top: 2px; }
+  dl { margin: 0; padding: var(--space-2) var(--space-5) var(--space-4); }
+  .menu-row { display: grid; grid-template-columns: 1fr auto; align-items: end; padding: 12px 0; border-bottom: 1px solid var(--line); }
+  .menu-row:last-child { border-bottom: 0; }
+  dt { font-weight: 620; display: flex; align-items: center; gap: 6px; }
+  .name { min-width: 0; }
+  dt::after { content: ""; flex: 1 0 24px; border-bottom: 2px dotted var(--oak); margin: 0 8px 5px; align-self: flex-end; }
+  .price { margin: 0; font-variant-numeric: tabular-nums; font-size: 15px; font-weight: 500; }
+  .desc { grid-column: 1 / -1; margin: 3px 0 0; font-size: 14px; color: var(--muted); max-width: 52ch; }
+  .tag { flex: none; height: 20px; padding: 0 6px; font-size: 11px; }
+  .veg { background: var(--veg-tint); color: var(--veg); }
+  .vegan { background: var(--vegan-tint); color: var(--vegan); }
+  .gf { background: var(--gf-tint); color: var(--gf); }
+  abbr.tag { cursor: help; }
   @media (max-width: 767px) {
-    .cols { grid-template-columns: 1fr; }
-    .docket { padding: var(--space-4); }
+    .cols { grid-template-columns: 1fr; gap: var(--space-3); }
+    .docket-head, dl { padding-inline: var(--space-4); }
   }
 </style>

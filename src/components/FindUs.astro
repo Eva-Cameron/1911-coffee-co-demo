@@ -3,58 +3,76 @@ import { Picture } from "astro:assets";
 import hours from "../content/hours.json";
 import site from "../content/site.json";
 import findus from "../assets/photos/findus.jpg";
+import Icon from "./Icon.astro";
 const fmt = (t: string) => t.replace(/^0/, "");
 ---
 <section id="find-us" class="find section" aria-labelledby="find-title">
-  <div class="wrap grid">
-    <div class="info">
-      <p class="kicker" data-type>No. 05 — Find us</p>
-      <h2 id="find-title" class="ink">On Queen Street, Amble</h2>
-      <address class="type">
-        {site.name}<br />{site.street}<br />{site.town} {site.postcode}<br />
-        <a href={`tel:${site.phoneHref}`}>{site.phone}</a>
-      </address>
-      <table class="hours" data-hours-table>
-        <caption class="caps">Opening hours</caption>
-        <tbody>
-          {hours.days.map((d) => (
-            <tr data-day={d.day}>
-              <th scope="row">{d.name}</th>
-              <td class="type">{fmt(d.open)} – {fmt(d.close)}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <ul class="notes">
-        <li>Dogs welcome inside.</li>
-        <li>Step-free entrance. <span class="todo">(Confirm with Joseph.)</span></li>
-      </ul>
+  <div class="wrap">
+    <header class="section-head">
+      <div class="title">
+        <p class="kicker" data-type>No. 05 — Find us</p>
+        <h2 id="find-title" class="ink">On Queen Street, Amble</h2>
+      </div>
+      <p>Drop in, or give us a ring. Dogs welcome inside <span class="todo-note">(to confirm)</span>.</p>
+    </header>
+    <div class="grid">
+      <div class="panel card">
+        <ul class="contact">
+          <li><span class="ico"><Icon name="map-pin" size={18} /></span>
+            <address>{site.name}<br />{site.street}, {site.town} {site.postcode}</address></li>
+          <li><span class="ico"><Icon name="phone" size={18} /></span>
+            <a href={`tel:${site.phoneHref}`}>{site.phone}</a></li>
+        </ul>
+        <table class="hours" data-hours-table>
+          <caption><Icon name="clock" size={16} />Opening hours</caption>
+          <tbody>
+            {hours.days.map((d) => (
+              <tr data-day={d.day}>
+                <th scope="row">{d.name}</th>
+                <td class="type">{fmt(d.open)} – {fmt(d.close)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <ul class="notes">
+          <li><span class="tag ok"><Icon name="dog" size={14} />Dog friendly</span></li>
+          <li><span class="tag todo"><Icon name="wheelchair" size={14} />Step-free: to confirm</span></li>
+        </ul>
+      </div>
+      <a class="map card" href={site.directions} rel="noopener" data-reveal>
+        <Picture src={findus} alt="" widths={[600, 1000]} sizes="(max-width: 767px) 100vw, 640px" formats={["avif", "webp"]} loading="lazy" />
+        <span class="btn"><Icon name="navigation-arrow" size={18} />Get directions</span>
+        <span class="visually-hidden">Open directions to {site.name} in Google Maps</span>
+      </a>
     </div>
-    <a class="map" href={site.directions} rel="noopener" data-reveal>
-      <Picture src={findus} alt="" widths={[600, 1000]} sizes="(max-width: 767px) 100vw, 520px" formats={["avif", "webp"]} loading="lazy" />
-      <span class="pill">Get directions</span>
-      <span class="visually-hidden">Open directions to {site.name} in Google Maps</span>
-    </a>
   </div>
 </section>
 <style>
-  .grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: var(--space-6); align-items: center; }
-  .info { display: grid; gap: var(--space-4); justify-items: start; }
-  .info .kicker { margin-bottom: calc(-1 * var(--space-2)); }
-  address { font-style: normal; font-size: 17px; line-height: 1.55; }
-  .hours { border-collapse: collapse; width: 100%; max-width: 380px; }
-  .hours caption { text-align: left; padding-bottom: var(--space-2); }
-  .hours th, .hours td { padding: 8px 0; border-bottom: 1px dashed rgb(45 42 38 / .25); text-align: left; font-weight: 400; }
-  .hours td { text-align: right; font-variant-numeric: tabular-nums; }
-  .hours tr.today th, .hours tr.today td { font-weight: 700; }
-  .hours tr.today th::before { content: "▸ "; color: var(--ember); }
-  .notes { margin: 0; padding-left: 1.1em; font-size: 15px; }
-  .todo { color: var(--ember); }
-  .map { position: relative; display: block; border-radius: var(--radius-photo); overflow: hidden; aspect-ratio: 4 / 3.4; box-shadow: var(--shadow-photo); rotate: 1.5deg; transition: rotate .8s var(--ease-out); }
-  .map:hover { rotate: 0deg; }
-  .map :global(img) { width: 100%; height: 100%; object-fit: cover; }
-  .map .pill { position: absolute; right: 20px; bottom: 20px; }
-  @media (max-width: 767px) { .grid { grid-template-columns: 1fr; gap: var(--space-5); } .map { rotate: 0deg; } }
+  .grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--space-4); align-items: stretch; }
+  .panel { padding: var(--space-5); display: grid; gap: var(--space-5); align-content: start; }
+  .contact { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-3); }
+  .contact li { display: flex; gap: var(--space-3); align-items: center; }
+  .ico { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 9px; background: var(--ember-tint); color: var(--ember); flex: none; }
+  address { font-style: normal; line-height: 1.45; font-weight: 500; }
+  .contact a { font-weight: 600; }
+  .hours { border-collapse: separate; border-spacing: 0; width: 100%; border: 1px solid var(--line); border-radius: var(--radius-control); overflow: hidden; }
+  .hours caption { display: flex; align-items: center; gap: 6px; text-align: left; padding-bottom: var(--space-2); font-weight: 680; }
+  .hours caption :global(.icon) { color: var(--ember); }
+  .hours th, .hours td { padding: 9px 12px; border-bottom: 1px solid var(--line); text-align: left; font-weight: 500; font-size: 15px; }
+  .hours tr:last-child th, .hours tr:last-child td { border-bottom: 0; }
+  .hours td { text-align: right; font-variant-numeric: tabular-nums; font-size: 14px; }
+  .hours tr.today th, .hours tr.today td { background: var(--ember-tint); color: var(--ember); font-weight: 700; }
+  .hours tr.today th::after { content: "Today"; margin-left: 8px; padding: 2px 6px; border-radius: 5px; background: var(--ember); color: var(--paper); font-size: 11px; vertical-align: 1px; }
+  .notes { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--space-2); }
+  .ok { background: var(--veg-tint); color: var(--veg); }
+  .todo { background: var(--gf-tint); color: var(--gf); }
+  .todo-note { color: var(--ember); }
+  .map { position: relative; display: block; overflow: hidden; min-height: 360px; padding: 0; }
+  .map :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .8s var(--ease-out); }
+  .map:hover :global(img) { transform: scale(1.03); }
+  .map .btn { position: absolute; right: 16px; bottom: 16px; }
+  .map:hover .btn { background: var(--orange-hover); }
+  @media (max-width: 767px) { .grid { grid-template-columns: 1fr; gap: var(--space-3); } .panel { padding: var(--space-4); } .map { min-height: 260px; } }
 </style>
 <script>
   const iso = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].indexOf(

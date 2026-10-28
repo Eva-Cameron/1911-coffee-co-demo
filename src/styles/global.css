@@ -11,8 +11,9 @@ html {
 body {
   margin: 0;
   background: var(--charcoal);
-  color: var(--charcoal);
-  font: 400 17px/1.6 var(--font-body);
+  color: var(--ink);
+  font: 400 16px/1.55 var(--font-sans);
+  font-optical-sizing: auto;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   overflow-x: hidden;
@@ -20,26 +21,27 @@ body {
 
 img, svg { display: block; max-width: 100%; }
 img { height: auto; }
+picture { display: contents; }
 
 h1, h2, h3 {
-  font-family: var(--font-display);
-  font-weight: 400;
-  line-height: 1.05;
+  font-family: var(--font-sans);
   margin: 0;
   text-wrap: balance;
+  color: var(--ink);
 }
-h1 { font-size: clamp(40px, 5.6vw, 64px); }
-h2 { font-size: clamp(30px, 3.6vw, 40px); }
-h3 { font-size: clamp(22px, 2.2vw, 26px); }
+h1 { font-size: clamp(38px, 5.2vw, 64px); font-weight: 760; line-height: 1; letter-spacing: -.035em; }
+h2 { font-size: clamp(28px, 3vw, 38px); font-weight: 720; line-height: 1.08; letter-spacing: -.025em; }
+h3 { font-size: 19px; font-weight: 680; line-height: 1.2; letter-spacing: -.01em; }
 
 p { margin: 0; text-wrap: pretty; }
 
-a { color: var(--ember); text-underline-offset: 3px; }
+a { color: var(--ember); text-underline-offset: 3px; text-decoration-thickness: 1.5px; }
+a:hover { color: var(--ink); }
 
 :focus-visible {
   outline: 3px solid var(--ember);
-  outline-offset: 3px;
-  border-radius: 4px;
+  outline-offset: 2px;
+  border-radius: 6px;
 }
 
 .skip {
@@ -48,12 +50,11 @@ a { color: var(--ember); text-underline-offset: 3px; }
   top: -60px;
   z-index: 100;
   padding: 10px 16px;
-  background: var(--cup);
-  color: var(--charcoal);
-  border-radius: var(--radius-pill);
-  font: 600 13px/1 var(--font-mark);
-  letter-spacing: .12em;
-  text-transform: uppercase;
+  background: var(--paper);
+  color: var(--ink);
+  border-radius: var(--radius-control);
+  box-shadow: var(--shadow-lift);
+  font-weight: 600;
 }
 .skip:focus { top: 16px; }
 
@@ -66,64 +67,95 @@ a { color: var(--ember); text-underline-offset: 3px; }
   white-space: nowrap;
 }
 
-/* Josefin caps: the shopfront lettering */
+/* Small caps label */
 .caps {
-  font: 600 13px/1 var(--font-mark);
-  letter-spacing: .12em;
+  font: 600 13px/1 var(--font-sans);
+  letter-spacing: .06em;
   text-transform: uppercase;
 }
 
-/* Typewriter accents */
+/* Mono accents: labels, prices, times */
 .type {
   font-family: var(--font-type);
   font-weight: 400;
-  letter-spacing: .02em;
+  letter-spacing: 0;
 }
 
 .wrap {
-  width: min(100% - 2 * var(--space-5), 1120px);
+  width: min(100% - 2 * var(--space-6), 1200px);
   margin-inline: auto;
 }
 @media (max-width: 767px) {
-  .wrap { width: calc(100% - 2 * var(--space-3)); }
+  .wrap { width: calc(100% - 2 * var(--space-4)); }
 }
 
 .section { padding-block: var(--space-7); }
 @media (max-width: 767px) { .section { padding-block: var(--space-6); } }
 
-/* Section kicker: a typed line with a catalogue number, e.g. "No. 02 — The menu" */
+/* Section kicker: a filled tag with a typed catalogue number, e.g. "No. 02 — The menu" */
 .kicker {
-  display: block;
-  margin-bottom: var(--space-3);
-  font: 400 15px/1.3 var(--font-type);
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: var(--radius-pill);
+  background: var(--ember-tint);
   color: var(--ember);
+  font: 500 13px/1.3 var(--font-type);
 }
 
+/* Section head: title and kicker left, supporting line right */
 .section-head {
   display: grid;
-  justify-items: center;
-  text-align: center;
-  gap: var(--space-2);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 420px);
+  align-items: end;
+  gap: var(--space-3) var(--space-6);
   margin-bottom: var(--space-5);
 }
-.section-head p { max-width: 52ch; }
+.section-head .title { display: grid; gap: var(--space-3); justify-items: start; }
+.section-head > p { color: var(--muted); }
+@media (max-width: 767px) { .section-head { grid-template-columns: 1fr; } }
 
-.pill {
+.card {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+}
+
+/* Buttons: filled, with a clear hover and pressed state */
+.btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: var(--space-2);
   min-height: 44px;
-  padding: 10px 20px;
-  border-radius: var(--radius-pill);
+  padding: 0 18px;
+  border: 0;
+  border-radius: var(--radius-control);
   background: var(--orange);
-  color: var(--charcoal);
+  color: var(--ink);
   text-decoration: none;
-  font: 600 13px/1 var(--font-mark);
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  transition: transform .3s var(--ease-out), box-shadow .3s var(--ease-out);
+  font: 650 15px/1 var(--font-sans);
+  cursor: pointer;
+  box-shadow: inset 0 -2px 0 rgb(22 19 15 / .14), 0 1px 2px rgb(22 19 15 / .12);
+  transition: background .15s, transform .15s, box-shadow .15s;
 }
-.pill:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgb(45 42 38 / .18); }
-.pill--ghost { background: transparent; box-shadow: inset 0 0 0 1.5px var(--charcoal); }
-picture { display: contents; }
+.btn:hover { background: var(--orange-hover); color: var(--ink); }
+.btn:active { transform: translateY(1px); box-shadow: inset 0 1px 2px rgb(22 19 15 / .2); }
+.btn--dark { background: var(--ink); color: var(--cream); box-shadow: inset 0 -2px 0 rgb(0 0 0 / .4), 0 1px 2px rgb(22 19 15 / .2); }
+.btn--dark:hover { background: #2C2722; color: var(--cream); }
+.btn--light { background: var(--paper); color: var(--ink); box-shadow: inset 0 0 0 1px var(--line-strong), 0 1px 2px rgb(22 19 15 / .08); }
+.btn--light:hover { background: var(--wash); }
+.btn .icon { flex: none; }
+
+/* Status tag */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 22px;
+  padding: 0 8px;
+  border-radius: 6px;
+  font: 600 11.5px/1 var(--font-sans);
+  letter-spacing: .03em;
+  text-decoration: none;
+}

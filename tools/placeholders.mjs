@@ -45,7 +45,7 @@ for (const [name, body] of Object.entries(art)) {
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1500" viewBox="0 0 1200 1500">
     <rect width="1200" height="1500" fill="${bg[name]}"/>
     <g transform="translate(0 0)">${body}</g>
-    <text x="600" y="1380" text-anchor="middle" font-family="Courier New, monospace" font-size="38" letter-spacing="6" fill="${ink}" opacity=".65">PHOTO TO COME · ${name.toUpperCase()}</text>
+    <text x="600" y="150" text-anchor="middle" font-family="Courier New, monospace" font-size="38" letter-spacing="6" fill="${ink}" opacity=".65">PHOTO TO COME · ${name.toUpperCase()}</text>
   </svg>`;
   await sharp(Buffer.from(svg)).jpeg({ quality: 82 }).toFile(new URL(`${name}.jpg`, out).pathname);
   console.log("wrote", name);

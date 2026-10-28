@@ -1,38 +1,62 @@
 :root {
-  --orange: #E07B39;   /* fills & blocks only — NOT text on cream (2.6:1 fails) */
-  --ember: #A44C17;    /* text accent/links on cream: 5.07:1 */
-  --charcoal: #2D2A26; /* body text 12.5:1 on cream; also text on orange 4.8:1 */
-  --cream: #F6EFE4;
-  --cup: #FFFDF8;
-  --oak: #B9874F;      /* decorative only: 2.77:1 on cream */
+  /* Brand */
+  --orange: #E07B39;      /* fills & blocks only — never text on cream (2.6:1) */
+  --orange-hover: #D46E2E;/* ink on it 5.35:1 */
+  --ember: #A44C17;       /* accent text & links: 5.79:1 on white, 5.07:1 on cream */
+  --ember-tint: #FBEADD;  /* ember on it 4.94:1 */
+  --oak: #B9874F;         /* decorative only */
 
-  --radius-card: 20px;
-  --radius-photo: 18px;
+  /* Surfaces */
+  --cream: #F6EFE4;       /* the frame: the shop's cups and walls */
+  --paper: #FFFFFF;       /* cards and panels */
+  --wash: #FBF8F3;        /* subtle inset areas */
+
+  /* Text */
+  --ink: #16130F;         /* 18.5:1 on white, 16.2:1 on cream */
+  --muted: #544C44;       /* 8.4:1 on white, 7.4:1 on cream */
+  --charcoal: var(--ink); /* footer ground and body background */
+
+  /* Lines and depth */
+  --line: rgb(22 19 15 / .10);
+  --line-strong: rgb(22 19 15 / .18);
+  --shadow-card: 0 1px 2px rgb(22 19 15 / .06), 0 2px 8px rgb(22 19 15 / .05);
+  --shadow-lift: 0 2px 4px rgb(22 19 15 / .06), 0 12px 28px rgb(22 19 15 / .12);
+  --shadow-photo: 0 2px 4px rgb(22 19 15 / .08), 0 16px 36px rgb(22 19 15 / .18);
+
+  /* Status */
+  --open: #1D6B3A;  --open-tint: #E2F2E7;
+  --veg: #1D6B3A;   --veg-tint: #E2F2E7;
+  --vegan: #3D6114; --vegan-tint: #ECF3DC;
+  --gf: #8A4508;    --gf-tint: #FCEBD3;
+
+  --radius-card: 14px;
+  --radius-photo: 14px;
+  --radius-control: 10px;
   --radius-pill: 999px;
 
   --space-1: 4px;
   --space-2: 8px;
-  --space-3: 16px;
-  --space-4: 24px;
-  --space-5: 40px;
-  --space-6: 64px;
-  --space-7: 96px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 40px;
+  --space-7: 64px;
 
-  --shadow-photo: 0 12px 30px rgb(45 42 38 / .18);
-
-  --font-mark: 'Josefin Sans', sans-serif;
-  --font-display: 'DM Serif Display', serif;
-  --font-body: 'Work Sans', sans-serif;
-  --font-type: 'Courier Prime', 'Courier New', monospace; /* typewriter accents */
+  /* One family, varied only by weight and size; mono for labels, prices and times */
+  --font-sans: 'Bricolage Grotesque Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-mark: var(--font-sans);
+  --font-display: var(--font-sans);
+  --font-body: var(--font-sans);
+  --font-type: 'IBM Plex Mono', ui-monospace, monospace;
 
   --ease-out: cubic-bezier(.32, .72, 0, 1);
   --ease-stamp: cubic-bezier(.2, 1.4, .4, 1);
 
-  /* Hairline figures on cream */
-  --hairline-plate: var(--cup);
+  /* Hairline figures on white panels */
+  --hairline-plate: var(--paper);
   --hairline-hi: var(--ember);
-  --hairline-edge: var(--charcoal);
-  --hairline-mid: #6B6258;
-  --hairline-lo: #B7AC9D;
-  --hairline-stroke: 1.1;
+  --hairline-edge: var(--ink);
+  --hairline-mid: #5E564D;
+  --hairline-lo: #B9AFA3;
+  --hairline-stroke: 1.4;
 }

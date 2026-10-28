@@ -7,14 +7,14 @@ const fill = tone === "ink" ? "var(--cream)" : "var(--charcoal)";
 ---
 <svg class:list={["roundel", cls]} width={size} height={size} viewBox="0 0 100 100"
   role={title ? "img" : undefined} aria-hidden={title ? undefined : "true"} aria-label={title}>
-  <circle cx="50" cy="50" r="48" fill={fill} stroke={ink} stroke-width="2" />
-  <circle class="roundel-dash" cx="50" cy="50" r="41" fill="none" stroke={ink} stroke-width="1.6" stroke-dasharray="4 4" />
+  <circle cx="50" cy="50" r="48" fill={fill} stroke={ink} stroke-width="2.5" />
+  <circle class="roundel-dash" cx="50" cy="50" r="41" fill="none" stroke={ink} stroke-width="2" stroke-dasharray="4 3.5" />
   <text x="50" y="57" text-anchor="middle" fill={ink}
-    style="font-family:var(--font-display);font-size:30px;letter-spacing:-.5px">1911</text>
+    style="font-family:var(--font-sans);font-weight:780;font-size:29px;letter-spacing:-1.2px">1911</text>
   <text x="50" y="73" text-anchor="middle" fill={ink}
-    style="font-family:var(--font-mark);font-weight:600;font-size:7.4px;letter-spacing:1.6px">COFFEE CO.</text>
+    style="font-family:var(--font-sans);font-weight:650;font-size:7.6px;letter-spacing:1.2px">COFFEE CO.</text>
   <text x="50" y="31" text-anchor="middle" fill={ink}
-    style="font-family:var(--font-mark);font-weight:600;font-size:6px;letter-spacing:1.6px">AMBLE</text>
+    style="font-family:var(--font-sans);font-weight:650;font-size:6.2px;letter-spacing:1.4px">AMBLE</text>
 </svg>
 <style>
   .roundel-dash { transform-origin: 50px 50px; transition: transform 1.2s var(--ease-out); }
