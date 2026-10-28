@@ -1,0 +1,116 @@
+---
+import { Picture } from "astro:assets";
+import Sprig from "./Sprig.astro";
+import OpenBadge from "./OpenBadge.astro";
+import latte from "../assets/photos/latte.jpg";
+import breakfast from "../assets/photos/breakfast.jpg";
+import cakes from "../assets/photos/cakes.jpg";
+import site from "../content/site.json";
+
+const trio = [
+  { src: latte, alt: "Placeholder for a photo of latte art in a 1911 cup" },
+  { src: breakfast, alt: "Placeholder for a photo of the 1911 Breakfast" },
+  { src: cakes, alt: "Placeholder for a photo of cakes under glass domes on the counter" },
+];
+---
+<section class="hero" aria-labelledby="hero-title">
+  <Sprig class="sprig-tl" />
+  <Sprig class="sprig-br" flip />
+
+  <p class="eyebrow type" data-type>Est. {site.est} · {site.street}, {site.town}</p>
+
+  <div class="title-wrap">
+    <span class="watermark" aria-hidden="true"></span>
+    <h1 id="hero-title" class="ink">Breakfast &amp; coffee on Queen Street</h1>
+  </div>
+
+  <OpenBadge />
+
+  <div class="trio" role="region" aria-label="Photos from the café" tabindex="0">
+    {trio.map((p, i) => (
+      <figure class={`card card-${i}`}>
+        <Picture src={p.src} alt={p.alt} widths={[400, 800]} sizes="(max-width: 767px) 78vw, 320px"
+          formats={["avif", "webp"]} loading="eager" fetchpriority={i < 2 ? "high" : undefined} />
+      </figure>
+    ))}
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    display: grid;
+    justify-items: center;
+    text-align: center;
+    gap: var(--space-4);
+    padding: var(--space-6) var(--space-3) var(--space-7);
+    overflow: hidden;
+  }
+  .eyebrow { font-size: 15px; color: var(--ember); min-height: 1.4em; }
+  .title-wrap { position: relative; display: grid; place-items: center; }
+  .watermark {
+    position: absolute;
+    font: 400 clamp(180px, 28vw, 360px)/1 var(--font-display);
+    color: var(--orange);
+    opacity: .08;
+    pointer-events: none;
+    user-select: none;
+    letter-spacing: -.02em;
+  }
+  .watermark::before { content: "1911"; }
+  h1 { position: relative; max-width: 14ch; color: var(--charcoal); }
+
+  .trio {
+    display: flex;
+    justify-content: center;
+    margin-top: var(--space-5);
+    padding-inline: 28px;
+  }
+  .card {
+    margin: 0;
+    width: 320px;
+    aspect-ratio: 320 / 380;
+    border-radius: var(--radius-photo);
+    overflow: hidden;
+    box-shadow: var(--shadow-photo);
+    background: var(--oak);
+    flex: none;
+    transition: transform .9s var(--ease-out);
+  }
+  .card img { width: 100%; height: 100%; object-fit: cover; }
+  .card-0 { transform: rotate(-4deg); margin-inline-end: -28px; }
+  .card-1 { z-index: 2; transform: translateY(-14px); }
+  .card-2 { transform: rotate(4deg); margin-inline-start: -28px; }
+  .card:hover { transform: rotate(0) translateY(-8px); z-index: 3; }
+
+  /* dealt onto the counter: the three start stacked in the middle and fan out */
+  :global(.motion) .card { animation: deal 1.1s var(--ease-out) backwards; }
+  :global(.motion) .card-0 { --from: translateX(calc(100% - 28px)) rotate(2deg); animation-delay: .35s; }
+  :global(.motion) .card-1 { --from: translateY(30px) rotate(-1deg); animation-delay: .2s; }
+  :global(.motion) .card-2 { --from: translateX(calc(-100% + 28px)) rotate(-2deg); animation-delay: .5s; }
+  @keyframes deal { from { transform: var(--from); opacity: 0; } 30% { opacity: 1; } }
+
+  .hero :global(.sprig) { position: absolute; width: 140px; height: 140px; pointer-events: none; }
+  .hero :global(.sprig-tl) { top: 24px; left: 28px; }
+  .hero :global(.sprig-br) { bottom: 24px; right: 28px; }
+
+  @media (max-width: 1023px) {
+    .card { width: 260px; }
+  }
+  @media (max-width: 767px) {
+    .hero :global(.sprig) { width: 84px; height: 84px; opacity: .7; }
+    .hero :global(.sprig-tl) { display: none; }
+    .trio {
+      width: 100%;
+      justify-content: flex-start;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      gap: var(--space-3);
+      padding: var(--space-3) var(--space-3) var(--space-4);
+      scrollbar-width: none;
+    }
+    .trio::-webkit-scrollbar { display: none; }
+    .card, .card-0, .card-1, .card-2 { width: 78vw; transform: none; margin: 0; scroll-snap-align: center; }
+    :global(.motion) .card { animation: none; }
+  }
+</style>

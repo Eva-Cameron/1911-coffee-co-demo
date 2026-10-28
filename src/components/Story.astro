@@ -1,0 +1,28 @@
+---
+import { Picture } from "astro:assets";
+import story from "../assets/photos/story.jpg";
+---
+<section id="story" class="story section" aria-labelledby="story-title">
+  <div class="wrap grid">
+    <figure class="photo" data-reveal>
+      <Picture src={story} alt="Placeholder for a photo of Joseph behind the oak counter" widths={[600, 1000]} sizes="(max-width: 767px) 100vw, 480px" formats={["avif", "webp"]} loading="lazy" />
+    </figure>
+    <div class="copy">
+      <p class="kicker" data-type>No. 01 — Our story</p>
+      <h2 id="story-title" class="ink">A little orange shop on Queen Street</h2>
+      <!-- DRAFT COPY: replace with Joseph's own words once the story call is done. -->
+      <p>Since 2019, Joseph and the team have been pouring coffee and cooking breakfast behind the hand-painted orange front at 28–30 Queen Street.</p>
+      <p>Everything on the counter is baked in the morning, the breakfast is sourced as close to Amble as we can manage, and the coffee in the cups is the same coffee in the bags on the shelf.</p>
+      <p class="sign type" data-type>— Joseph, 1911 Coffee Co.</p>
+    </div>
+  </div>
+</section>
+<style>
+  .grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--space-6); align-items: center; }
+  .photo { margin: 0; border-radius: var(--radius-photo); overflow: hidden; aspect-ratio: 4 / 5; box-shadow: var(--shadow-photo); rotate: -2deg; max-width: 460px; justify-self: end; }
+  .photo :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .copy { display: grid; gap: var(--space-3); max-width: 46ch; }
+  .copy h2 { margin-bottom: var(--space-2); }
+  .sign { color: var(--ember); font-size: 16px; }
+  @media (max-width: 767px) { .grid { grid-template-columns: 1fr; gap: var(--space-5); } .photo { rotate: 0deg; justify-self: stretch; max-width: none; } }
+</style>

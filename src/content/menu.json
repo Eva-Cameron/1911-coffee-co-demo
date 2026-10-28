@@ -1,0 +1,41 @@
+[
+  {
+    "section": "Brunch",
+    "note": "Served until 11:30",
+    "items": [
+      { "name": "The 1911 Breakfast", "desc": "Coffee-smoked bacon, local sausage, two eggs, beans, toast.", "price": 8.5, "tags": [] },
+      { "name": "Eggs on Sourdough", "desc": "Poached, scrambled or fried, with a little side of greens.", "price": 6.5, "tags": ["V"] },
+      { "name": "Granola Bowl", "desc": "House granola, yoghurt, seasonal fruit, honey.", "price": 5.5, "tags": ["V"] },
+      { "name": "Smashed Avocado", "desc": "Chilli, lime and seeds on toasted sourdough.", "price": 7, "tags": ["VG"] }
+    ]
+  },
+  {
+    "section": "Lunch",
+    "note": "From 11:30",
+    "items": [
+      { "name": "Soup of the Day", "desc": "With bread and butter. Ask at the counter.", "price": 5.5, "tags": ["V"] },
+      { "name": "Toasted Sandwich", "desc": "Ham and mature cheddar, or cheese and red onion.", "price": 6.5, "tags": [] },
+      { "name": "Loaded Jacket", "desc": "Choose two fillings, with a side salad.", "price": 7.5, "tags": ["GF"] }
+    ]
+  },
+  {
+    "section": "Coffee",
+    "note": "Our own roast. Oat, soya or almond at no extra cost.",
+    "items": [
+      { "name": "Espresso", "desc": "", "price": 2.4, "tags": [] },
+      { "name": "Flat White", "desc": "", "price": 3.3, "tags": [] },
+      { "name": "Latte", "desc": "", "price": 3.5, "tags": [] },
+      { "name": "Cortado", "desc": "", "price": 3.0, "tags": [] },
+      { "name": "Mocha", "desc": "", "price": 3.8, "tags": [] }
+    ]
+  },
+  {
+    "section": "Cakes",
+    "note": "Baked every morning. Under the domes on the counter.",
+    "items": [
+      { "name": "Scone, Jam & Cream", "desc": "", "price": 3.5, "tags": ["V"] },
+      { "name": "Cake of the Day", "desc": "", "price": 3.8, "tags": ["V"] },
+      { "name": "Brownie", "desc": "", "price": 3.2, "tags": ["V", "GF"] }
+    ]
+  }
+]

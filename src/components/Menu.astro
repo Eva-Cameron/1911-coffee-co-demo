@@ -1,0 +1,55 @@
+---
+import menu from "../content/menu.json";
+const TAGS: Record<string, string> = { V: "Vegetarian", VG: "Vegan", GF: "Gluten free" };
+const price = (p: number) => `£${p.toFixed(2)}`;
+---
+<section id="menu" class="menu section" aria-labelledby="menu-title">
+  <div class="wrap">
+    <header class="section-head">
+      <p class="kicker" data-type>No. 02 — The menu</p>
+      <h2 id="menu-title" class="ink">Made here, every morning</h2>
+      <p>Breakfast until 11:30, then lunch until we close. Ask at the counter about allergens.</p>
+    </header>
+    <div class="cols">
+      {menu.map((s) => (
+        <section class="docket" aria-labelledby={`m-${s.section}`}>
+          <h3 id={`m-${s.section}`}>{s.section}</h3>
+          <p class="note type">{s.note}</p>
+          <dl>
+            {s.items.map((it, i) => (
+              <div class="menu-row" style={`--i:${i}`}>
+                <dt>
+                  <span class="name">{it.name}</span>
+                  {it.tags.map((t) => <abbr class="tag" title={TAGS[t]} aria-label={TAGS[t]}>{t}</abbr>)}
+                </dt>
+                <dd class="price type">{price(it.price)}</dd>
+                {it.desc && <dd class="desc">{it.desc}</dd>}
+              </div>
+            ))}
+          </dl>
+        </section>
+      ))}
+    </div>
+  </div>
+</section>
+<style>
+  .cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); }
+  .docket { background: var(--cup); border-radius: var(--radius-card); padding: var(--space-5); }
+  .docket h3 { margin-bottom: 4px; }
+  .note { font-size: 14px; color: var(--ember); margin-bottom: var(--space-4); }
+  dl { margin: 0; display: grid; gap: var(--space-3); }
+  .menu-row { display: grid; grid-template-columns: 1fr auto; align-items: end; }
+  dt { font-weight: 600; display: flex; align-items: center; gap: 6px; }
+  dt::after { content: ""; flex: 1 0 24px; border-bottom: 2px dotted var(--oak); margin: 0 8px 6px; align-self: flex-end; }
+  .price { margin: 0; font-variant-numeric: tabular-nums; font-size: 17px; }
+  .desc { grid-column: 1 / -1; margin: 2px 0 0; font-size: 14px; color: #5A534B; max-width: 46ch; }
+  .tag {
+    display: inline-grid; place-items: center; min-width: 26px; height: 20px; padding: 0 5px;
+    border: 1.5px solid var(--charcoal); border-radius: var(--radius-pill);
+    font: 600 10px/1 var(--font-mark); letter-spacing: .06em; text-decoration: none;
+  }
+  @media (max-width: 767px) {
+    .cols { grid-template-columns: 1fr; }
+    .docket { padding: var(--space-4); }
+  }
+</style>

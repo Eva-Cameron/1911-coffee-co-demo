@@ -1,0 +1,44 @@
+---
+/* Two Hairline figures: interactive isometric line drawings of things on the counter. */
+const figures = [
+  { name: "cups", title: "Coffee", text: "Our own roast, poured into our own cups. Move across the row to lift a cup.", label: "A row of coffee cups on saucers. The cup under the pointer lifts off its saucer." },
+  { name: "dome", title: "Bakes", text: "Baked every morning and kept under glass. Raise the dome to see what's on today.", label: "A cake stand under a glass dome. Moving the pointer up raises the dome off the cake." },
+];
+---
+<section id="counter" class="counter section" aria-labelledby="counter-title">
+  <div class="wrap">
+    <header class="section-head">
+      <p class="kicker" data-type>No. 03 — On the counter</p>
+      <h2 id="counter-title" class="ink">Local, and made by hand</h2>
+      <p>Eggs, bacon, bread and milk from suppliers up and down the Northumberland coast. <span class="todo">(Supplier names to confirm.)</span></p>
+    </header>
+    <div class="figs">
+      {figures.map((f, i) => (
+        <figure class="fig" data-reveal style={`--i:${i}`}>
+          <div class="plate">
+            <span class="read type" data-read-for={f.name} aria-hidden="true">rest</span>
+            <div class="stage" data-figure={f.name} data-label={f.label}></div>
+          </div>
+          <figcaption>
+            <h3>{f.title}</h3>
+            <p>{f.text}</p>
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+  </div>
+</section>
+<style>
+  .figs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); }
+  .fig { margin: 0; display: grid; gap: var(--space-3); }
+  .plate { position: relative; background: var(--cup); border-radius: var(--radius-card); overflow: hidden; }
+  .read { position: absolute; top: 14px; right: 18px; font-size: 13px; color: #6B6258; pointer-events: none; z-index: 1; }
+  .stage { width: 100%; aspect-ratio: 5 / 4; }
+  figcaption { display: grid; gap: 4px; padding-inline: 4px; }
+  figcaption p { font-size: 15px; }
+  .todo { color: var(--ember); }
+  @media (max-width: 767px) { .figs { grid-template-columns: 1fr; } }
+</style>
+<script>
+  import "../scripts/figures.ts";
+</script>

@@ -1,0 +1,91 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import Hero from "../components/Hero.astro";
+import Tiles from "../components/Tiles.astro";
+import Story from "../components/Story.astro";
+import Menu from "../components/Menu.astro";
+import Counter from "../components/Counter.astro";
+import Reviews from "../components/Reviews.astro";
+import FindUs from "../components/FindUs.astro";
+import Footer from "../components/Footer.astro";
+import site from "../content/site.json";
+import hours from "../content/hours.json";
+
+const DOW = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "CafeOrCoffeeShop",
+  name: site.name,
+  url: Astro.site?.href,
+  telephone: site.phone,
+  image: new URL("/og.jpg", Astro.site).href,
+  priceRange: "£",
+  servesCuisine: ["Breakfast", "Brunch", "Coffee", "Cakes"],
+  hasMenu: new URL("/#menu", Astro.site).href,
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: site.street,
+    addressLocality: site.town,
+    postalCode: site.postcode,
+    addressCountry: "GB",
+  },
+  geo: { "@type": "GeoCoordinates", latitude: site.geo.lat, longitude: site.geo.lng },
+  openingHoursSpecification: hours.days.map((d) => ({
+    "@type": "OpeningHoursSpecification",
+    dayOfWeek: `https://schema.org/${DOW[d.day - 1]}`,
+    opens: d.open,
+    closes: d.close,
+  })),
+  sameAs: site.socials.map((s) => s.href),
+};
+---
+<Layout
+  title="1911 Coffee Co. | Breakfast & Coffee in Amble"
+  description="Breakfast, lunch, home bakes and our own-roast coffee at 28–30 Queen Street, Amble. Dog friendly. Open today — see the hours."
+  jsonLd={jsonLd}
+>
+  <svg class="ribbon" viewBox="0 0 1440 2400" preserveAspectRatio="none" aria-hidden="true">
+    <path pathLength="1" vector-effect="non-scaling-stroke"
+      d="M -40 60 C 380 -40, 980 40, 1360 180 S 1620 760, 1300 1100 S 880 1600, 1180 1900 S 1560 2300, 1480 2440" />
+  </svg>
+
+  <div class="frame">
+    <Header />
+    <main id="main">
+      <Hero />
+      <Tiles />
+      <Story />
+      <Menu />
+      <Counter />
+      <Reviews />
+      <FindUs />
+    </main>
+  </div>
+  <Footer />
+</Layout>
+
+<style>
+  .ribbon {
+    position: absolute;
+    inset: 0 0 auto 0;
+    width: 100%;
+    height: 2400px;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .ribbon path { fill: none; stroke: var(--orange); stroke-width: 28; stroke-linecap: round; }
+  .frame {
+    position: relative;
+    z-index: 1;
+    max-width: 1280px;
+    margin: 24px auto;
+    border-radius: var(--radius-card);
+    background: var(--cream);
+    overflow: hidden;
+  }
+  @media (max-width: 767px) {
+    .frame { margin: 0; border-radius: 0; }
+    .ribbon { display: none; }
+  }
+</style>

@@ -1,0 +1,17 @@
+{
+  "name": "1911 Coffee Co.",
+  "street": "28–30 Queen Street",
+  "town": "Amble",
+  "postcode": "NE65 0BZ",
+  "phone": "01665 710706",
+  "phoneHref": "+441665710706",
+  "geo": { "lat": 55.3339, "lng": -1.5847 },
+  "est": "2019",
+  "directions": "https://www.google.com/maps/dir/?api=1&destination=1911+Coffee+Co,+28-30+Queen+St,+Amble+NE65+0BZ",
+  "socials": [
+    { "name": "Instagram", "href": "https://www.instagram.com/" },
+    { "name": "Facebook", "href": "https://www.facebook.com/" },
+    { "name": "Tripadvisor", "href": "https://www.tripadvisor.co.uk/" }
+  ],
+  "banner": { "on": false, "text": "", "href": "" }
+}

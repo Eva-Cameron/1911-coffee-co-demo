@@ -1,0 +1,44 @@
+---
+import { Picture } from "astro:assets";
+import story from "../assets/photos/story.jpg";
+import menu from "../assets/photos/menu.jpg";
+import findus from "../assets/photos/findus.jpg";
+const tiles = [
+  { href: "#story", label: "Our Story", src: story, alt: "Placeholder for a photo of the orange shopfront on Queen Street" },
+  { href: "#menu", label: "Menu", src: menu, alt: "Placeholder for a photo of the menu board" },
+  { href: "#find-us", label: "Find Us", src: findus, alt: "Placeholder for a photo of Queen Street, Amble" },
+];
+---
+<section class="tiles wrap" aria-label="Explore">
+  {tiles.map((t, i) => (
+    <a class="tile" href={t.href} data-reveal style={`--i:${i}`}>
+      <Picture src={t.src} alt={t.alt} widths={[400, 800, 1200]} sizes="(max-width: 767px) 100vw, 360px" formats={["avif", "webp"]} loading="lazy" />
+      <span class="label caps"><span class="no type">0{i + 1}</span>{t.label}</span>
+    </a>
+  ))}
+</section>
+<style>
+  .tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; padding-bottom: var(--space-7); }
+  .tile {
+    position: relative; display: block; aspect-ratio: 4 / 5;
+    border-radius: var(--radius-photo); overflow: hidden; background: var(--oak);
+    color: var(--cup); text-decoration: none;
+  }
+  .tile :global(img) { width: 100%; height: 100%; object-fit: cover; transition: transform 1s var(--ease-out); }
+  .tile::after { content: ""; position: absolute; inset: 0; background: linear-gradient(transparent 55%, rgb(45 42 38 / .7)); }
+  .tile:hover :global(img) { transform: scale(1.04); }
+  .label {
+    position: absolute; left: 20px; bottom: 20px; z-index: 1;
+    letter-spacing: .14em; display: flex; gap: 12px; align-items: baseline;
+  }
+  .no { font-size: 13px; letter-spacing: 0; text-transform: none; opacity: .85; }
+  .label::after {
+    content: "→"; font-family: var(--font-type); letter-spacing: 0;
+    transform: translateX(-6px); opacity: 0; transition: .4s var(--ease-out);
+  }
+  .tile:hover .label::after, .tile:focus-visible .label::after { transform: none; opacity: 1; }
+  @media (max-width: 767px) {
+    .tiles { grid-template-columns: 1fr; padding-bottom: var(--space-6); }
+    .tile { aspect-ratio: 16 / 10; }
+  }
+</style>

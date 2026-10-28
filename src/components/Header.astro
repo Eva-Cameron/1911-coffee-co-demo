@@ -1,0 +1,133 @@
+---
+import Roundel from "./Roundel.astro";
+const links = [
+  { href: "#menu", label: "Menu" },
+  { href: "#story", label: "Our Story" },
+  { href: "#counter", label: "Suppliers" },
+  { href: "#gallery", label: "Gallery" },
+];
+---
+<header class="header">
+  <nav class="left" aria-label="Main">
+    <ul>
+      {links.map((l) => <li><a class="caps" href={l.href}>{l.label}</a></li>)}
+    </ul>
+  </nav>
+
+  <a class="mark" href="/" aria-label="1911 Coffee Co., home">
+    <Roundel size={64} class="stamp" />
+  </a>
+
+  <div class="right">
+    <a class="caps find" href="#find-us">Find us</a>
+    <a class="pill" href="#menu">Today's menu</a>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="sheet">
+      <span class="caps">Menu</span>
+      <svg width="22" height="14" viewBox="0 0 22 14" aria-hidden="true"><path d="M1 1h20M1 7h20M1 13h20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" /></svg>
+    </button>
+  </div>
+</header>
+
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="Site menu" hidden>
+  <div class="sheet-top">
+    <Roundel size={48} />
+    <button class="close" type="button">
+      <span class="caps">Close</span>
+      <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 2l12 12M14 2L2 14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" /></svg>
+    </button>
+  </div>
+  <ul>
+    {links.map((l, i) => <li style={`--i:${i}`}><a href={l.href}>{l.label}</a></li>)}
+    <li style="--i:4"><a href="#find-us">Find us</a></li>
+  </ul>
+  <p class="type sheet-foot">28–30 Queen Street, Amble · <a href="tel:+441665710706">01665 710706</a></p>
+</div>
+
+<style>
+  .header {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    height: 76px;
+    padding: 0 var(--space-5);
+    position: relative;
+    z-index: 5;
+  }
+  .left ul { display: flex; gap: 28px; list-style: none; margin: 0; padding: 0; }
+  .left a, .find { color: var(--charcoal); text-decoration: none; position: relative; padding-block: 14px; }
+  /* a typed underline: a run of short strokes that fills in from the left */
+  .left a::after, .find::after {
+    content: "";
+    position: absolute; left: 0; right: 0; bottom: 8px; height: 2px;
+    background: repeating-linear-gradient(90deg, var(--ember) 0 5px, transparent 5px 8px);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform .45s steps(8, end);
+  }
+  .left a:hover::after, .find:hover::after { transform: scaleX(1); }
+  .mark { display: block; margin-top: 20px; border-radius: 50%; }
+  .right { display: flex; justify-content: flex-end; align-items: center; gap: var(--space-4); }
+  .menu-btn, .close {
+    display: none;
+    align-items: center; gap: 10px;
+    min-height: 44px; padding: 0 4px;
+    border: 0; background: none; color: var(--charcoal); cursor: pointer;
+  }
+
+  .sheet {
+    position: fixed; inset: 0; z-index: 50;
+    background: var(--cream);
+    padding: var(--space-3);
+    display: flex; flex-direction: column;
+  }
+  .sheet[hidden] { display: none; }
+  .sheet-top { display: flex; justify-content: space-between; align-items: center; }
+  .sheet .close { display: inline-flex; }
+  .sheet ul { list-style: none; margin: var(--space-6) 0 auto; padding: 0; display: grid; gap: var(--space-3); }
+  .sheet li a {
+    font: 400 28px/1.2 var(--font-display);
+    color: var(--charcoal); text-decoration: none;
+    display: inline-block; padding-block: 6px;
+  }
+  .sheet-foot { font-size: 14px; }
+  :global(.motion) .sheet:not([hidden]) li { animation: sheet-in .5s var(--ease-out) both; animation-delay: calc(var(--i) * 60ms); }
+  @keyframes sheet-in { from { opacity: 0; transform: translateY(12px); } }
+
+  @media (max-width: 1023px) {
+    .left { display: none; }
+    .find, .right .pill { display: none; }
+    .menu-btn { display: inline-flex; }
+    .header { grid-template-columns: auto 1fr; padding: 0 var(--space-3); height: 72px; }
+    .mark { margin-top: 0; }
+    .mark :global(svg) { width: 48px; height: 48px; }
+  }
+</style>
+
+<script>
+  const btn = document.querySelector<HTMLButtonElement>(".menu-btn")!;
+  const sheet = document.getElementById("sheet")!;
+  const close = sheet.querySelector<HTMLButtonElement>(".close")!;
+  const focusables = () => [...sheet.querySelectorAll<HTMLElement>("a, button")];
+
+  function open() {
+    sheet.hidden = false;
+    btn.setAttribute("aria-expanded", "true");
+    document.body.style.overflow = "hidden";
+    close.focus();
+  }
+  function shut(restore = true) {
+    sheet.hidden = true;
+    btn.setAttribute("aria-expanded", "false");
+    document.body.style.overflow = "";
+    if (restore) btn.focus();
+  }
+  btn.addEventListener("click", open);
+  close.addEventListener("click", () => shut());
+  sheet.addEventListener("click", (e) => { if ((e.target as Element).closest("li a")) shut(false); });
+  sheet.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") return shut();
+    if (e.key !== "Tab") return;
+    const f = focusables(), first = f[0], last = f[f.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  });
+</script>

@@ -1,0 +1,38 @@
+:root {
+  --orange: #E07B39;   /* fills & blocks only — NOT text on cream (2.6:1 fails) */
+  --ember: #A44C17;    /* text accent/links on cream: 5.07:1 */
+  --charcoal: #2D2A26; /* body text 12.5:1 on cream; also text on orange 4.8:1 */
+  --cream: #F6EFE4;
+  --cup: #FFFDF8;
+  --oak: #B9874F;      /* decorative only: 2.77:1 on cream */
+
+  --radius-card: 20px;
+  --radius-photo: 18px;
+  --radius-pill: 999px;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 16px;
+  --space-4: 24px;
+  --space-5: 40px;
+  --space-6: 64px;
+  --space-7: 96px;
+
+  --shadow-photo: 0 12px 30px rgb(45 42 38 / .18);
+
+  --font-mark: 'Josefin Sans', sans-serif;
+  --font-display: 'DM Serif Display', serif;
+  --font-body: 'Work Sans', sans-serif;
+  --font-type: 'Courier Prime', 'Courier New', monospace; /* typewriter accents */
+
+  --ease-out: cubic-bezier(.32, .72, 0, 1);
+  --ease-stamp: cubic-bezier(.2, 1.4, .4, 1);
+
+  /* Hairline figures on cream */
+  --hairline-plate: var(--cup);
+  --hairline-hi: var(--ember);
+  --hairline-edge: var(--charcoal);
+  --hairline-mid: #6B6258;
+  --hairline-lo: #B7AC9D;
+  --hairline-stroke: 1.1;
+}

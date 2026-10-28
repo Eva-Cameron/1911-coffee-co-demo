@@ -1,0 +1,25 @@
+{
+  "name": "1911-coffee",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "npm run figures && astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "figures": "cp figures/cups.js figures/dome.js public/hairline/"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "3.7.4",
+    "@fontsource/courier-prime": "5.3.0",
+    "@fontsource/dm-serif-display": "5.3.0",
+    "@fontsource/josefin-sans": "5.3.0",
+    "@fontsource/work-sans": "5.3.0",
+    "astro": "6.4.8"
+  },
+  "devDependencies": {
+    "axe-core": "^4.10.3",
+    "lighthouse": "^12.6.1"
+  }
+}

@@ -1,0 +1,59 @@
+---
+import hours from "../content/hours.json";
+/* Without JS the badge shows a compact week; the script replaces it with the live status in Europe/London time. */
+const weekday = hours.days.slice(0, 5);
+const sameWeek = weekday.every((d) => d.open === weekday[0].open && d.close === weekday[0].close);
+const fallback = sameWeek
+  ? `Mon–Fri ${weekday[0].open}–${weekday[0].close}`
+  : "See opening hours below";
+---
+<p class="badge type" data-open-badge data-hours={JSON.stringify(hours)}>
+  <span class="dot" aria-hidden="true"></span>
+  <span class="text">{fallback}</span>
+</p>
+
+<style>
+  .badge {
+    display: inline-flex; align-items: center; gap: 10px;
+    min-height: 36px; padding: 6px 16px;
+    border-radius: var(--radius-pill);
+    background: var(--cup);
+    box-shadow: inset 0 0 0 1.5px var(--charcoal);
+    font-size: 15px;
+  }
+  .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--oak); }
+  .badge[data-state="open"] .dot { background: #2F7D4B; box-shadow: 0 0 0 4px rgb(47 125 75 / .16); }
+  .badge[data-state="closed"] .dot { background: var(--ember); }
+  :global(.motion) .badge[data-state="open"] .dot { animation: pulse 2.4s ease-in-out infinite; }
+  @keyframes pulse { 50% { box-shadow: 0 0 0 7px rgb(47 125 75 / 0); } }
+</style>
+
+<script>
+  type Day = { day: number; name: string; open: string; close: string };
+  const el = document.querySelector<HTMLElement>("[data-open-badge]");
+  if (el) {
+    const { timezone, days } = JSON.parse(el.dataset.hours!) as { timezone: string; days: Day[] };
+    const parts = Object.fromEntries(
+      new Intl.DateTimeFormat("en-GB", { timeZone: timezone, weekday: "short", hour: "2-digit", minute: "2-digit", hourCycle: "h23" })
+        .formatToParts(new Date()).map((p) => [p.type, p.value]),
+    );
+    const iso = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].indexOf(parts.weekday) + 1;
+    const now = `${parts.hour}:${parts.minute}`;
+    const today = days.find((d) => d.day === iso);
+    const fmt = (t: string) => {
+      const [h, m] = t.split(":").map(Number);
+      return `${h % 12 || 12}${m ? ":" + String(m).padStart(2, "0") : ""}${h < 12 ? "am" : "pm"}`;
+    };
+    let text: string, state: string;
+    if (today && now >= today.open && now < today.close) {
+      state = "open"; text = `Open now · until ${fmt(today.close)}`;
+    } else {
+      state = "closed";
+      const later = today && now < today.open;
+      const next = later ? today : days.find((d) => d.day === (iso % 7) + 1) ?? days[0];
+      text = `Closed · opens ${fmt(next.open)}${later ? "" : " " + next.name.slice(0, 3)}`;
+    }
+    el.dataset.state = state;
+    el.querySelector(".text")!.textContent = text;
+  }
+</script>
