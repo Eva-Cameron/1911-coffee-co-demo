@@ -1,116 +1,81 @@
 ---
-import { Picture } from "astro:assets";
+/* Chapter VIII: the printed bill of fare, set from menu.json. Prices only where the café has printed them. */
+import ChapterHead from "./ChapterHead.astro";
+import Wordmark from "./Wordmark.astro";
 import menu from "../content/menu.json";
-import hours from "../content/hours.json";
-import latte from "../assets/photos/latte.jpg";
-import cakes from "../assets/photos/cakes.jpg";
-const TAGS: Record<string, string> = { V: "Vegetarian", VG: "Vegan", GF: "Gluten free" };
-const price = (p: number) => `£${p.toFixed(2)}`;
-const time = (t: string) => {
-  const [h, m] = t.split(":").map(Number);
-  return `${h % 12 || 12}${m ? ":" + String(m).padStart(2, "0") : ""}${h < 12 ? "am" : "pm"}`;
-};
-const groups: { names: string[]; open: string; close: string }[] = [];
-for (const d of hours.days) {
-  const last = groups.at(-1);
-  if (last && last.open === d.open && last.close === d.close) last.names.push(d.name.slice(0, 3));
-  else groups.push({ names: [d.name.slice(0, 3)], open: d.open, close: d.close });
-}
-const hoursLine = groups.map((g) => `${g.names.length > 1 ? `${g.names[0]}–${g.names.at(-1)}` : g.names[0]} ${time(g.open)}–${time(g.close)}`);
+import site from "../content/site.json";
+type Item = { name: string; desc?: string; price?: number; addons?: { name: string; price: number }[] };
+const money = (p: number) => `£${p % 1 ? p.toFixed(2) : p}`;
+const left = ["breakfast", "extras", "bakes", "children"];
+const cols = [
+  menu.sections.filter((s) => left.includes(s.id)),
+  menu.sections.filter((s) => !left.includes(s.id)),
+];
 ---
-<section id="menu" class="menu section field-mint" aria-labelledby="menu-title">
+<section id="menu" class="chapter field-mint" aria-labelledby="menu-title">
   <div class="wrap">
-    <div class="chapter">
-      <p class="part">Chapter two</p>
-      <h2 id="menu-title" data-type data-type-speed="55">The menu</h2>
-      <p>Breakfast until 11:30, then lunch until we close.</p>
-    </div>
+    <ChapterHead numeral="VIII" label="The Menu" id="menu-title"
+      title="Everything, written down." lede="Breakfast from eight. Lunch until we close at three." />
 
-    <div class="stage">
-      <figure class="mat plate" data-reveal>
-        <Picture src={latte} alt="A cappuccino with latte art and a biscuit beside the 1911 brunch menu" widths={[400, 855]} sizes="(max-width: 1100px) 45vw, 300px" formats={["avif", "webp"]} loading="lazy" />
-      </figure>
-
-      <article class="card bevel" aria-label="Menu card">
-        <p class="band">1911 Coffee Co. · Bill of fare</p>
-        {menu.map((s) => (
-          <section class="group" aria-labelledby={`m-${s.section}`}>
-            <h3 id={`m-${s.section}`}>{s.section}</h3>
-            <p class="note">{s.note}</p>
-            <dl>
-              {s.items.map((it, i) => (
-                <div class="menu-row" style={`--i:${i}`}>
-                  <dt>
-                    <span class="name">{it.name}</span>
-                    {it.tags.map((t) => <abbr title={TAGS[t]}>{t}</abbr>)}
-                  </dt>
-                  <dd class="price">{price(it.price)}</dd>
-                  {it.desc && <dd class="desc">{it.desc}</dd>}
-                </div>
-              ))}
-            </dl>
-          </section>
+    <article class="card" aria-label="The menu card" data-reveal>
+      <header class="top">
+        <Wordmark size="md" />
+        <p class="label">Bill of fare · {site.street}, {site.town}</p>
+      </header>
+      <div class="cols">
+        {cols.map((col) => (
+          <div class="col">
+            {col.map((s) => (
+              <section class="group" aria-labelledby={`m-${s.id}`}>
+                <h3 id={`m-${s.id}`}>{s.title}</h3>
+                {s.note && <p class="note">{s.note}</p>}
+                <ul>
+                  {(s.items as Item[]).map((it) => (
+                    <li>
+                      <p class="row">
+                        <span class="name">{it.name}</span>
+                        {it.price != null && <><span class="lead" aria-hidden="true"></span><span class="price">{money(it.price)}</span></>}
+                      </p>
+                      {it.desc && <p class="desc">{it.desc}</p>}
+                      {it.addons && <p class="addons">Add {it.addons.map((a) => `${a.name.toLowerCase()} ${money(a.price)}`).join(", ")}</p>}
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            ))}
+          </div>
         ))}
-        <footer class="card-foot">
-          <p>{hoursLine.join(" · ")}</p>
-          <p>V vegetarian · VG vegan · GF gluten free. Ask at the counter about allergens.</p>
-        </footer>
-      </article>
-
-      <figure class="mat plate" data-reveal style="--i:2">
-        <Picture src={cakes} alt="A raspberry and coconut sponge on the counter in front of the espresso machine" widths={[400, 960]} sizes="(max-width: 1100px) 45vw, 300px" formats={["avif", "webp"]} loading="lazy" />
-      </figure>
-    </div>
+      </div>
+      <footer class="foot">
+        <p>{menu.footnote}</p>
+        <p class="label">{menu.allergy}</p>
+        <a class="btn" href={`tel:${site.phoneHref}`}>Ring ahead · {site.phone}</a>
+      </footer>
+    </article>
   </div>
 </section>
 
 <style>
-  .stage { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 560px) minmax(0, 1fr); gap: 40px; align-items: start; }
-  .plate { aspect-ratio: 4 / 5; overflow: hidden; margin-top: 120px; position: sticky; top: 120px; }
-  .plate :global(picture) { display: block; height: 100%; }
-
-  /* The menu card: cream paper, scalloped top and bottom, an orange band across the head */
   .card {
-    --scallop: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='12'%3E%3Ccircle cx='12' cy='12' r='12' fill='%23FBF3EA'/%3E%3C/svg%3E");
-    position: relative;
-    background: var(--paper);
-    padding: 0 56px 56px;
-    text-align: center;
-    margin-block: 12px;
+    max-width: 960px; margin-inline: auto; background: var(--paper);
+    padding: clamp(32px, 5vw, 72px) clamp(22px, 5vw, 72px);
+    clip-path: polygon(var(--chamfer) 0, calc(100% - var(--chamfer)) 0, 100% var(--chamfer), 100% calc(100% - var(--chamfer)), calc(100% - var(--chamfer)) 100%, var(--chamfer) 100%, 0 calc(100% - var(--chamfer)), 0 var(--chamfer));
+    outline: 1px solid rgb(51 38 34 / .25); outline-offset: -14px;
   }
-  .card::before, .card::after {
-    content: ""; position: absolute; left: 0; right: 0; height: 12px;
-    background: var(--scallop) 0 0 / 24px 12px repeat-x;
-  }
-  .card::before { top: -12px; }
-  .card::after { bottom: -12px; transform: scaleY(-1); }
-  .band {
-    margin: 0 -56px 52px; padding: 22px 16px;
-    background: var(--orange); color: var(--maroon);
-    font-size: 14px; font-weight: 600; letter-spacing: .3em; text-transform: uppercase;
-  }
-  .group + .group { margin-top: 52px; }
-  .note { font-size: 14px; color: var(--muted); margin: 8px auto 22px; max-width: 36ch; }
-  dl { margin: 0 auto; max-width: 440px; text-align: left; display: grid; gap: 16px; }
-  .menu-row { display: grid; grid-template-columns: 1fr auto; align-items: end; }
-  dt { display: flex; align-items: baseline; gap: 6px; font-weight: 500; font-size: 17px; }
-  dt::after { content: ""; flex: 1 0 20px; border-bottom: 2px dotted var(--oak); margin: 0 6px 5px; align-self: flex-end; }
-  abbr { flex: none; font-size: 14px; color: var(--muted); text-decoration: none; cursor: help; }
-  .price { margin: 0; font-size: 17px; font-variant-numeric: tabular-nums; }
-  .desc { grid-column: 1 / -1; margin: 4px 0 0; font-size: 14px; line-height: 1.5; color: var(--muted); }
-  .card-foot { margin-top: 56px; display: grid; gap: 8px; font-size: 14px; color: var(--muted); }
-  .card-foot p:first-child { color: var(--ink); font-weight: 600; letter-spacing: .06em; }
-
-  @media (max-width: 1100px) {
-    .stage { grid-template-columns: 1fr 1fr; gap: 16px; }
-    .card { grid-column: 1 / -1; grid-row: 1; }
-    .plate { grid-row: 2; margin-top: 32px; position: static; }
-  }
-  @media (max-width: 767px) {
-    .card { padding: 0 20px 44px; }
-    .band { margin: 0 -20px 40px; letter-spacing: .2em; }
-    dl { max-width: none; }
-    dt, .price { font-size: 16px; }
-    .plate { padding: 8px; }
-  }
+  .top { display: grid; justify-items: center; gap: 14px; text-align: center; padding-bottom: 28px; margin-bottom: 36px; border-bottom: 3px double rgb(51 38 34 / .4); color: var(--cherry); }
+  .top .label { color: var(--espresso); }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 6vw, 72px); }
+  .group + .group { margin-top: 36px; }
+  h3 { font-size: clamp(22px, 2.2vw, 28px); color: var(--cherry); margin-bottom: 6px; }
+  .note { font-size: 15px; color: var(--muted); font-style: italic; margin-bottom: 10px; }
+  ul { display: grid; gap: 12px; margin-top: 10px; }
+  .row { display: flex; align-items: baseline; gap: 8px; }
+  .name { font-weight: 600; }
+  .lead { flex: 1; border-bottom: 1.5px dotted rgb(51 38 34 / .45); transform: translateY(-4px); min-width: 20px; }
+  .price { font-family: var(--font-mono); font-size: 15px; }
+  .desc { font-size: 15px; color: var(--muted); }
+  .addons { font: 13px/1.5 var(--font-mono); color: var(--muted); }
+  .foot { display: grid; justify-items: center; gap: 14px; text-align: center; margin-top: 44px; padding-top: 28px; border-top: 3px double rgb(51 38 34 / .4); }
+  .foot p:first-child { font: italic 400 var(--step-lead)/1.4 var(--font-head); font-variation-settings: "SOFT" 100; max-width: 40ch; }
+  @media (max-width: 720px) { .cols { grid-template-columns: 1fr; } .card { outline-offset: -8px; } }
 </style>

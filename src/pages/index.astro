@@ -2,16 +2,20 @@
 import Layout from "../layouts/Layout.astro";
 import Header from "../components/Header.astro";
 import Hero from "../components/Hero.astro";
-import Story from "../components/Story.astro";
-import Plates from "../components/Plates.astro";
+import ChapterWelcome from "../components/ChapterWelcome.astro";
+import ChapterCoffee from "../components/ChapterCoffee.astro";
+import ChapterBreakfast from "../components/ChapterBreakfast.astro";
+import ChapterLunch from "../components/ChapterLunch.astro";
+import ChapterLittleThings from "../components/ChapterLittleThings.astro";
+import ChapterWelcomeTable from "../components/ChapterWelcomeTable.astro";
+import ChapterVisitors from "../components/ChapterVisitors.astro";
 import Menu from "../components/Menu.astro";
-import Counter from "../components/Counter.astro";
-import Reviews from "../components/Reviews.astro";
 import FindUs from "../components/FindUs.astro";
 import Footer from "../components/Footer.astro";
 import site from "../content/site.json";
 import hours from "../content/hours.json";
 
+type Day = { day: number; open?: string; close?: string; closed?: boolean };
 const DOW = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 const jsonLd = {
   "@context": "https://schema.org",
@@ -21,8 +25,9 @@ const jsonLd = {
   telephone: site.phone,
   image: new URL("/og.jpg", Astro.site).href,
   priceRange: "£",
-  servesCuisine: ["Breakfast", "Brunch", "Coffee", "Cakes"],
+  servesCuisine: ["Breakfast", "Lunch", "Coffee", "Cakes"],
   hasMenu: new URL("/#menu", Astro.site).href,
+  acceptsReservations: true,
   address: {
     "@type": "PostalAddress",
     streetAddress: site.street,
@@ -31,7 +36,7 @@ const jsonLd = {
     addressCountry: "GB",
   },
   geo: { "@type": "GeoCoordinates", latitude: site.geo.lat, longitude: site.geo.lng },
-  openingHoursSpecification: hours.days.map((d) => ({
+  openingHoursSpecification: (hours.days as Day[]).filter((d) => !d.closed).map((d) => ({
     "@type": "OpeningHoursSpecification",
     dayOfWeek: `https://schema.org/${DOW[d.day - 1]}`,
     opens: d.open,
@@ -41,25 +46,26 @@ const jsonLd = {
 };
 ---
 <Layout
-  title="1911 Coffee Co. | Breakfast & Coffee in Amble"
-  description="Breakfast, lunch, home bakes and our own-roast coffee at 28–30 Queen Street, Amble. Dog friendly. Open today — see the hours."
+  title="1911 Coffee Co. | Coffee, Breakfast & Lunch in Amble"
+  description="Coffee, proper breakfasts, fresh lunches and home bakes at 28–30 Queen Street, Amble. Open Monday to Saturday, 8am to 3pm."
   jsonLd={jsonLd}
 >
-  <div class="frame">
-    <div class="field-orange band"><Header /></div>
-    <main id="main">
-      <div class="field-orange band"><Hero /></div>
-      <Story />
-      <Menu />
-      <Plates />
-      <Counter />
-      <Reviews />
-      <FindUs />
-    </main>
-  </div>
+  <div class="field-orange"><Header /></div>
+  <main id="main">
+    <div class="field-orange"><Hero /></div>
+    <ChapterWelcome />
+    <ChapterCoffee />
+    <ChapterBreakfast />
+    <ChapterLunch />
+    <ChapterLittleThings />
+    <ChapterWelcomeTable />
+    <ChapterVisitors />
+    <Menu />
+    <FindUs />
+  </main>
   <Footer />
 </Layout>
 
 <style>
-  .frame { position: relative; z-index: 1; background: var(--cream); overflow-x: clip; }
+  main { overflow-x: clip; }
 </style>

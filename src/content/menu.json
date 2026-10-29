@@ -1,41 +1,66 @@
-[
-  {
-    "section": "Brunch",
-    "note": "Served until 11:30",
-    "items": [
-      { "name": "The 1911 Breakfast", "desc": "Coffee-smoked bacon, local sausage, two eggs, beans, toast.", "price": 8.5, "tags": [] },
-      { "name": "Eggs on Sourdough", "desc": "Poached, scrambled or fried, with a little side of greens.", "price": 6.5, "tags": ["V"] },
-      { "name": "Granola Bowl", "desc": "House granola, yoghurt, seasonal fruit, honey.", "price": 5.5, "tags": ["V"] },
-      { "name": "Smashed Avocado", "desc": "Chilli, lime and seeds on toasted sourdough.", "price": 7, "tags": ["VG"] }
-    ]
-  },
-  {
-    "section": "Lunch",
-    "note": "From 11:30",
-    "items": [
-      { "name": "Soup of the Day", "desc": "With bread and butter. Ask at the counter.", "price": 5.5, "tags": ["V"] },
-      { "name": "Toasted Sandwich", "desc": "Ham and mature cheddar, or cheese and red onion.", "price": 6.5, "tags": [] },
-      { "name": "Loaded Jacket", "desc": "Choose two fillings, with a side salad.", "price": 7.5, "tags": ["GF"] }
-    ]
-  },
-  {
-    "section": "Coffee",
-    "note": "Our own roast. Oat, soya or almond at no extra cost.",
-    "items": [
-      { "name": "Espresso", "desc": "", "price": 2.4, "tags": [] },
-      { "name": "Flat White", "desc": "", "price": 3.3, "tags": [] },
-      { "name": "Latte", "desc": "", "price": 3.5, "tags": [] },
-      { "name": "Cortado", "desc": "", "price": 3.0, "tags": [] },
-      { "name": "Mocha", "desc": "", "price": 3.8, "tags": [] }
-    ]
-  },
-  {
-    "section": "Cakes",
-    "note": "Baked every morning. Under the domes on the counter.",
-    "items": [
-      { "name": "Scone, Jam & Cream", "desc": "", "price": 3.5, "tags": ["V"] },
-      { "name": "Cake of the Day", "desc": "", "price": 3.8, "tags": ["V"] },
-      { "name": "Brownie", "desc": "", "price": 3.2, "tags": ["V", "GF"] }
-    ]
-  }
-]
+{
+  "_note": "Only what 1911 have published themselves. Prices appear only where they were legible on their printed brunch menu (Facebook photo, 22 Oct 2026). Items marked confirm: true are reasonable but unverified; check every line with the café before launch.",
+  "footnote": "Dishes and prices change with the seasons, so the board at the counter has the final word.",
+  "allergy": "If you have a food allergy, please make it known when you order.",
+  "sections": [
+    {
+      "id": "breakfast",
+      "title": "Breakfast",
+      "note": "Pancakes are served until 11:00.",
+      "items": [
+        { "name": "The 1911 Breakfast", "desc": "The house breakfast." },
+        { "name": "Bacon or sausage sandwich" },
+        { "name": "Eggs on toast" },
+        { "name": "Beans on toast" },
+        { "name": "American buttermilk pancakes", "desc": "With syrup. Until 11:00.", "price": 7,
+          "addons": [ { "name": "Bacon", "price": 2 }, { "name": "Toasted pecans", "price": 2 }, { "name": "Blueberries", "price": 2 } ] },
+        { "name": "Toasted fruit bread", "desc": "With butter and jam.", "confirm": true }
+      ]
+    },
+    {
+      "id": "extras",
+      "title": "Add some extras",
+      "items": [
+        { "name": "Black pudding", "price": 1.5 },
+        { "name": "Hash brown", "price": 1 }
+      ]
+    },
+    {
+      "id": "lunch",
+      "title": "Lunch",
+      "note": "Sandwiches, paninis and baguettes come with a fresh side salad, homemade coleslaw and red cabbage.",
+      "items": [
+        { "name": "Cold sandwiches" },
+        { "name": "Paninis" },
+        { "name": "Warm baguettes" },
+        { "name": "Soup of the day", "desc": "Always gluten free. With a bread roll and butter." },
+        { "name": "Fresh salads", "desc": "Plated with beetroot, pickled red cabbage and coleslaw.", "confirm": true }
+      ]
+    },
+    {
+      "id": "bakes",
+      "title": "Cakes and bakes",
+      "items": [
+        { "name": "Homemade scones" },
+        { "name": "Today's cakes and bakes", "desc": "On the counter. They change daily." }
+      ]
+    },
+    {
+      "id": "drinks",
+      "title": "Hot drinks",
+      "note": "Coffee comes with a little biscuit on the saucer.",
+      "items": [
+        { "name": "Espresso, Americano", "confirm": true },
+        { "name": "Cappuccino, latte, flat white", "confirm": true },
+        { "name": "Cortado, mocha", "confirm": true },
+        { "name": "Marimba hot chocolate", "desc": "Made with real chocolate flakes." },
+        { "name": "Tea", "confirm": true }
+      ]
+    },
+    {
+      "id": "children",
+      "title": "For children",
+      "items": [ { "name": "Children's menu", "desc": "Ask at the counter." } ]
+    }
+  ]
+}

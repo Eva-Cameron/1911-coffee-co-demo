@@ -5,22 +5,29 @@ const time = (t: string) => {
   const [h, m] = t.split(":").map(Number);
   return `${h % 12 || 12}${m ? ":" + String(m).padStart(2, "0") : ""}${h < 12 ? "am" : "pm"}`;
 };
-const groups: { names: string[]; open: string; close: string }[] = [];
-for (const d of hours.days) {
+type Day = { day: number; name: string; open?: string; close?: string; closed?: boolean };
+const days = hours.days as Day[];
+const slot = (d: Day) => (d.closed ? "closed" : `${d.open}-${d.close}`);
+const groups: { names: string[]; day: Day }[] = [];
+for (const d of days) {
   const last = groups.at(-1);
-  if (last && last.open === d.open && last.close === d.close) last.names.push(d.name);
-  else groups.push({ names: [d.name], open: d.open, close: d.close });
+  if (last && slot(last.day) === slot(d)) last.names.push(d.name);
+  else groups.push({ names: [d.name], day: d });
 }
 const short = (n: string) => n.slice(0, 3);
-const lines = groups.map((g) => `${g.names.length > 1 ? `${short(g.names[0])}–${short(g.names.at(-1)!)}` : short(g.names[0])}  ${time(g.open)}–${time(g.close)}`);
-const spoken = groups.map((g) => `${g.names.length > 1 ? `${g.names[0]} to ${g.names.at(-1)}` : g.names[0]}, ${time(g.open)} to ${time(g.close)}`).join("; ");
+const span = (names: string[], shorten: boolean) => {
+  const label = shorten ? names.map(short) : names;
+  return names.length > 1 ? `${label[0]}${shorten ? "–" : " to "}${label.at(-1)}` : label[0];
+};
+const lines = groups.map((g) => `${span(g.names, true)}  ${g.day.closed ? "Closed" : `${time(g.day.open!)}–${time(g.day.close!)}`}`);
+const spoken = groups.map((g) => `${span(g.names, false)}, ${g.day.closed ? "closed" : `${time(g.day.open!)} to ${time(g.day.close!)}`}`).join("; ");
 ---
 <div class="door-sign" data-door-sign data-hours={JSON.stringify(hours)} data-lines={JSON.stringify(lines)}>
   <button class="sign" type="button" aria-expanded="false" aria-describedby="sign-hours">
     <span class="card">
       <span class="face front">
         <span class="state" data-state-word>Open</span>
-        <span class="sub" data-state-sub>from 8am</span>
+        <span class="sub" data-state-sub>Mon–Sat, 8am–3pm</span>
       </span>
       <span class="face back" aria-hidden="true"><span class="state">Hours</span></span>
     </span>
@@ -31,9 +38,11 @@ const spoken = groups.map((g) => `${g.names.length > 1 ? `${g.names[0]} to ${g.n
 </div>
 
 <style>
+  /* Fredericka the Great (OFL), cut down to the letters of Open, Closed and Hours. */
+  @font-face { font-family: 'Fredericka the Great'; src: url('../assets/fonts/fredericka-sign.woff2') format('woff2'); font-display: swap; }
   .door-sign { display: grid; justify-items: center; gap: 18px; }
   .sign { padding: 0; border: 0; background: none; cursor: pointer; perspective: 700px; font: inherit; color: #F1EEE6; }
-  .sign:focus-visible { outline: 3px solid var(--maroon); outline-offset: 6px; }
+  .sign:focus-visible { outline: 3px solid var(--espresso); outline-offset: 6px; }
   .card { position: relative; display: block; width: 200px; height: 104px; transform-style: preserve-3d; transition: transform .7s cubic-bezier(.3, 1.3, .5, 1); }
   .sign[aria-expanded="true"] .card { transform: rotateY(180deg); }
   .face {
@@ -48,7 +57,7 @@ const spoken = groups.map((g) => `${g.names.length > 1 ? `${g.names[0]} to ${g.n
   .sub { font-family: 'Schoolbell', var(--font-sans); font-size: 18px; color: #DCDCD2; }
 
   /* The hours, typed out under the sign; the space is held so nothing below jumps */
-  .typed { min-height: calc(3 * 1.5em); margin: 0; font-size: 17px; font-weight: 500; letter-spacing: .06em; line-height: 1.5; white-space: pre-line; text-align: center; color: var(--maroon); }
+  .typed { min-height: calc(2 * 1.5em); margin: 0; font: 500 15px/1.5 var(--font-mono); letter-spacing: .06em; white-space: pre-line; text-align: center; color: var(--espresso); }
   .typed:not(:empty)::after { content: ""; display: inline-block; width: 2px; height: .95em; margin-left: 3px; vertical-align: -.12em; background: currentColor; animation: caret 1s steps(1) infinite; }
   .typed[data-done]::after { display: none; }
   @keyframes caret { 50% { opacity: 0; } }
@@ -56,7 +65,7 @@ const spoken = groups.map((g) => `${g.names.length > 1 ? `${g.names[0]} to ${g.n
 </style>
 
 <script>
-  type Day = { day: number; name: string; open: string; close: string };
+  type Day = { day: number; name: string; open?: string; close?: string; closed?: boolean };
   const root = document.querySelector<HTMLElement>("[data-door-sign]");
   if (root) {
     const sign = root.querySelector<HTMLButtonElement>(".sign")!;
@@ -79,14 +88,18 @@ const spoken = groups.map((g) => `${g.names.length > 1 ? `${g.names[0]} to ${g.n
     };
     const word = root.querySelector<HTMLElement>("[data-state-word]")!;
     const sub = root.querySelector<HTMLElement>("[data-state-sub]")!;
-    if (today && now >= today.open && now < today.close) {
+    if (today && !today.closed && now >= today.open! && now < today.close!) {
       word.textContent = "Open";
-      sub.textContent = `until ${fmt(today.close)}`;
+      sub.textContent = `until ${fmt(today.close!)}`;
     } else {
-      const later = today && now < today.open;
-      const next = later ? today : days.find((d) => d.day === (iso % 7) + 1) ?? days[0];
+      const later = today && !today.closed && now < today.open!;
+      let next = today!;
+      if (!later) for (let step = 1; step <= 7; step++) {
+        const candidate = days.find((d) => d.day === ((iso - 1 + step) % 7) + 1);
+        if (candidate && !candidate.closed) { next = candidate; break; }
+      }
       word.textContent = "Closed";
-      sub.textContent = `opens ${fmt(next.open)}${later ? "" : " " + next.name.slice(0, 3)}`;
+      sub.textContent = `opens ${fmt(next.open!)}${later ? "" : " " + next.name.slice(0, 3)}`;
     }
 
     // Flipped: the hours type out beneath the sign, one letter at a time.

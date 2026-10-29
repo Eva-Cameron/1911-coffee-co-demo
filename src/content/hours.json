@@ -1,5 +1,5 @@
 {
-  "_note": "PLACEHOLDER: confirm with Joseph before launch. Days use ISO numbering, 1 = Monday.",
+  "_note": "From 1911's Instagram bio ('Open Monday - Saturday 8:00 - 15:00') and Restaurantji (Sunday closed), both read 29 Oct 2026. Confirm with the café before launch.",
   "timezone": "Europe/London",
   "days": [
     { "day": 1, "name": "Monday", "open": "08:00", "close": "15:00" },
@@ -7,7 +7,7 @@
     { "day": 3, "name": "Wednesday", "open": "08:00", "close": "15:00" },
     { "day": 4, "name": "Thursday", "open": "08:00", "close": "15:00" },
     { "day": 5, "name": "Friday", "open": "08:00", "close": "15:00" },
-    { "day": 6, "name": "Saturday", "open": "08:30", "close": "15:30" },
-    { "day": 7, "name": "Sunday", "open": "09:00", "close": "14:00" }
+    { "day": 6, "name": "Saturday", "open": "08:00", "close": "15:00" },
+    { "day": 7, "name": "Sunday", "closed": true }
   ]
 }

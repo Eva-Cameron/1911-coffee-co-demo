@@ -33,10 +33,11 @@ They take their colours from the `--hairline-*` tokens.
 To work on a figure on its own, build a bench page for it with the hairline-create
 skill and open `figures/hairline-<name>.html`.
 
-## Placeholders to replace before launch
+## Before launch
 
-- Every photo in `src/assets/photos/` and `public/og.jpg` (they are labelled "PHOTO TO COME").
-- The reviews (real quotes, with each reviewer's permission).
-- The opening hours, the menu and prices, the geo coordinates, and the social links.
-- The Our Story copy (marked DRAFT in `src/components/Story.astro`), the supplier names, the dog-friendly and step-free access notes.
-- The roundel, which is redrawn: swap it for the client's vector logo when it arrives.
+The full list is in `docs/LAUNCH-CHECKLIST.md`. The short version:
+
+- Written permission from the café for every photo in `src/assets/photos/` (sources in `CREDITS.md`), and the originals at full size.
+- Confirm the hours (`src/content/hours.json`), the menu and prices (`src/content/menu.json`; lines with `"confirm": true` are unverified), and the geo coordinates.
+- Visitor quotes stay out until each reviewer has agreed; only the public ratings are shown (`src/content/reviews.json`).
+- Swap the redrawn wordmark for the café's own vector logo if they have one.

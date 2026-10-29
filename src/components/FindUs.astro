@@ -1,35 +1,40 @@
 ---
+/* Chapter IX: the address, the telephone and the hours. Closed days stay in the table and say so. */
+import ChapterHead from "./ChapterHead.astro";
+import Plate from "./Plate.astro";
+import shopfront from "../assets/photos/findus.jpg";
 import hours from "../content/hours.json";
 import site from "../content/site.json";
+type Day = { day: number; name: string; open?: string; close?: string; closed?: boolean };
 const time = (t: string) => {
   const [h, m] = t.split(":").map(Number);
   return `${h % 12 || 12}${m ? ":" + String(m).padStart(2, "0") : ""}${h < 12 ? "am" : "pm"}`;
 };
+const days = hours.days as Day[];
 ---
-<section id="find-us" class="find section field-sky" aria-labelledby="find-title">
+<section id="find-us" class="chapter field-sky" aria-labelledby="find-title">
   <div class="wrap">
-    <div class="chapter">
-      <p class="part">Chapter six</p>
-      <h2 id="find-title" data-type data-type-speed="55">Find us</h2>
-    </div>
+    <ChapterHead numeral="IX" label="Find us in Amble" id="find-title" title="Your table is waiting. <em>Probably.</em>"
+      lede="On Queen Street, in the middle of Amble." />
     <div class="grid">
-      <div class="where bevel" data-reveal style="--i:1">
+      <div class="card" data-reveal>
         <h3>The address</h3>
         <address>{site.street}<br />{site.town}, Northumberland<br />{site.postcode}</address>
-        <p><a href={`tel:${site.phoneHref}`}>{site.phone}</a></p>
-        <p class="small">Ring ahead to order and skip the wait.</p>
+        <p class="phone"><a href={`tel:${site.phoneHref}`}>{site.phone}</a></p>
+        <p class="small">{site.orderNote} Call to reserve a table, too.</p>
         <a class="btn" href={site.directions} rel="noopener">Get directions</a>
-        <p class="small">Dogs welcome and step-free access (to confirm).</p>
       </div>
-      <div class="when bevel" data-reveal style="--i:2">
+      <Plate src={shopfront} no={12} caption="The shopfront, Queen Street" ratio="1570 / 1130" sizes="(max-width: 860px) 100vw, 420px" widths={[480, 840]} i={1}
+        alt="The 1911 Coffee Co. shopfront on Queen Street, with its painted sign and large windows" />
+      <div class="card" data-reveal style="--i:2">
         <h3>The hours</h3>
         <table class="hours" data-hours-table>
           <caption class="visually-hidden">Opening hours</caption>
           <tbody>
-            {hours.days.map((d) => (
-              <tr data-day={d.day}>
+            {days.map((d) => (
+              <tr data-day={d.day} class:list={{ closed: d.closed }}>
                 <th scope="row">{d.name}</th>
-                <td>{time(d.open)} – {time(d.close)}</td>
+                <td>{d.closed ? "Closed" : `${time(d.open!)} – ${time(d.close!)}`}</td>
               </tr>
             ))}
           </tbody>
@@ -38,24 +43,29 @@ const time = (t: string) => {
     </div>
   </div>
 </section>
+
 <style>
-  .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 400px)); justify-content: center; gap: 48px; align-items: stretch; }
-  .where, .when { background: var(--paper); padding: 48px 40px; display: grid; gap: 18px; justify-items: center; align-content: start; text-align: center; }
-  h3 { margin-bottom: 8px; }
-  address { font-style: normal; font-size: 20px; line-height: 1.5; }
-  .where a:not(.btn) { color: var(--ink); font-size: 20px; text-decoration-color: var(--orange); text-decoration-thickness: 2px; text-underline-offset: .25em; }
-  .small { font-size: 14px; color: var(--muted); }
-  .hours { width: 100%; border-collapse: collapse; font-size: 17px; }
-  .hours th, .hours td { padding: 9px 0; font-weight: 400; }
+  .grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr) minmax(0, 1fr); gap: clamp(24px, 3vw, 40px); align-items: center; }
+  .card { background: var(--paper); padding: 40px 30px; display: grid; gap: 14px; justify-items: center; align-content: start; text-align: center; }
+  h3 { font-size: 26px; margin-bottom: 4px; }
+  address { font-style: normal; font-size: 19px; line-height: 1.5; }
+  .phone a { color: var(--espresso); font: 500 20px/1 var(--font-mono); text-decoration-color: var(--cherry); text-decoration-thickness: 2px; text-underline-offset: .3em; }
+  .small { font-size: 14px; color: var(--muted); max-width: 28ch; }
+  .hours { width: 100%; border-collapse: collapse; font-size: 16px; }
+  .hours th, .hours td { padding: 8px 0; font-weight: 400; }
+  .hours tr + tr th, .hours tr + tr td { box-shadow: 0 -1px 0 rgb(51 38 34 / .12); }
   .hours th { text-align: left; }
-  .hours td { text-align: right; font-variant-numeric: tabular-nums; }
-  .hours tr.today th, .hours tr.today td { font-weight: 600; }
-  .hours tr.today th::after { content: " · today"; font-weight: 400; }
-  @media (max-width: 860px) {
-    .grid { grid-template-columns: 1fr; gap: 24px; max-width: 480px; margin-inline: auto; }
-    .where, .when { padding: 36px 24px; }
+  .hours td { text-align: right; font-family: var(--font-mono); font-size: 14px; }
+  .hours tr.closed td { color: var(--cherry); }
+  .hours tr.today th, .hours tr.today td { font-weight: 700; }
+  .hours tr.today th::after { content: " · today"; font-weight: 400; color: var(--muted); }
+  @media (max-width: 960px) {
+    .grid { grid-template-columns: 1fr 1fr; }
+    .grid :global(.plate) { grid-column: 1 / -1; grid-row: 1; max-width: 640px; justify-self: center; width: 100%; }
   }
+  @media (max-width: 600px) { .grid { grid-template-columns: 1fr; } }
 </style>
+
 <script>
   const table = document.querySelector<HTMLTableElement>("[data-hours-table]");
   if (table) {

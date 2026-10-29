@@ -1,42 +1,44 @@
 ---
-import { Picture } from "astro:assets";
 import DoorSign from "./DoorSign.astro";
+import Plate from "./Plate.astro";
 import shopfront from "../assets/photos/findus.jpg";
 import site from "../content/site.json";
 ---
-<section class="hero wrap" aria-labelledby="hero-title">
-  <div class="chapter">
-    <p class="part">Amble, Northumberland</p>
-    <h1 id="hero-title" data-type data-type-delay="400" data-type-speed="90">{site.name}</h1>
-    <p class="lead">Breakfast, homemade bakes and good coffee at {site.street}. Est. {site.est}.</p>
-    <div class="actions">
-      <a class="btn" href="#menu">See the menu</a>
-      <a class="link" href={site.directions} rel="noopener">Directions</a>
+<section class="hero" aria-labelledby="hero-title">
+  <div class="wrap">
+    <div class="intro">
+      <p class="label intro-fade" style="--d:150ms">Scene one <span aria-hidden="true">·</span> {site.street}, {site.town}</p>
+      <h1 id="hero-title">
+        <span class="visually-hidden">{site.name}, {site.town}. </span>
+        <span class="intro-line" style="--d:200ms">A very good day</span>
+        <span class="intro-line" style="--d:340ms"><em>for</em> coffee.</span>
+      </h1>
+      <p class="lead intro-fade" style="--d:600ms">Coffee, proper breakfasts and fresh lunches on Queen Street. Open Monday to Saturday, eight till three.</p>
+      <div class="actions intro-fade" style="--d:750ms">
+        <a class="btn btn--ink" href="#menu">See the menu</a>
+        <a class="link" href={site.directions} rel="noopener">Directions</a>
+      </div>
+      <div class="intro-fade" style="--d:900ms"><DoorSign /></div>
     </div>
-    <DoorSign />
+
+    <Plate class="shopfront intro-mask" src={shopfront} no={1} caption="The shopfront, 28–30 Queen Street" eager shutter={false}
+      alt="The orange 1911 Coffee Co. shopfront at 28–30 Queen Street, seen straight on, with balloons in both windows"
+      ratio="1570 / 1130" sizes="(max-width: 767px) 100vw, 900px" widths={[600, 1000, 1570]} />
+
+    <a class="next label intro-fade" style="--d:1300ms" href="#welcome">Chapter I <span class="arrow" aria-hidden="true">↓</span></a>
   </div>
-  <figure class="mat shopfront">
-    <Picture src={shopfront} alt="The orange 1911 Coffee Co. shopfront at 28–30 Queen Street, with balloons in the windows"
-      widths={[600, 1000, 1570]} sizes="(max-width: 767px) 100vw, 860px" formats={["avif", "webp"]}
-      loading="eager" fetchpriority="high" />
-  </figure>
 </section>
 
 <style>
-  .hero { padding: 24px 0 104px; }
-  h1 { font-size: clamp(28px, 5.4vw, 72px); white-space: nowrap; }
-  .chapter { gap: 22px; margin-bottom: 20px; }
-  .lead { font-size: 19px !important; line-height: 1.5; text-wrap: balance; max-width: 36ch !important; }
-  .actions { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 16px 32px; margin-top: 8px; }
-  /* On the orange band the mat swaps to the shop's grey */
-  .shopfront { width: min(100%, 860px); margin-inline: auto; aspect-ratio: 1570 / 1130; overflow: hidden; background: var(--stone); }
-  .hero :global(.link) { text-decoration-color: var(--maroon); }
-  .shopfront :global(picture) { display: block; height: 100%; overflow: hidden; }
-  :global(.motion) .shopfront :global(img) { animation: settle 2.4s var(--ease-out) both; }
-  @keyframes settle { from { transform: scale(1.05); } }
-  @media (max-width: 767px) {
-    .hero { padding: 24px 0 72px; }
-    .lead { font-size: 17px !important; }
-    .shopfront { padding: 8px; }
-  }
+  .hero { background: var(--orange); padding: 8px 0 56px; --mat: var(--stone); --wm-ground: var(--orange); }
+  .intro { display: grid; justify-items: center; text-align: center; gap: 22px; margin-bottom: 40px; }
+  h1 { max-width: 12ch; }
+  h1 em { font-weight: 500; }
+  .lead { font-size: var(--step-lead); line-height: 1.45; max-width: 36ch; }
+  .actions { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 16px 32px; }
+  .hero :global(.shopfront) { width: min(100%, 900px); margin-inline: auto; }
+  .next { display: flex; gap: 10px; justify-content: center; margin-top: 40px; color: var(--espresso); text-decoration: none; }
+  .arrow { display: inline-block; }
+  :global(.motion) .arrow { animation: bob 2.4s ease-in-out 2s infinite; }
+  @keyframes bob { 50% { transform: translateY(5px); } }
 </style>
