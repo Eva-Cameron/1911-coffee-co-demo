@@ -1,41 +1,147 @@
-[
-  {
-    "section": "Brunch",
-    "note": "Served until 11:30",
-    "items": [
-      { "name": "The 1911 Breakfast", "desc": "Coffee-smoked bacon, local sausage, two eggs, beans, toast.", "price": 8.5, "tags": [] },
-      { "name": "Eggs on Sourdough", "desc": "Poached, scrambled or fried, with a little side of greens.", "price": 6.5, "tags": ["V"] },
-      { "name": "Granola Bowl", "desc": "House granola, yoghurt, seasonal fruit, honey.", "price": 5.5, "tags": ["V"] },
-      { "name": "Smashed Avocado", "desc": "Chilli, lime and seeds on toasted sourdough.", "price": 7, "tags": ["VG"] }
-    ]
-  },
-  {
-    "section": "Lunch",
-    "note": "From 11:30",
-    "items": [
-      { "name": "Soup of the Day", "desc": "With bread and butter. Ask at the counter.", "price": 5.5, "tags": ["V"] },
-      { "name": "Toasted Sandwich", "desc": "Ham and mature cheddar, or cheese and red onion.", "price": 6.5, "tags": [] },
-      { "name": "Loaded Jacket", "desc": "Choose two fillings, with a side salad.", "price": 7.5, "tags": ["GF"] }
-    ]
-  },
-  {
-    "section": "Coffee",
-    "note": "Our own roast. Oat, soya or almond at no extra cost.",
-    "items": [
-      { "name": "Espresso", "desc": "", "price": 2.4, "tags": [] },
-      { "name": "Flat White", "desc": "", "price": 3.3, "tags": [] },
-      { "name": "Latte", "desc": "", "price": 3.5, "tags": [] },
-      { "name": "Cortado", "desc": "", "price": 3.0, "tags": [] },
-      { "name": "Mocha", "desc": "", "price": 3.8, "tags": [] }
-    ]
-  },
-  {
-    "section": "Cakes",
-    "note": "Baked every morning. Under the domes on the counter.",
-    "items": [
-      { "name": "Scone, Jam & Cream", "desc": "", "price": 3.5, "tags": ["V"] },
-      { "name": "Cake of the Day", "desc": "", "price": 3.8, "tags": ["V"] },
-      { "name": "Brownie", "desc": "", "price": 3.2, "tags": ["V", "GF"] }
-    ]
-  }
-]
+{
+  "_note": "Dishes are the ones the café has published or posted before; NOT verified as the current menu. Prices are null until confirmed with the café, and the page says so. Set verified to true and fill in prices once checked. Tags only where the dish name itself says so; never guess dietary claims.",
+  "verified": false,
+  "checked": null,
+  "pdf": null,
+  "allergens": "Please ask at the counter about allergens before you order. The team will talk you through what's in each dish.",
+  "sections": [
+    {
+      "id": "breakfast",
+      "title": "Breakfast",
+      "note": "Served in the morning. Ask at the counter for today's times.",
+      "items": [
+        {
+          "name": "The 1911 Breakfast",
+          "desc": "The full plate.",
+          "price": null,
+          "tags": []
+        },
+        {
+          "name": "Vegetarian Breakfast",
+          "desc": "The full plate, without the meat.",
+          "price": null,
+          "tags": [
+            "V"
+          ]
+        },
+        {
+          "name": "Bacon or Sausage Sandwich",
+          "desc": "The morning classic.",
+          "price": null,
+          "tags": []
+        },
+        {
+          "name": "Bacon & Hash Brown Bun",
+          "desc": "As seen on our Instagram.",
+          "price": null,
+          "tags": []
+        },
+        {
+          "name": "Eggs on Toast",
+          "desc": "Ask how you'd like them.",
+          "price": null,
+          "tags": []
+        },
+        {
+          "name": "Buttermilk Pancakes",
+          "desc": "A stack of them.",
+          "price": null,
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "lunch",
+      "title": "Lunch",
+      "note": "For the middle of the day.",
+      "items": [
+        {
+          "name": "Sandwiches",
+          "desc": "Recently served with slaw and salad.",
+          "price": null,
+          "tags": []
+        },
+        {
+          "name": "Toasties",
+          "desc": "Hot from the press.",
+          "price": null,
+          "tags": []
+        },
+        {
+          "name": "Jacket Potatoes",
+          "desc": "Ask about today's fillings.",
+          "price": null,
+          "tags": []
+        },
+        {
+          "name": "Quiche",
+          "desc": "Ask what's on today.",
+          "price": null,
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "hot-drinks",
+      "title": "Hot Drinks",
+      "note": "Coffee, made carefully, one cup at a time.",
+      "items": [
+        {
+          "name": "Espresso",
+          "desc": "",
+          "price": null,
+          "tags": []
+        },
+        {
+          "name": "Americano",
+          "desc": "",
+          "price": null,
+          "tags": []
+        },
+        {
+          "name": "Cappuccino",
+          "desc": "",
+          "price": null,
+          "tags": []
+        },
+        {
+          "name": "Latte",
+          "desc": "",
+          "price": null,
+          "tags": []
+        },
+        {
+          "name": "Flat White",
+          "desc": "",
+          "price": null,
+          "tags": []
+        },
+        {
+          "name": "Cortado",
+          "desc": "",
+          "price": null,
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "bakes",
+      "title": "Cakes & Bakes",
+      "note": "Whatever is on the counter today.",
+      "items": [
+        {
+          "name": "Cake of the Day",
+          "desc": "Recently: raspberry and coconut sponge.",
+          "price": null,
+          "tags": []
+        }
+      ]
+    }
+  ],
+  "missing": [
+    "Cold drinks",
+    "Children's options",
+    "Extras and milk alternatives",
+    "Tea and other hot drinks"
+  ]
+}

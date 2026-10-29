@@ -2,8 +2,10 @@
 import { defineConfig } from "astro/config";
 import sitemap from "@astrojs/sitemap";
 
-// Placeholder until the client's domain is registered.
+// The café currently appears to use 1911cafe.co.uk. Confirm the production domain before launch.
 export default defineConfig({
-  site: "https://1911coffee.co.uk",
+  site: "https://1911cafe.co.uk",
   integrations: [sitemap()],
+  // One small page: inlining its CSS saves a render-blocking request on slow phones.
+  build: { inlineStylesheets: "always" },
 });

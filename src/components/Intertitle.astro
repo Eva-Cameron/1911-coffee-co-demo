@@ -1,0 +1,57 @@
+---
+/**
+ * A chapter intertitle: the chapter number in cinema capitals between fine rules, a small
+ * label, and the headline. Write the headline with "|" between lines and _underscores_ round
+ * the words to set in italic, e.g. "Some places are|worth _slowing down_ for."
+ */
+interface Props {
+  no?: string;          // "I", "II" … or omit
+  label?: string;
+  title: string;
+  id?: string;
+  level?: 1 | 2;
+  align?: "center" | "start";
+  size?: "xl" | "lg" | "md";
+  class?: string;
+}
+const { no, label, title, id, level = 2, align = "center", size = "lg", class: cls } = Astro.props;
+const Tag = level === 1 ? "h1" : "h2";
+const lines = title.split("|").map((l) =>
+  l.split(/(_[^_]+_)/).filter(Boolean).map((part) => (part.startsWith("_") ? { em: true, t: part.slice(1, -1) } : { em: false, t: part })),
+);
+---
+<header class:list={["intertitle", `intertitle--${align}`, `intertitle--${size}`, cls]}>
+  {no && (
+    <p class="chapter-no" data-reveal>
+      <span class="rule-line" aria-hidden="true"></span>
+      <span class="display">Chapter&nbsp;{no}</span>
+      <span class="rule-line" aria-hidden="true"></span>
+    </p>
+  )}
+  {label && <p class="label kicker" data-reveal style="--i:1">{label}</p>}
+  <Tag id={id} class="headline" data-lines>
+    {lines.map((parts, n) => (
+      <span class="line"><span style={`--n:${n}`}>{parts.map((p) => (p.em ? <em>{p.t}</em> : p.t))}</span></span>
+    ))}
+  </Tag>
+  <slot />
+</header>
+
+<style>
+  .intertitle { display: grid; gap: var(--space-4); margin-bottom: var(--space-7); }
+  .intertitle--center { justify-items: center; text-align: center; }
+  .intertitle--start { justify-items: start; text-align: left; }
+  .chapter-no { display: flex; align-items: center; gap: 14px; font-size: 15px; letter-spacing: .14em; color: var(--accent-ink, var(--cherry)); }
+  .intertitle--start .chapter-no { width: 100%; }
+  .intertitle--start .chapter-no .rule-line:first-child { display: none; }
+  .rule-line { width: 48px; border-top: 1px solid currentColor; }
+  .intertitle--start .rule-line:last-child { flex: 1; max-width: 120px; }
+  .kicker { color: var(--ink-soft); }
+  .headline { color: inherit; }
+  .intertitle--xl .headline { font-size: var(--step-5); font-weight: 330; letter-spacing: -.025em; }
+  .intertitle--lg .headline { font-size: var(--step-4); }
+  .intertitle--md .headline { font-size: var(--step-3); }
+  .headline em { color: var(--accent-ink, var(--cherry)); }
+  .intertitle :global(.dek) { max-width: 44ch; font-size: var(--step-1); line-height: 1.5; }
+  @media (max-width: 767px) { .intertitle { margin-bottom: var(--space-6); } .rule-line { width: 28px; } }
+</style>

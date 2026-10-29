@@ -1,13 +1,49 @@
 {
-  "_note": "PLACEHOLDER: confirm with Joseph before launch. Days use ISO numbering, 1 = Monday.",
+  "_note": "NOT VERIFIED: placeholder hours. Confirm with the café, then set verified to true. While false, the site shows the hours as 'to be confirmed' and never claims the café is open right now.",
   "timezone": "Europe/London",
   "days": [
-    { "day": 1, "name": "Monday", "open": "08:00", "close": "15:00" },
-    { "day": 2, "name": "Tuesday", "open": "08:00", "close": "15:00" },
-    { "day": 3, "name": "Wednesday", "open": "08:00", "close": "15:00" },
-    { "day": 4, "name": "Thursday", "open": "08:00", "close": "15:00" },
-    { "day": 5, "name": "Friday", "open": "08:00", "close": "15:00" },
-    { "day": 6, "name": "Saturday", "open": "08:30", "close": "15:30" },
-    { "day": 7, "name": "Sunday", "open": "09:00", "close": "14:00" }
-  ]
+    {
+      "day": 1,
+      "name": "Monday",
+      "open": "08:00",
+      "close": "15:00"
+    },
+    {
+      "day": 2,
+      "name": "Tuesday",
+      "open": "08:00",
+      "close": "15:00"
+    },
+    {
+      "day": 3,
+      "name": "Wednesday",
+      "open": "08:00",
+      "close": "15:00"
+    },
+    {
+      "day": 4,
+      "name": "Thursday",
+      "open": "08:00",
+      "close": "15:00"
+    },
+    {
+      "day": 5,
+      "name": "Friday",
+      "open": "08:00",
+      "close": "15:00"
+    },
+    {
+      "day": 6,
+      "name": "Saturday",
+      "open": "08:30",
+      "close": "15:30"
+    },
+    {
+      "day": 7,
+      "name": "Sunday",
+      "open": "09:00",
+      "close": "14:00"
+    }
+  ],
+  "verified": false
 }

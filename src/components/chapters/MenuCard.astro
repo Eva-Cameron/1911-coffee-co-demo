@@ -1,0 +1,96 @@
+---
+/**
+ * Chapter VIII — the menu, as a printed card on a burgundy field. Everything comes from
+ * menu.json. Until the café has confirmed it, the card says so, and prices show as "—".
+ */
+import Intertitle from "../Intertitle.astro";
+import menu from "../../content/menu.json";
+import { chapters } from "../../content/chapters";
+const c = chapters.menu;
+type Item = { name: string; desc: string; price: number | null; tags: string[] };
+const TAGS: Record<string, string> = { V: "Vegetarian", VG: "Vegan", GF: "Gluten free" };
+const price = (p: number | null) => (p == null ? "—" : `£${p.toFixed(2)}`);
+const used = [...new Set(menu.sections.flatMap((s) => s.items.flatMap((i) => i.tags)))];
+---
+<section id={c.id} class="scene field-burgundy menu" aria-labelledby={`${c.id}-title`}>
+  <div class="wrap">
+    <Intertitle no={c.no} label="Printed for your convenience" id={`${c.id}-title`} title="The _Menu._" />
+
+    <div class="card">
+      {!menu.verified && (
+        <p class="stamp-note" role="note"><span class="display">Prices to follow</span><span class="mono">This menu is being checked with the café. Dishes may change.</span></p>
+      )}
+      <nav class="tabs" aria-label="Menu sections">
+        {menu.sections.map((s) => <a href={`#menu-${s.id}`}>{s.title}</a>)}
+      </nav>
+      <div class="cols">
+        {menu.sections.map((s) => (
+          <section id={`menu-${s.id}`} class="sec" aria-labelledby={`menu-${s.id}-h`}>
+            <h3 id={`menu-${s.id}-h`}>{s.title}</h3>
+            {s.note && <p class="note">{s.note}</p>}
+            <dl>
+              {(s.items as Item[]).map((it) => (
+                <div class="row">
+                  <dt>{it.name}{it.tags.map((t) => <abbr class="tag mono" title={TAGS[t]}>{t}</abbr>)}</dt>
+                  <dd class="price mono">{it.price == null ? <><span aria-hidden="true">—</span><span class="visually-hidden">price to be confirmed</span></> : price(it.price)}</dd>
+                  {it.desc && <dd class="desc">{it.desc}</dd>}
+                </div>
+              ))}
+            </dl>
+          </section>
+        ))}
+      </div>
+      <div class="small-print">
+        <p><strong>Allergens.</strong> {menu.allergens}</p>
+        {used.length > 0 && <p class="mono">{used.map((t) => `${t} ${TAGS[t].toLowerCase()}`).join(" · ")}</p>}
+        {menu.pdf && <p><a href={menu.pdf}>Download the printed menu (PDF)</a></p>}
+        {menu.checked && <p class="mono">Menu last checked {menu.checked}.</p>}
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+  .card {
+    position: relative; max-width: 1040px; margin-inline: auto;
+    background: var(--paper); color: var(--espresso);
+    --ink-soft: #5B4640; --rule: color-mix(in srgb, var(--espresso) 70%, transparent);
+    padding: clamp(28px, 5vw, 72px) clamp(20px, 5vw, 72px);
+    outline: 1px solid var(--espresso); outline-offset: -12px;
+    box-shadow: 0 0 0 6px var(--paper), 0 0 0 7px var(--custard), 0 40px 80px -40px rgb(0 0 0 / .6);
+  }
+  .card a { color: var(--cherry); }
+  .stamp-note {
+    position: absolute; top: clamp(-28px, -2vw, -18px); right: clamp(12px, 4vw, 48px);
+    display: grid; justify-items: center; gap: 4px; max-width: 230px; padding: 12px 18px;
+    background: var(--cream); color: var(--cherry); text-align: center;
+    border: 2px solid var(--cherry); outline: 1px solid var(--cherry); outline-offset: 3px;
+    rotate: 4deg;
+  }
+  .stamp-note .display { font-size: 19px; }
+  .stamp-note .mono { font-size: 11.5px; color: var(--espresso); line-height: 1.4; }
+  .tabs { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 4px; padding-bottom: var(--space-5); margin-bottom: var(--space-6); border-bottom: var(--double-rule); }
+  .tabs a {
+    padding: 10px 14px; min-height: 44px; display: inline-flex; align-items: center;
+    font: 600 12.5px/1 var(--font-sans); letter-spacing: var(--tracking-caps); text-transform: uppercase;
+    color: var(--espresso); text-decoration: none; background: var(--cream);
+    transition: background var(--dur-fast);
+  }
+  .tabs a:hover { background: var(--custard); color: var(--espresso); }
+  .cols { columns: 2; column-gap: clamp(32px, 6vw, 88px); column-rule: 1px solid var(--rule); }
+  .sec { break-inside: avoid; margin-bottom: var(--space-6); }
+  h3 { font-size: 30px; font-weight: 400; font-style: italic; color: var(--cherry); margin-bottom: 4px; text-align: center; }
+  .note { text-align: center; font-size: 14.5px; color: var(--ink-soft); margin-bottom: var(--space-4); }
+  dl { margin: 0; display: grid; gap: 14px; }
+  .row { display: grid; grid-template-columns: 1fr auto; align-items: baseline; column-gap: 8px; }
+  dt { display: flex; align-items: baseline; gap: 6px; font-weight: 600; font-size: 16.5px; }
+  dt::after { content: ""; flex: 1; border-bottom: 1px dotted var(--espresso); transform: translateY(-4px); margin-left: 6px; min-width: 16px; }
+  .price { margin: 0; font-size: 15px; }
+  .desc { grid-column: 1 / -1; margin: 2px 0 0; font-size: 14.5px; color: var(--ink-soft); }
+  .tag { font-size: 10.5px; text-decoration: none; border: 1px solid currentColor; padding: 1px 4px; color: var(--cherry); }
+  .small-print { display: grid; gap: 8px; justify-items: center; text-align: center; padding-top: var(--space-5); border-top: var(--double-rule); font-size: 15px; }
+  @media (max-width: 767px) {
+    .cols { columns: 1; }
+    .stamp-note { position: static; rotate: 0deg; margin: 0 auto var(--space-5); }
+    .card { outline-offset: -8px; }
+  }
+</style>

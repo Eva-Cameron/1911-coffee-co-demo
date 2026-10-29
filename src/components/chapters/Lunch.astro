@@ -1,0 +1,57 @@
+---
+/**
+ * Chapter IV — lunch. Sky field: a framed plate on the left, the editorial and the lunch
+ * categories as printed tickets on the right.
+ */
+import Intertitle from "../Intertitle.astro";
+import Plate from "../Plate.astro";
+import lunch from "../../assets/photos/menu.jpg";
+import menu from "../../content/menu.json";
+import { chapters } from "../../content/chapters";
+const c = chapters.lunch;
+const items = menu.sections.find((s) => s.id === "lunch")!.items;
+---
+<section id={c.id} class="scene field-sky lunch" aria-labelledby={`${c.id}-title`}>
+  <div class="wrap grid">
+    <Plate src={lunch} alt="A sandwich in a seeded bun with coleslaw, beetroot and a bright salad, served on a black slate on a wooden table."
+      no="5" caption="A sandwich, with slaw and salad." ratio="1 / 1" class="pic" />
+    <div class="col">
+      <Intertitle no={c.no} label="A little lunch. A large improvement to your day." id={`${c.id}-title`} align="start" size="md" class="title" title="A little something|for the _middle_ of the day." />
+    <div class="copy">
+      <p class="lede" data-reveal>When breakfast is a distant memory and supper is a long way off, there is lunch.</p>
+      <ul class="tickets" aria-label="Lunch dishes">
+        {items.map((it, i) => (
+          <li class="ticket" data-reveal style={`--i:${i}`}><span class="mono n">No. {String(i + 1).padStart(2, "0")}</span><span class="t">{it.name}</span>{it.desc && <span class="d">{it.desc}</span>}</li>
+        ))}
+      </ul>
+      <div class="foot" data-reveal>
+        <a class="btn btn--paper" href={`#${chapters.menu.id}`}>The full menu</a>
+        <p class="allergen">Allergies or dietary needs? <strong>Please ask at the counter</strong> before you order.</p>
+      </div>
+    </div>
+    </div>
+  </div>
+</section>
+<style>
+  .grid { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: clamp(32px, 6vw, 96px); align-items: center; }
+  .col { display: grid; gap: var(--space-5); }
+  .col > :global(.title) { margin-bottom: 0; }
+  .pic { max-width: 520px; width: 100%; }
+  .copy { display: grid; gap: var(--space-5); }
+  .tickets { list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-3); }
+  .ticket {
+    position: relative; display: grid; gap: 4px; padding: 16px 18px 16px 22px;
+    background: var(--paper); border-radius: var(--radius-ticket);
+    /* the punched edge of a raffle ticket */
+    -webkit-mask: radial-gradient(circle 7px at 0 50%, transparent 98%, #000) ;
+            mask: radial-gradient(circle 7px at 0 50%, transparent 98%, #000);
+  }
+  .ticket .n { color: var(--cherry); }
+  .ticket .t { font: 400 22px/1.1 var(--font-serif); }
+  .ticket .d { font-size: 14.5px; color: var(--ink-soft); }
+  .foot { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-4); }
+  .allergen { font-size: 15px; max-width: 34ch; }
+  /* On phones the column dissolves so the order reads title, photograph, dishes */
+  @media (max-width: 900px) { .grid { grid-template-columns: 1fr; gap: var(--space-5); } .col { display: contents; } .col > :global(.title) { order: -2; } .pic { order: -1; justify-self: center; } }
+  @media (max-width: 520px) { .tickets { grid-template-columns: 1fr; } }
+</style>

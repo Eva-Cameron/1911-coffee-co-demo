@@ -1,0 +1,77 @@
+---
+/**
+ * Chapter IX — find us in Amble. The shopfront orange, as a page from a travel guide: the map
+ * treatment, the address and the two actions, then the hours, shown only once they're verified.
+ */
+import Intertitle from "../Intertitle.astro";
+import GuideMap from "../GuideMap.astro";
+import site from "../../content/site.json";
+import hours from "../../content/hours.json";
+import { chapters } from "../../content/chapters";
+const c = chapters.visit;
+const time = (t: string) => {
+  const [h, m] = t.split(":").map(Number);
+  return `${h % 12 || 12}${m ? ":" + String(m).padStart(2, "0") : ""}${h < 12 ? "am" : "pm"}`;
+};
+---
+<section id={c.id} class="scene field-orange find" aria-labelledby={`${c.id}-title`}>
+  <div class="wrap">
+    <Intertitle no={c.no} label="A guide for the traveller" id={`${c.id}-title`} title="Your table is waiting.|_Probably._" >
+      <p class="dek" data-reveal style="--i:2">This isn't a booking, just an invitation. Come along to Queen Street and we'll do our best to find you a seat.</p>
+    </Intertitle>
+    <div class="guide">
+      <figure class="map" data-reveal>
+        <GuideMap />
+        <figcaption class="mono">Fig. IX — Queen Street, Amble, Northumberland</figcaption>
+      </figure>
+      <div class="info">
+        <div class="block" data-reveal>
+          <p class="label h">The address</p>
+          <address>{site.name}<br />{site.street}<br />{site.town}, Northumberland<br />{site.postcode}</address>
+          <div class="actions">
+            <a class="btn" href={site.directions} rel="noopener">Get directions <span class="arrow" aria-hidden="true">→</span></a>
+            <a class="btn btn--paper" href={`tel:${site.phoneHref}`}>Call {site.phone}</a>
+          </div>
+        </div>
+        <div class="block hours" data-reveal style="--i:1">
+          <p class="label h">Opening hours</p>
+          {hours.verified ? (
+            <table data-hours-table>
+              <caption class="visually-hidden">Opening hours</caption>
+              <tbody>
+                {hours.days.map((d) => (
+                  <tr data-day={d.day}><th scope="row">{d.name}</th><td class="mono">{time(d.open)} – {time(d.close)}</td></tr>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <p class="tbc">Our hours are being confirmed for the new website. Before you travel, please <a href={`tel:${site.phoneHref}`}>give us a ring</a> or check our <a href={site.socials.find((s) => s.name === "Facebook")?.href} rel="noopener">Facebook page</a>.</p>
+          )}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+  .find { --rule: rgb(51 38 34 / .55); }
+  .guide { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: clamp(28px, 5vw, 72px); align-items: start; }
+  .map { margin: 0; display: grid; gap: var(--space-3); rotate: -1deg; box-shadow: 0 30px 60px -36px rgb(51 38 34 / .6); }
+  .map figcaption { text-align: center; }
+  .info { display: grid; gap: var(--space-6); }
+  .block { display: grid; gap: var(--space-3); padding-top: var(--space-4); border-top: var(--double-rule); }
+  .h { font-weight: 600; }
+  address { font: normal 400 26px/1.3 var(--font-serif); }
+  .actions { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-2); }
+  table { border-collapse: collapse; width: 100%; max-width: 420px; }
+  th, td { padding: 8px 0; border-bottom: 1px solid var(--rule); text-align: left; font-weight: 400; }
+  td { text-align: right; }
+  tr.today th, tr.today td { font-weight: 700; }
+  .tbc { max-width: 38ch; font-size: 17px; }
+  .find a:not(.btn) { color: var(--espresso); text-decoration-thickness: 1.5px; }
+  @media (max-width: 900px) { .guide { grid-template-columns: 1fr; } .map { rotate: 0deg; } address { font-size: 23px; } .actions .btn { flex: 1 1 200px; } }
+</style>
+<script>
+  const iso = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].indexOf(
+    new Intl.DateTimeFormat("en-GB", { timeZone: "Europe/London", weekday: "short" }).format(new Date())) + 1;
+  document.querySelector(`[data-hours-table] tr[data-day="${iso}"]`)?.classList.add("today");
+</script>

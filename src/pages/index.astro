@@ -2,17 +2,21 @@
 import Layout from "../layouts/Layout.astro";
 import Header from "../components/Header.astro";
 import Hero from "../components/Hero.astro";
-import Story from "../components/Story.astro";
-import Plates from "../components/Plates.astro";
-import Menu from "../components/Menu.astro";
-import Counter from "../components/Counter.astro";
-import Reviews from "../components/Reviews.astro";
-import FindUs from "../components/FindUs.astro";
+import Place from "../components/chapters/Place.astro";
+import Coffee from "../components/chapters/Coffee.astro";
+import Breakfast from "../components/chapters/Breakfast.astro";
+import Lunch from "../components/chapters/Lunch.astro";
+import Little from "../components/chapters/Little.astro";
+import Welcome from "../components/chapters/Welcome.astro";
+import Visitors from "../components/chapters/Visitors.astro";
+import MenuCard from "../components/chapters/MenuCard.astro";
+import FindUs from "../components/chapters/FindUs.astro";
 import Footer from "../components/Footer.astro";
 import site from "../content/site.json";
 import hours from "../content/hours.json";
 
 const DOW = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+// Structured data carries only what we can state: opening hours go in once they are verified.
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "CafeOrCoffeeShop",
@@ -20,46 +24,44 @@ const jsonLd = {
   url: Astro.site?.href,
   telephone: site.phone,
   image: new URL("/og.jpg", Astro.site).href,
-  priceRange: "£",
-  servesCuisine: ["Breakfast", "Brunch", "Coffee", "Cakes"],
+  servesCuisine: ["Coffee", "Breakfast", "Lunch", "Cakes"],
   hasMenu: new URL("/#menu", Astro.site).href,
   address: {
     "@type": "PostalAddress",
     streetAddress: site.street,
     addressLocality: site.town,
+    addressRegion: "Northumberland",
     postalCode: site.postcode,
     addressCountry: "GB",
   },
-  geo: { "@type": "GeoCoordinates", latitude: site.geo.lat, longitude: site.geo.lng },
-  openingHoursSpecification: hours.days.map((d) => ({
-    "@type": "OpeningHoursSpecification",
-    dayOfWeek: `https://schema.org/${DOW[d.day - 1]}`,
-    opens: d.open,
-    closes: d.close,
-  })),
-  sameAs: site.socials.map((s) => s.href),
+  ...(hours.verified && {
+    openingHoursSpecification: hours.days.map((d) => ({
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: `https://schema.org/${DOW[d.day - 1]}`,
+      opens: d.open,
+      closes: d.close,
+    })),
+  }),
+  sameAs: site.socials.filter((s) => !s.href.includes("/Search")).map((s) => s.href),
 };
 ---
 <Layout
-  title="1911 Coffee Co. | Breakfast & Coffee in Amble"
-  description="Breakfast, lunch, home bakes and our own-roast coffee at 28–30 Queen Street, Amble. Dog friendly. Open today — see the hours."
+  title="1911 Coffee Co. | Café on Queen Street, Amble, Northumberland"
+  description="A welcoming independent café at 28–30 Queen Street, Amble, Northumberland: carefully made coffee, proper breakfasts, a little lunch and cakes. Menu, directions and contact details."
   jsonLd={jsonLd}
 >
-  <div class="frame">
-    <div class="field-orange band"><Header /></div>
-    <main id="main">
-      <div class="field-orange band"><Hero /></div>
-      <Story />
-      <Menu />
-      <Plates />
-      <Counter />
-      <Reviews />
-      <FindUs />
-    </main>
-  </div>
+  <Header />
+  <main id="main">
+    <Hero />
+    <Place />
+    <Coffee />
+    <Breakfast />
+    <Lunch />
+    <Little />
+    <Welcome />
+    <Visitors />
+    <MenuCard />
+    <FindUs />
+  </main>
   <Footer />
 </Layout>
-
-<style>
-  .frame { position: relative; z-index: 1; background: var(--cream); overflow-x: clip; }
-</style>

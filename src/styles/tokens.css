@@ -1,49 +1,57 @@
+/*
+ * The Wonderfully Ordinary World of 1911 — design tokens.
+ *
+ * Palette from vintage painted shopfronts, old postcards and café tableware. Cream gives
+ * breathing space; mint and blush set the atmosphere; custard makes warm moments; cherry is a
+ * deliberate accent. Shopfront orange is the real fascia on Queen Street, kept as the signature.
+ *
+ * Contrast (WCAG 2.2 AA), measured:
+ *   espresso on every field ≥ 4.9:1 (orange) … 14.1:1 (paper)
+ *   cherry text only on cream 5.8, paper 6.4, custard 4.75; never on mint, blush, sky or orange
+ *   cream on burgundy 11.1, cream on cherry 5.8, custard on burgundy 9.0
+ */
 :root {
-  /*
-   * A Wes Anderson-ish set: flat pastel fields, one maroon ink everywhere, the shop's orange as
-   * the frame colour. Every text pair below is maroon on a field (8.8:1 or better) or pink on maroon.
-   */
-  --stone: #E3DFD6;       /* the shopfront's pilaster grey, lightened; maroon on it 10.6:1 */
-  --pink: #F4D5CB;
-  --sky: #BCD6E0;
-  --mint: #C6DCCB;
-  --mustard: #EDC86E;
-  --orange: #E8874A;       /* mats, bands, buttons; maroon on it 5.4:1 */
-  --orange-hover: #EF9A62;
-  --maroon: #4A1E1A;
+  /* Fields */
+  --cream: #F8F0DF;
+  --paper: #FFFBF2;      /* printed menu card */
+  --mint: #A8C5B5;
+  --blush: #E8BDB4;
+  --custard: #F2D98D;
+  --sky: #AFC9DE;
+  --orange: #E07B39;     /* the shopfront fascia */
 
-  /* Old names, mapped so untouched components still work */
-  --cream: var(--stone);
-  --paper: #FBF3EA;        /* the menu card */
-  --wash: var(--sky);
-  --ink: var(--maroon);
-  --muted: #6E3A30;        /* 5.1:1 or better on every field, stone included */
-  --on-fill: var(--maroon);
-  --name: var(--maroon);
-  --ember: var(--maroon);
-  --ember-tint: var(--paper);
-  --oak: #C98F6A;
-  --deep: var(--maroon);
-  --charcoal: var(--maroon);
-  --on-deep: var(--paper);
+  /* Inks */
+  --espresso: #332622;   /* body text */
+  --burgundy: #51272A;   /* deep fields, footer */
+  --cherry: #A83235;     /* accent: rules, stamps, numerals, links on light fields */
+  --ink-soft: #5B4640;   /* secondary text: 7.5:1 on cream, 4.6:1 on mint */
 
-  --line: transparent;
-  --line-strong: transparent;
-  --shadow-card: none;
-  --shadow-lift: none;
-  --shadow-photo: none;
+  /* Semantic */
+  --bg: var(--cream);
+  --text: var(--espresso);
+  --accent: var(--cherry);
+  --rule: color-mix(in srgb, var(--espresso) 70%, transparent);
+  --hairline: 1px solid var(--rule);
+  --double-rule: 3px double var(--espresso);
 
-  /* Status */
-  --open: #1D6B3A;  --open-tint: #E2F2E7;
-  --veg: #1D6B3A;   --veg-tint: #E2F2E7;
-  --vegan: #3D6114; --vegan-tint: #ECF3DC;
-  --gf: #8A4508;    --gf-tint: #FCEBD3;
+  /* Type: serif headlines, cinema display for signage, sans for reading, mono for the archive */
+  --font-serif: 'Fraunces Variable', 'Iowan Old Style', Georgia, serif;
+  --font-display: 'Limelight', 'Fraunces Variable', Georgia, serif;
+  --font-sans: 'DM Sans Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', monospace;
 
-  --radius-card: 0;
-  --radius-photo: 0;
-  --radius-control: 0;
-  --radius-pill: 999px;
+  --step--1: 13px;
+  --step-0: 17px;
+  --step-1: clamp(19px, 1.4vw, 21px);
+  --step-2: clamp(24px, 2.2vw, 30px);
+  --step-3: clamp(34px, 4.4vw, 56px);
+  --step-4: clamp(44px, 7.4vw, 104px);
+  --step-5: clamp(52px, 10vw, 150px);
 
+  --tracking-caps: .18em;
+  --tracking-label: .12em;
+
+  /* Space */
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
@@ -51,24 +59,31 @@
   --space-5: 24px;
   --space-6: 40px;
   --space-7: 64px;
+  --space-8: 104px;
+  --space-9: 160px;
 
-  /* Jost: a free face in the Futura mould. Titles in spaced capitals. */
-  --font-sans: 'Jost Variable', 'Futura', 'Century Gothic', ui-sans-serif, sans-serif;
-  /* Poppins SemiBold: a bold geometric close to the lettering painted on the shop's fascia */
-  --font-title: 'Poppins', 'Jost Variable', ui-sans-serif, sans-serif;
-  --font-mark: var(--font-sans);
-  --font-display: var(--font-sans);
-  --font-body: var(--font-sans);
-  --font-type: var(--font-sans);
+  --gutter: clamp(16px, 4vw, 48px);
+  --measure: 62ch;
+  --page: 1320px;
 
-  --ease-out: cubic-bezier(.32, .72, 0, 1);
-  --ease-stamp: cubic-bezier(.2, 1.4, .4, 1);
+  /* Ephemera */
+  --frame-pad: clamp(8px, 1.2vw, 14px);   /* the mat around a photograph */
+  --corner: 14px;                         /* corner marks */
+  --radius-ticket: 6px;
 
-  /* Hairline figures on white panels */
-  --hairline-plate: var(--sky);
-  --hairline-hi: #B5531F;
-  --hairline-edge: var(--ink);
-  --hairline-mid: #8A6A52;
+  /* Motion: objects moving through a controlled frame */
+  --ease-curtain: cubic-bezier(.65, 0, .35, 1);
+  --ease-settle: cubic-bezier(.22, 1, .36, 1);
+  --ease-out: var(--ease-settle);
+  --dur-fast: 220ms;
+  --dur-mid: 600ms;
+  --dur-slow: 900ms;
+
+  /* Hairline figures: plate colour matches the field they sit on */
+  --hairline-plate: var(--paper);
+  --hairline-hi: var(--cherry);
+  --hairline-edge: var(--espresso);
+  --hairline-mid: #7A625A;
   --hairline-lo: #CDBBA6;
-  --hairline-stroke: 1.4;
+  --hairline-stroke: 1.3;
 }

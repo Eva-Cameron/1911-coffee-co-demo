@@ -1,0 +1,38 @@
+---
+/** Chapter I — the café, introduced. Cream field, a two-column composition balanced on a centre line. */
+import Intertitle from "../Intertitle.astro";
+import Plate from "../Plate.astro";
+import window from "../../assets/photos/story.jpg";
+import { chapters } from "../../content/chapters";
+const c = chapters.place;
+---
+<section id={c.id} class="scene field-cream place" aria-labelledby={`${c.id}-title`}>
+  <div class="wrap grid">
+    <div class="copy">
+      <Intertitle no={c.no} label={c.title} id={`${c.id}-title`} align="start" size="lg" title="Some places|are worth|_slowing down_ for." />
+      <div class="prose" data-reveal>
+        <p class="lede">1911 Coffee Co. is a small, welcoming café on Queen Street in Amble, Northumberland.</p>
+        <p>Come in for a good cup of coffee, a proper breakfast or a bite of lunch. Take the window seat if it's free. Nobody is in a hurry here, and a second cup is always a reasonable idea.</p>
+        <p>It is, on most days, a perfectly ordinary café. We think that's rather the point.</p>
+      </div>
+      <dl class="ledger mono" data-reveal style="--i:2">
+        <div><dt>Served</dt><dd>Coffee · Breakfast · Lunch · Cakes</dd></div>
+        <div><dt>Address</dt><dd>28–30 Queen Street, Amble</dd></div>
+        <div><dt>Pace</dt><dd>Unhurried</dd></div>
+      </dl>
+    </div>
+    <Plate src={window} alt="The 1911 Coffee Co. roundel painted on the window at dusk, a warm pendant lamp glowing inside and Queen Street beyond."
+      no="2" caption="The window, after dark. Lamp lit." ratio="4 / 5" class="pic" />
+  </div>
+</section>
+<style>
+  .grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); gap: clamp(40px, 7vw, 120px); align-items: center; }
+  .copy { display: grid; gap: var(--space-6); }
+  .copy :global(.intertitle) { margin-bottom: 0; }
+  .ledger { display: grid; border-top: var(--double-rule); }
+  .ledger div { display: grid; grid-template-columns: 100px 1fr; gap: 16px; padding: 10px 0; border-bottom: var(--hairline); }
+  .ledger dt { color: var(--cherry); text-transform: uppercase; letter-spacing: .12em; }
+  .ledger dd { margin: 0; }
+  .pic { max-width: 520px; justify-self: end; width: 100%; }
+  @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } .pic { justify-self: center; max-width: 460px; } }
+</style>

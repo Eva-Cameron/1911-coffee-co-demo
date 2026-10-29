@@ -1,0 +1,39 @@
+---
+/**
+ * The 1911 Coffee Co. wordmark: a sign-painter's "1911" over a fine rule with a bean at its
+ * centre, and the descriptor in spaced capitals. "lg" stacks it for the opening scene and the
+ * credits; "sm" runs it in one line for the header.
+ */
+import Bean from "./Bean.astro";
+interface Props { size?: "lg" | "sm"; class?: string; tone?: "ink" | "cream"; }
+const { size = "sm", class: cls, tone = "ink" } = Astro.props;
+---
+<span class:list={["wordmark", `wordmark--${size}`, `wordmark--${tone}`, cls]}>
+  <span class="wm-num">1911</span>
+  <span class="wm-rule" aria-hidden="true"><Bean size={size === "lg" ? 11 : 7} /></span>
+  <span class="wm-name">Coffee&nbsp;Co.</span>
+</span>
+
+<style>
+  .wordmark { display: inline-grid; justify-items: center; color: var(--espresso); line-height: 1; }
+  .wordmark--cream { color: var(--cream); --bean-seam: var(--burgundy); }
+  .wm-num {
+    font-family: var(--font-serif); font-weight: 560; font-style: italic;
+    font-variation-settings: "opsz" 144;
+    letter-spacing: -.02em;
+  }
+  .wm-name { font: 600 1em/1 var(--font-sans); letter-spacing: .34em; text-transform: uppercase; margin-right: -.34em; }
+  .wm-rule { display: flex; align-items: center; gap: .5em; width: 100%; color: var(--cherry); }
+  .wordmark--cream .wm-rule { color: var(--custard); }
+  .wm-rule::before, .wm-rule::after { content: ""; flex: 1; border-top: 1px solid currentColor; }
+
+  .wordmark--lg { gap: 10px; }
+  .wordmark--lg .wm-num { font-size: clamp(64px, 9vw, 112px); }
+  .wordmark--lg .wm-name { font-size: clamp(12px, 1.1vw, 14px); }
+
+  .wordmark--sm { grid-auto-flow: column; align-items: center; gap: 10px; }
+  .wordmark--sm .wm-num { font-size: 30px; }
+  .wordmark--sm .wm-rule { width: 30px; }
+  .wordmark--sm .wm-rule::before, .wordmark--sm .wm-rule::after { display: none; }
+  .wordmark--sm .wm-name { font-size: 11px; letter-spacing: .28em; margin-right: -.28em; }
+</style>

@@ -1,0 +1,41 @@
+---
+/**
+ * A travel-guide map treatment: deliberately schematic, labelled "not to scale", showing only
+ * what we know: Queen Street and the café on it. Real directions are one tap away. Decorative.
+ */
+interface Props { class?: string; }
+const { class: cls } = Astro.props;
+---
+<svg class:list={["guide-map", cls]} viewBox="0 0 520 380" aria-hidden="true" focusable="false">
+  <rect x="6" y="6" width="508" height="368" fill="var(--paper)" stroke="var(--espresso)" stroke-width="1.5" />
+  <rect x="14" y="14" width="492" height="352" fill="none" stroke="var(--espresso)" stroke-width=".8" />
+  <!-- terraces either side of the street -->
+  <g fill="var(--cream)" stroke="var(--espresso)" stroke-width="1.2">
+    <rect x="40" y="70" width="70" height="92" /><rect x="110" y="70" width="58" height="92" /><rect x="168" y="70" width="62" height="92" />
+    <rect x="290" y="70" width="64" height="92" /><rect x="354" y="70" width="56" height="92" /><rect x="410" y="70" width="70" height="92" />
+    <rect x="40" y="246" width="88" height="92" /><rect x="128" y="246" width="66" height="92" /><rect x="194" y="246" width="80" height="92" />
+    <rect x="274" y="246" width="70" height="92" /><rect x="344" y="246" width="66" height="92" /><rect x="410" y="246" width="70" height="92" />
+  </g>
+  <!-- 1911: the orange one -->
+  <rect x="230" y="70" width="60" height="92" fill="var(--orange)" stroke="var(--espresso)" stroke-width="1.6" />
+  <rect x="238" y="146" width="44" height="16" fill="var(--paper)" stroke="var(--espresso)" stroke-width="1" />
+  <!-- Queen Street -->
+  <path d="M28 204h464" stroke="var(--espresso)" stroke-width="1" stroke-dasharray="10 8" />
+  <text x="260" y="226" text-anchor="middle" fill="var(--espresso)" style="font: 600 11px/1 var(--font-sans); letter-spacing: 4px">QUEEN STREET</text>
+  <!-- the visitor, approaching -->
+  <path d="M64 196c60-10 130-6 180-30" fill="none" stroke="var(--cherry)" stroke-width="2" stroke-dasharray="2 6" stroke-linecap="round" />
+  <circle cx="64" cy="196" r="5" fill="var(--cherry)" />
+  <text x="64" y="186" text-anchor="middle" fill="var(--cherry)" style="font: 500 10px/1 var(--font-mono)">YOU</text>
+  <!-- the pin -->
+  <g transform="translate(260 40)">
+    <path d="M0 26C-10 12-12 6-12 0a12 12 0 0 1 24 0c0 6-2 12-12 26z" fill="var(--cherry)" stroke="var(--espresso)" stroke-width="1.2" />
+    <circle cy="0" r="4.5" fill="var(--paper)" />
+  </g>
+  <text x="300" y="44" fill="var(--espresso)" style="font: 500 10.5px/1 var(--font-mono)">No. 28–30</text>
+  <!-- compass -->
+  <g transform="translate(470 330)" fill="none" stroke="var(--espresso)" stroke-width="1">
+    <circle r="16" /><path d="M0-22v44M-22 0h44" stroke-width=".6" /><path d="M0-14l5 14-5-4-5 4z" fill="var(--espresso)" />
+  </g>
+  <text x="40" y="360" fill="var(--espresso)" style="font: italic 400 13px/1 var(--font-serif)">Not to scale. Not even slightly.</text>
+</svg>
+<style>.guide-map { width: 100%; height: auto; }</style>

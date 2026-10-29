@@ -1,0 +1,55 @@
+---
+/**
+ * An editorial photograph: set in a flat mat with printed corner marks and an archival caption
+ * ("Plate No. 04 — …"). It opens behind a vertical mask as it scrolls in.
+ */
+import { Picture } from "astro:assets";
+import type { ImageMetadata } from "astro";
+interface Props {
+  src: ImageMetadata;
+  alt: string;
+  no?: string;
+  caption?: string;
+  ratio?: string;           // e.g. "4 / 5"
+  mat?: string;             // a colour token, e.g. "var(--paper)"
+  sizes?: string;
+  widths?: number[];
+  eager?: boolean;
+  position?: string;        // object-position, to keep the subject in a crop
+  class?: string;
+  mask?: boolean;
+}
+const {
+  src, alt, no, caption, ratio = "4 / 5", mat = "var(--paper)", sizes = "(max-width: 767px) 92vw, 560px",
+  widths = [480, 800, 1200], eager = false, position = "50% 50%", class: cls, mask = true,
+} = Astro.props;
+---
+<figure class:list={["plate", cls]} style={`--ratio:${ratio};--mat:${mat};--pos:${position}`}>
+  <div class="corners"><div class="mat frame-hover" data-mask={mask && !eager ? "" : undefined}>
+    <Picture src={src} alt={alt} widths={widths.filter((w) => w <= src.width)} sizes={sizes}
+      formats={["avif", "webp"]} loading={eager ? "eager" : "lazy"} fetchpriority={eager ? "high" : undefined} />
+  </div></div>
+  {(no || caption) && (
+    <figcaption class="mono">
+      {no && <span class="no">Plate No.&nbsp;{no}</span>}
+      {caption && <span class="cap">{caption}</span>}
+    </figcaption>
+  )}
+</figure>
+
+<style>
+  .plate { margin: 0; display: grid; gap: var(--space-3); }
+  .mat {
+    position: relative; padding: var(--frame-pad); background: var(--mat);
+    color: var(--espresso);
+    box-shadow: 0 1px 0 rgb(51 38 34 / .12), 0 18px 40px -24px rgb(51 38 34 / .45);
+  }
+  .mat :global(img) {
+    display: block; width: 100%; aspect-ratio: var(--ratio); object-fit: cover; object-position: var(--pos);
+    outline: 1px solid rgb(51 38 34 / .25); outline-offset: -1px;
+  }
+  .mat { overflow: hidden; }
+  figcaption { display: flex; flex-wrap: wrap; gap: 4px 12px; justify-content: center; text-align: center; color: inherit; }
+  .no { color: var(--accent-ink, var(--cherry)); }
+  .cap { opacity: .9; }
+</style>

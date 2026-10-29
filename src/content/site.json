@@ -9,7 +9,6 @@
     "lat": 55.3339,
     "lng": -1.5847
   },
-  "est": "2019",
   "directions": "https://www.google.com/maps/dir/?api=1&destination=1911+Coffee+Co,+28-30+Queen+St,+Amble+NE65+0BZ",
   "socials": [
     {
@@ -29,5 +28,7 @@
     "on": false,
     "text": "",
     "href": ""
-  }
+  },
+  "_note": "Address and phone are as currently listed; verify before launch. Production domain unconfirmed (1911cafe.co.uk appears to be the current site).",
+  "verified": false
 }

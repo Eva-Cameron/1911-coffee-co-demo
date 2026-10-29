@@ -1,64 +1,55 @@
 /*
- * Motion, in the spirit of the shopfront: a typewriter, photographs dealt onto
- * a counter, a rubber stamp. Every hidden start state is behind html.motion,
- * which the inline script in Layout sets only when JS runs and the reader has
- * not asked for reduced motion, so the page is complete without either.
+ * Motion: physical objects moving through a controlled frame.
+ *
+ * Every hidden start state sits behind html.motion, which Layout's inline script sets only when
+ * JavaScript runs and the reader has not asked for reduced motion. Without it, everything is
+ * simply there. Nothing here hijacks scrolling or delays reading.
  */
 
-/* Typewriter: characters are struck one at a time, then the caret keeps blinking a few times and rests. */
-.tw-char { visibility: hidden; }
-.tw-char.on { visibility: visible; }
-.tw-caret {
-  display: inline-block;
-  width: max(2px, .06em);
-  height: .9em;
-  margin-left: .06em;
-  vertical-align: -.08em;
-  background: currentColor;
-  animation: tw-blink 1s steps(1) infinite;
-}
-/* After the line is struck the caret blinks three times and goes */
-.tw-caret.done { animation: tw-blink-out 1s steps(1) 3 forwards; }
-@keyframes tw-blink { 50% { opacity: 0; } }
-@keyframes tw-blink-out { 50%, 100% { opacity: 0; } }
+/* ---------- The opening scene: a curtain opening onto a small world (about 1.4s in all) */
+.motion .intro-wordmark { animation: settle-in var(--dur-slow) var(--ease-settle) both; }
+.motion .intro-nav { animation: fade-in var(--dur-mid) ease-out 180ms both; }
+.motion .intro-label { animation: fade-in var(--dur-mid) ease-out 260ms both; }
+.motion .intro-lines .line > span { animation: line-up 760ms var(--ease-settle) both; animation-delay: calc(320ms + var(--n, 0) * 110ms); }
+.motion .intro-picture { animation: curtain 1100ms var(--ease-curtain) 300ms both; }
+.motion .intro-picture img { animation: settle-scale 1600ms var(--ease-settle) 300ms both; }
+.motion .intro-late { animation: fade-in var(--dur-mid) ease-out 950ms both; }
 
-/* Ink-in: a struck letter lands a touch dark and settles */
-.motion .ink { opacity: 0; transform: translateY(6px); filter: blur(2px); }
-.motion .ink.in {
-  opacity: 1; transform: none; filter: none;
-  transition: opacity .8s var(--ease-out), transform .8s var(--ease-out), filter .8s var(--ease-out);
-}
-
-/* Reveal: blocks rise in as they scroll into view, staggered through --i */
-.motion [data-reveal] { opacity: 0; transform: translateY(18px); }
+/* ---------- Scroll reveals, set off once by IntersectionObserver */
+.motion [data-reveal] { opacity: 0; transform: translateY(14px); }
 .motion [data-reveal].in {
   opacity: 1; transform: none;
-  transition: opacity .7s var(--ease-out), transform .7s var(--ease-out);
-  transition-delay: calc(var(--i, 0) * 80ms);
+  transition: opacity 700ms ease-out, transform 900ms var(--ease-settle);
+  transition-delay: calc(var(--i, 0) * 90ms);
 }
+/* Headlines rise line by line */
+.line { display: block; overflow: hidden; padding: .04em .06em .2em; margin: -.04em -.06em -.2em; }
+.line > span { display: inline-block; }
+.motion [data-lines] .line > span { transform: translateY(105%); }
+.motion [data-lines].in .line > span {
+  transform: none;
+  transition: transform 900ms var(--ease-settle);
+  transition-delay: calc(var(--n, 0) * 110ms);
+}
+/* Photographs open behind a vertical mask, like a lantern slide sliding in */
+.motion [data-mask] { clip-path: inset(0 0 100% 0); }
+.motion [data-mask] img { transform: scale(1.06); }
+.motion [data-mask].in {
+  clip-path: inset(0 0 0 0);
+  transition: clip-path 1100ms var(--ease-curtain);
+}
+.motion [data-mask].in img { transform: none; transition: transform 1600ms var(--ease-settle); }
 
-/* Stamp: the roundel lands like a rubber stamp */
-.motion .stamp { opacity: 0; transform: scale(1.35) rotate(-8deg); }
-.motion .stamp.in {
-  opacity: 1; transform: none;
-  transition: opacity .25s ease-out, transform .55s var(--ease-stamp);
-}
+/* ---------- Keyframes */
+@keyframes fade-in { from { opacity: 0; } }
+@keyframes settle-in { from { opacity: 0; transform: translateY(-10px); } }
+@keyframes line-up { from { transform: translateY(105%); } }
+@keyframes curtain { from { clip-path: inset(0 50% 0 50%); } }
+@keyframes settle-scale { from { transform: scale(1.08); } }
 
-/* The ribbon draws itself on load */
-.motion .ribbon path {
-  stroke-dasharray: 1;
-  stroke-dashoffset: 1;
-  animation: ribbon-draw 2.4s var(--ease-out) .2s forwards;
-}
-@keyframes ribbon-draw { to { stroke-dashoffset: 0; } }
-
-/* Menu leaders type across, like a row of struck full stops */
-.motion .menu-row dt::after { transform: scaleX(0); transform-origin: left; }
-.motion .menu-row.in dt::after {
-  transform: scaleX(1);
-  transition: transform .9s steps(18, end);
-  transition-delay: calc(var(--i, 0) * 60ms + 150ms);
-}
+/* ---------- Gallery hover: a photograph shifts in its mat, never distorted */
+.frame-hover img { transition: transform 1200ms var(--ease-settle); }
+.frame-hover:hover img { transform: scale(1.025) translateY(-.6%); }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
@@ -68,6 +59,3 @@
     scroll-behavior: auto !important;
   }
 }
-
-/* Until it is struck, a typed line holds its space but shows nothing */
-.motion [data-type]:not(.typing) { visibility: hidden; }

@@ -1,0 +1,23 @@
+---
+/**
+ * A circular printed seal: the name set round a ring, a cup at the centre. Used as a stamp
+ * that lands on hover, and in the end credits. Decorative unless given a label.
+ */
+interface Props { size?: number; class?: string; label?: string; text?: string; }
+const { size = 120, class: cls, label, text = "1911 COFFEE CO. · AMBLE · NORTHUMBERLAND · " } = Astro.props;
+const id = `seal-${Math.random().toString(36).slice(2, 8)}`;
+---
+<svg class:list={["seal", cls]} width={size} height={size} viewBox="0 0 120 120"
+  role={label ? "img" : undefined} aria-label={label} aria-hidden={label ? undefined : "true"} focusable="false">
+  <defs><path id={id} d="M60 60 m-44 0 a44 44 0 1 1 88 0 a44 44 0 1 1 -88 0" /></defs>
+  <circle cx="60" cy="60" r="57" fill="none" stroke="currentColor" stroke-width="1.6" />
+  <circle cx="60" cy="60" r="53" fill="none" stroke="currentColor" stroke-width=".8" stroke-dasharray="2.2 2.6" />
+  <circle cx="60" cy="60" r="34" fill="none" stroke="currentColor" stroke-width="1" />
+  <text fill="currentColor" style="font: 600 9.4px/1 var(--font-sans); letter-spacing: 2.3px"><textPath href={`#${id}`}>{text}</textPath></text>
+  <g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M44 56h28v6a14 14 0 0 1-28 0z" />
+    <path d="M72 59h3.5a4.5 4.5 0 0 1 0 9H70" />
+    <path d="M40 79h40" />
+    <path d="M53 50c-2-3 2-4 0-7M60 50c-2-3 2-4 0-7M67 50c-2-3 2-4 0-7" stroke-width="1.4" />
+  </g>
+</svg>

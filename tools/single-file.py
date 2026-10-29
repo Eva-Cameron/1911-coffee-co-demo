@@ -28,6 +28,10 @@ for link in re.findall(r'<link rel="stylesheet" href="([^"]+)">', html):
     css = re.sub(r"url\((/_astro/[^)]+\.woff2)\)", lambda match: f"url({data_uri(DIST / match.group(1).lstrip('/'))})", css)
     html = html.replace(f'<link rel="stylesheet" href="{link}">', f"<style>{css}</style>")
 
+# Stylesheets Astro already inlined into the page: embed their woff2 fonts the same way
+html = re.sub(r',\s*url\([^)]*\.woff\) format\("woff"\)', "", html)
+html = re.sub(r"url\((/_astro/[^)]+\.woff2)\)", lambda match: f"url({data_uri(DIST / match.group(1).lstrip('/'))})", html)
+
 # Each <picture> keeps its wrapper but holds one <img> carrying the largest WebP no wider than MAX_IMAGE_WIDTH
 def flatten_picture(match):
     block = match.group(0)

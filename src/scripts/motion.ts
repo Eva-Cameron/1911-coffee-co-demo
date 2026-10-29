@@ -1,62 +1,34 @@
 /**
- * Scroll-triggered motion: typewriter lines, reveals, ink-in headings and the
- * stamp. Does nothing unless Layout's inline script set html.motion.
+ * Sets off the scroll reveals once each: [data-reveal], [data-lines] and [data-mask].
+ * Does nothing unless Layout's inline script set html.motion, so content is never hidden
+ * when JavaScript or motion is off.
  */
 const root = document.documentElement;
 
-/** Strikes an element's text one character at a time. Screen readers get the whole line at once. */
-function typewrite(el: HTMLElement) {
-  const text = el.textContent ?? "";
-  const speed = Number(el.dataset.typeSpeed ?? 38);
-  el.classList.add("typing");
-  el.textContent = "";
-  const whole = document.createElement("span");
-  whole.className = "visually-hidden";
-  whole.textContent = text;
-  el.append(whole);
-  const chars = [...text].map((ch) => {
-    const s = document.createElement("span");
-    s.className = "tw-char";
-    s.setAttribute("aria-hidden", "true");
-    s.textContent = ch;
-    el.append(s);
-    return s;
-  });
-  const caret = document.createElement("span");
-  caret.className = "tw-caret";
-  caret.setAttribute("aria-hidden", "true");
-  el.append(caret);
-
-  let i = 0, last = 0;
-  // A typist's rhythm: slower after spaces and punctuation, never perfectly even.
-  const gap = (ch: string) => speed * (/[\s·—,.]/.test(ch) ? 2.2 : 0.7 + Math.random() * 0.6);
-  let wait = 300 + Number(el.dataset.typeDelay ?? 0);
-  const step = (now: number) => {
-    if (!last) last = now;
-    if (now - last >= wait) {
-      chars[i].classList.add("on");
-      chars[i].after(caret);
-      wait = gap(chars[i].textContent ?? "");
-      last = now;
-      i++;
-    }
-    if (i < chars.length) requestAnimationFrame(step);
-    else caret.classList.add("done");
-  };
-  requestAnimationFrame(step);
-}
-
-if (root.classList.contains("motion")) {
+if (root.classList.contains("motion") && "IntersectionObserver" in window) {
+  // A masked photograph is clipped to nothing until it opens, and a clipped element has no area
+  // to intersect, so its unclipped parent is watched instead and the class lands on the mask.
+  const targetOf = new Map<Element, Element>();
   const io = new IntersectionObserver((entries) => {
     for (const e of entries) {
       if (!e.isIntersecting) continue;
-      const el = e.target as HTMLElement;
-      io.unobserve(el);
-      if (el.matches("[data-type]")) typewrite(el);
-      else el.classList.add("in");
+      (targetOf.get(e.target) ?? e.target).classList.add("in");
+      io.unobserve(e.target);
     }
-  }, { rootMargin: "0px 0px -10% 0px" });
+  }, { rootMargin: "0px 0px -12% 0px", threshold: 0.05 });
 
-  document.querySelectorAll<HTMLElement>("[data-type], [data-reveal], .ink, .stamp, .menu-row")
-    .forEach((el) => io.observe(el));
+  document.querySelectorAll("[data-reveal], [data-lines]").forEach((el) => io.observe(el));
+  document.querySelectorAll("[data-mask]").forEach((el) => {
+    const watch = el.parentElement ?? el;
+    targetOf.set(watch, el);
+    io.observe(watch);
+  });
+
+  // A safety net: if anything is still waiting after the page settles at the bottom, show it.
+  addEventListener("load", () => setTimeout(() => {
+    if (innerHeight + scrollY >= document.body.scrollHeight - 4)
+      document.querySelectorAll("[data-reveal]:not(.in), [data-lines]:not(.in), [data-mask]:not(.in)").forEach((el) => el.classList.add("in"));
+  }, 1500));
+} else {
+  root.classList.remove("motion");
 }

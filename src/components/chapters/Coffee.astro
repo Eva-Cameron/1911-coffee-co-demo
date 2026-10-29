@@ -1,0 +1,74 @@
+---
+/**
+ * Chapter II — the coffee department. Blush field, strict symmetry: a caption column either side
+ * of one cup on a custard square, then the drinks set out like a departures board.
+ */
+import Intertitle from "../Intertitle.astro";
+import Plate from "../Plate.astro";
+import Cup from "../Cup.astro";
+import latte from "../../assets/photos/latte.jpg";
+import menu from "../../content/menu.json";
+import { chapters } from "../../content/chapters";
+const c = chapters.coffee;
+const drinks = menu.sections.find((s) => s.id === "hot-drinks")!.items;
+---
+<section id={c.id} class="scene field-blush coffee" aria-labelledby={`${c.id}-title`}>
+  <div class="wrap">
+    <Intertitle no={c.no} label="The Daily Ritual" id={`${c.id}-title`} title="A very good|cup of _coffee._" />
+    <div class="triptych">
+      <div class="side side-l" data-reveal>
+        <p class="label">Prepared with<br />considerable care</p>
+        <p>Espresso pulled, milk steamed until it's glossy, poured with a steady hand. A small amount of art, on a good day.</p>
+      </div>
+      <div class="centre">
+        <div class="square">
+          <Plate src={latte} alt="A cappuccino with latte art in a white cup and saucer, a round biscuit on the side, beside a printed 1911 menu on a wooden table."
+            no="3" caption="One cappuccino, one biscuit. As served." ratio="1 / 1" position="50% 30%" mat="var(--paper)" />
+        </div>
+      </div>
+      <div class="side side-r" data-reveal style="--i:1">
+        <p class="label">One more cup,<br />if you please</p>
+        <p>Have it here in a proper cup and saucer, and sit a while. Ask at the counter about milks and anything else you fancy.</p>
+      </div>
+    </div>
+
+    <div class="board" data-reveal>
+      <div class="board-head">
+        <span class="rock"><Cup size={40} /></span>
+        <h3 class="label">The coffee timetable</h3>
+        <span class="mono">Hot drinks</span>
+      </div>
+      <ol>
+        {drinks.map((d, i) => (
+          <li><span class="mono n">{String(i + 1).padStart(2, "0")}</span><span class="name">{d.name}</span><span class="mono when">Whenever you like</span></li>
+        ))}
+      </ol>
+      <p class="mono board-foot"><a href={`#${chapters.menu.id}`}>Prices and the full list are in Chapter VIII</a></p>
+    </div>
+  </div>
+</section>
+<style>
+  .triptych { display: grid; grid-template-columns: 1fr minmax(0, 520px) 1fr; gap: clamp(24px, 4vw, 64px); align-items: center; }
+  .side { display: grid; gap: var(--space-3); max-width: 30ch; font-size: 16px; }
+  .side .label { color: var(--burgundy); font-weight: 600; }
+  .side-l { justify-self: end; text-align: right; }
+  .square { background: var(--custard); padding: clamp(20px, 4vw, 56px); }
+  .board { margin: var(--space-8) auto 0; max-width: 760px; background: var(--espresso); color: var(--cream); padding: var(--space-5) clamp(16px, 4vw, 40px) var(--space-4); }
+  .board-head { display: flex; align-items: center; gap: var(--space-3); padding-bottom: var(--space-3); border-bottom: 1px solid rgb(248 240 223 / .3); }
+  .board-head .label { flex: 1; font-weight: 600; color: var(--custard); }
+  .board-head :global(.cup) { color: var(--custard); --cup-fill: var(--espresso); }
+  .rock { display: inline-flex; cursor: default; }
+  .board ol { list-style: none; }
+  .board li { display: grid; grid-template-columns: 40px 1fr auto; align-items: baseline; gap: 12px; padding: 12px 0; border-bottom: 1px dashed rgb(248 240 223 / .25); }
+  .board .n { color: var(--custard); }
+  .board .name { font: 400 24px/1.1 var(--font-serif); }
+  .board .when { color: rgb(248 240 223 / .75); }
+  .board-foot { padding-top: var(--space-3); text-align: right; }
+  .board-foot a { color: var(--custard); }
+  @media (max-width: 960px) {
+    .triptych { grid-template-columns: 1fr; }
+    .side, .side-l { justify-self: center; text-align: center; }
+    .centre { order: -1; }
+  }
+  @media (max-width: 520px) { .board .when { display: none; } .board li { grid-template-columns: 36px 1fr; } }
+</style>

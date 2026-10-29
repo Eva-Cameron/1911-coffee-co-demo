@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://1911coffee.co.uk/sitemap-index.xml
+Sitemap: https://1911cafe.co.uk/sitemap-index.xml

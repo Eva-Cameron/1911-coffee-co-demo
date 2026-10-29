@@ -1,42 +1,94 @@
 ---
+/**
+ * The opening scene: a travel-poster composition. A small location line, the headline in two
+ * set lines, one sentence, two actions, then the shopfront itself, framed and captioned, on a
+ * band of mint. Two tiny annotations reward a closer look.
+ */
 import { Picture } from "astro:assets";
-import DoorSign from "./DoorSign.astro";
+import Bean from "./Bean.astro";
 import shopfront from "../assets/photos/findus.jpg";
 import site from "../content/site.json";
+import { chapters } from "../content/chapters";
 ---
-<section class="hero wrap" aria-labelledby="hero-title">
-  <div class="chapter">
-    <p class="part">Amble, Northumberland</p>
-    <h1 id="hero-title" data-type data-type-delay="400" data-type-speed="90">{site.name}</h1>
-    <p class="lead">Breakfast, homemade bakes and good coffee at {site.street}. Est. {site.est}.</p>
-    <div class="actions">
-      <a class="btn" href="#menu">See the menu</a>
-      <a class="link" href={site.directions} rel="noopener">Directions</a>
+<section id="top" class="hero" aria-labelledby="hero-title">
+  <div class="poster wrap">
+    <p class="label where intro-label"><span>An independent café</span><Bean size={8} /><span>{site.street}, {site.town}</span></p>
+    <h1 id="hero-title" class="intro-lines">
+      <span class="visually-hidden">1911 Coffee Co., Amble. </span>
+      <span class="line"><span style="--n:0">A very good day</span></span>
+      <span class="line"><span style="--n:1">for <em>coffee.</em></span></span>
+    </h1>
+    <p class="lede intro-late">Proper breakfasts, a little lunch and carefully made coffee, on Queen Street in Amble.</p>
+    <div class="actions intro-late">
+      <a class="btn" href={`#${chapters.menu.id}`}>See the menu <span class="arrow" aria-hidden="true">→</span></a>
+      <a class="btn btn--paper" href={`#${chapters.visit.id}`}>Find us</a>
     </div>
-    <DoorSign />
   </div>
-  <figure class="mat shopfront">
-    <Picture src={shopfront} alt="The orange 1911 Coffee Co. shopfront at 28–30 Queen Street, with balloons in the windows"
-      widths={[600, 1000, 1570]} sizes="(max-width: 767px) 100vw, 860px" formats={["avif", "webp"]}
-      loading="eager" fetchpriority="high" />
-  </figure>
+
+  <div class="stage field-mint">
+    <div class="wrap stage-inner">
+      <p class="note note-left mono intro-late" aria-hidden="true"><span>Fig. A</span>The door.<br />Please use it.</p>
+      <figure class="shot intro-picture">
+        <div class="corners"><div class="mat">
+          <Picture src={shopfront} alt="The 1911 Coffee Co. shopfront on Queen Street: an orange painted fascia with the name in white letters, two windows with the 1911 roundel, and orange and silver balloons."
+            widths={[480, 800, 1200, 1570]} sizes="(max-width: 767px) 92vw, 880px"
+            formats={["avif", "webp"]} loading="eager" fetchpriority="high" />
+        </div></div>
+        <figcaption class="mono"><span class="no">Plate No.&nbsp;1</span><span>The front of 28–30 Queen Street. Balloons not always included.</span></figcaption>
+      </figure>
+      <p class="note note-right mono intro-late" aria-hidden="true"><span>Fig. B</span>Two windows,<br />one name.</p>
+    </div>
+    <a class="cue intro-late" href={`#${chapters.place.id}`}>
+      <span class="label">Chapter I begins below</span>
+      <span class="cue-bean" aria-hidden="true"><Bean size={10} /></span>
+    </a>
+  </div>
 </section>
 
 <style>
-  .hero { padding: 24px 0 104px; }
-  h1 { font-size: clamp(28px, 5.4vw, 72px); white-space: nowrap; }
-  .chapter { gap: 22px; margin-bottom: 20px; }
-  .lead { font-size: 19px !important; line-height: 1.5; text-wrap: balance; max-width: 36ch !important; }
-  .actions { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 16px 32px; margin-top: 8px; }
-  /* On the orange band the mat swaps to the shop's grey */
-  .shopfront { width: min(100%, 860px); margin-inline: auto; aspect-ratio: 1570 / 1130; overflow: hidden; background: var(--stone); }
-  .hero :global(.link) { text-decoration-color: var(--maroon); }
-  .shopfront :global(picture) { display: block; height: 100%; overflow: hidden; }
-  :global(.motion) .shopfront :global(img) { animation: settle 2.4s var(--ease-out) both; }
-  @keyframes settle { from { transform: scale(1.05); } }
+  .hero { padding-top: var(--space-7); }
+  .poster { display: grid; justify-items: center; text-align: center; gap: var(--space-5); padding-bottom: var(--space-7); }
+  .where { display: inline-flex; align-items: center; gap: 12px; color: var(--ink-soft); }
+  .where :global(.bean) { color: var(--cherry); }
+  h1 { font-size: var(--step-5); font-weight: 320; line-height: .95; letter-spacing: -.03em; }
+  h1 em { color: var(--cherry); font-weight: 300; }
+  .lede { margin-inline: auto; }
+  .actions { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-3); }
+
+  /* The stage: a mint band that the photograph sits across, half above, half below */
+  .stage { position: relative; margin-top: calc(-1 * var(--space-6)); padding-bottom: var(--space-7); background: linear-gradient(var(--cream) 0 22%, var(--mint) 22%); }
+  .stage-inner { display: grid; grid-template-columns: 1fr minmax(0, 880px) 1fr; align-items: center; gap: var(--space-5); }
+  .shot { margin: 0; grid-column: 2; display: grid; gap: var(--space-3); }
+  .mat { padding: var(--frame-pad); background: var(--paper); box-shadow: 0 30px 60px -36px rgb(51 38 34 / .55); }
+  .mat :global(img) { width: 100%; aspect-ratio: 1570 / 1130; object-fit: cover; }
+  .shot figcaption { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 12px; }
+  .shot .no { color: var(--burgundy); }
+  .corners { color: var(--espresso); }
+
+  .note { display: grid; gap: 4px; color: var(--espresso); line-height: 1.5; }
+  .note span { color: var(--burgundy); font-weight: 500; }
+  .note-left { justify-self: end; text-align: right; }
+  .note-right { justify-self: start; }
+
+  .cue { display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: var(--space-6); color: var(--espresso); text-decoration: none; }
+  .cue-bean { color: var(--burgundy); }
+  :global(.motion) .cue-bean { animation: bob 2.4s ease-in-out 2s infinite; }
+  @keyframes bob { 50% { transform: translateY(6px); } }
+
+  @media (max-width: 1100px) {
+    .stage-inner { grid-template-columns: 1fr; }
+    .shot { grid-column: 1; }
+    .note { display: none; }
+  }
   @media (max-width: 767px) {
-    .hero { padding: 24px 0 72px; }
-    .lead { font-size: 17px !important; }
-    .shopfront { padding: 8px; }
+    .hero { padding-top: var(--space-6); }
+    .poster { gap: var(--space-4); padding-bottom: var(--space-6); }
+    .where { flex-direction: column; gap: 6px; }
+    h1 { font-size: clamp(46px, 14vw, 68px); }
+    .actions { width: 100%; display: grid; grid-template-columns: 1fr 1fr; }
+    .actions .btn { padding: 0 10px; letter-spacing: .12em; }
+    .actions .arrow { display: none; }
+    .stage { margin-top: 0; background: linear-gradient(var(--cream) 0 16%, var(--mint) 16%); }
+    .mat :global(img) { aspect-ratio: 4 / 3.4; object-position: 50% 40%; }
   }
 </style>

@@ -1,8 +1,22 @@
 {
-  "_note": "Scores to re-check before launch: Tripadvisor showed 4.9 from 163 reviews on 29 Oct 2026; the Google score is unconfirmed. Real quotes can come back once each reviewer has said yes.",
-  "badges": [
-    { "score": "4.9", "label": "Tripadvisor", "href": "https://www.tripadvisor.co.uk/Search?q=1911+Coffee+Co+Amble" },
-    { "score": "4.8", "label": "Google", "href": "https://www.google.com/maps/search/?api=1&query=1911+Coffee+Co+Amble" }
+  "_note": "Only show what has been checked. Tripadvisor read 4.9 from 163 reviews on 29 Oct 2026 (from the earlier research session); re-check before launch. The Google score is unconfirmed, so it is hidden. Quotes need each reviewer's permission.",
+  "ratings": [
+    {
+      "source": "Tripadvisor",
+      "score": "4.9",
+      "count": 163,
+      "checked": "29 October 2026",
+      "verified": true,
+      "href": "https://www.tripadvisor.co.uk/Search?q=1911+Coffee+Co+Amble"
+    },
+    {
+      "source": "Google",
+      "score": null,
+      "count": null,
+      "checked": null,
+      "verified": false,
+      "href": "https://www.google.com/maps/search/?api=1&query=1911+Coffee+Co+Amble"
+    }
   ],
   "quotes": []
 }

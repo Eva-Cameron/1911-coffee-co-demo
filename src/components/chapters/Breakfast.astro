@@ -1,0 +1,80 @@
+---
+/**
+ * Chapter III — the breakfast department. Custard field with a cherry checker hem: the plate is
+ * the star, annotated like a specimen, beside a printed card of the morning's dishes.
+ */
+import Intertitle from "../Intertitle.astro";
+import Plate from "../Plate.astro";
+import bun from "../../assets/photos/breakfast.jpg";
+import menu from "../../content/menu.json";
+import { chapters } from "../../content/chapters";
+const c = chapters.breakfast;
+const dishes = menu.sections.find((s) => s.id === "breakfast")!.items;
+const parts = [
+  { n: 1, t: "The bun", x: "20%", y: "28%" },
+  { n: 2, t: "The hash brown", x: "50%", y: "26%" },
+  { n: 3, t: "The bacon", x: "78%", y: "56%" },
+];
+---
+<section id={c.id} class="scene field-custard breakfast" aria-labelledby={`${c.id}-title`}>
+  <div class="checker checker--cherry hem" aria-hidden="true"></div>
+  <div class="wrap">
+    <Intertitle no={c.no} label="Without unnecessary drama" id={`${c.id}-title`} title="Breakfast is a|_serious_ matter." />
+    <div class="grid">
+      <figure class="specimen">
+        <div class="pinned">
+          <Plate src={bun} alt="A bacon and hash brown bun on a dark plate: a soft white bun, a golden hash brown and rashers of bacon."
+            no="4" caption="Bacon & hash brown bun. A specimen." ratio="1 / 1" mat="var(--paper)" />
+          <ol class="pins" aria-label="Parts of the bun">
+            {parts.map((p) => <li style={`--x:${p.x};--y:${p.y}`}><span class="pin mono" aria-hidden="true">{p.n}</span><span class="visually-hidden">{p.n}. {p.t}</span></li>)}
+          </ol>
+        </div>
+        <figcaption class="key mono" aria-hidden="true">
+          {parts.map((p) => <span><b>{p.n}</b> {p.t}</span>)}
+        </figcaption>
+      </figure>
+
+      <div class="card" data-reveal>
+        <p class="label card-top">The morning card</p>
+        <ul>
+          {dishes.map((d) => (
+            <li><span class="dish">{d.name}{d.tags.includes("V") && <abbr class="v mono" title="Vegetarian">V</abbr>}</span>{d.desc && <span class="desc">{d.desc}</span>}</li>
+          ))}
+        </ul>
+        <a class="link" href={`#${chapters.menu.id}`}>The full menu <span aria-hidden="true">→</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+  .breakfast { padding-top: 0; }
+  .hem { margin-bottom: var(--space-8); }
+  .grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: clamp(32px, 6vw, 96px); align-items: center; }
+  .specimen { margin: 0; display: grid; gap: var(--space-4); }
+  .pinned { position: relative; }
+  .pins { list-style: none; }
+  .pins li { position: absolute; left: var(--x); top: var(--y); transform: translate(-50%, -50%); }
+  .pin {
+    display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%;
+    background: var(--cream); color: var(--cherry); font-size: 15px; font-weight: 500;
+    box-shadow: 0 0 0 1.5px var(--cherry), 0 4px 10px rgb(51 38 34 / .25);
+    transition: transform var(--dur-fast) var(--ease-settle);
+  }
+  .pins li:hover .pin { transform: scale(1.12); }
+  .key { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 20px; }
+  .key b { color: var(--cherry); font-weight: 500; }
+  .card {
+    background: var(--paper); padding: clamp(24px, 3.5vw, 44px);
+    outline: 1px solid var(--espresso); outline-offset: -10px;
+    display: grid; gap: var(--space-5);
+  }
+  .card-top { text-align: center; color: var(--cherry); font-weight: 600; padding-bottom: var(--space-3); border-bottom: var(--double-rule); }
+  .card ul { list-style: none; display: grid; gap: var(--space-4); }
+  .card li { display: grid; gap: 2px; text-align: center; }
+  .dish { font: 400 23px/1.15 var(--font-serif); display: inline-flex; justify-content: center; align-items: baseline; gap: 8px; }
+  .desc { font-size: 15px; color: var(--ink-soft); font-style: italic; font-family: var(--font-serif); }
+  .v { font-size: 11px; text-decoration: none; border: 1px solid currentColor; border-radius: 50%; width: 20px; height: 20px; display: inline-grid; place-items: center; color: var(--cherry); }
+  .card .link { justify-self: center; color: var(--cherry); }
+  @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } .hem { margin-bottom: var(--space-7); } }
+  @media (max-width: 520px) { .pin { width: 28px; height: 28px; font-size: 13px; } }
+</style>

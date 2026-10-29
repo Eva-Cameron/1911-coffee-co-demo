@@ -1,0 +1,38 @@
+---
+/** Chapter VI — a very welcome table. Mint field, everything centred on the table for two. */
+import Intertitle from "../Intertitle.astro";
+import TableSetting from "../TableSetting.astro";
+import { chapters } from "../../content/chapters";
+const c = chapters.welcome;
+const notes = [
+  { t: "Say hello.", d: "Somebody will say it back." },
+  { t: "Find a seat.", d: "Any one you like, if it's free." },
+  { t: "Look at the menu.", d: "Or simply ask what's good today." },
+];
+---
+<section id={c.id} class="scene field-mint welcome" aria-labelledby={`${c.id}-title`}>
+  <div class="wrap--narrow">
+    <Intertitle no={c.no} label={c.title} id={`${c.id}-title`} size="lg" title="Come as you are.|_We'll do the rest._" >
+      <p class="dek" data-reveal style="--i:2">Locals, walkers, families, and anyone who meant to pop in for five minutes. First visit or five-hundredth, you're very welcome at 1911.</p>
+    </Intertitle>
+    <div class="setting" data-reveal><TableSetting /></div>
+    <ol class="notes">
+      {notes.map((n, i) => (
+        <li data-reveal style={`--i:${i}`}><span class="display no">{["I", "II", "III"][i]}</span><span class="t">{n.t}</span><span class="d">{n.d}</span></li>
+      ))}
+    </ol>
+  </div>
+</section>
+<style>
+  .setting { margin-bottom: var(--space-7); }
+  .notes { list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--espresso); border-bottom: 1px solid var(--espresso); }
+  .notes li { display: grid; justify-items: center; gap: 6px; text-align: center; padding: var(--space-5) var(--space-3); }
+  .notes li + li { border-left: 1px solid var(--espresso); }
+  .no { color: var(--burgundy); font-size: 18px; }
+  .t { font: 400 24px/1.1 var(--font-serif); }
+  .d { font-size: 15px; }
+  @media (max-width: 767px) {
+    .notes { grid-template-columns: 1fr; }
+    .notes li + li { border-left: 0; border-top: 1px solid var(--espresso); }
+  }
+</style>

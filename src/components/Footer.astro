@@ -1,31 +1,49 @@
 ---
-import Roundel from "./Roundel.astro";
+/** The end credits: the wordmark, the cast, the set and the essential details, then a closing line. */
+import Wordmark from "./Wordmark.astro";
+import Seal from "./Seal.astro";
 import site from "../content/site.json";
+import { chapters } from "../content/chapters";
+const credits = [
+  { role: "Starring", names: ["Coffee", "Breakfast", "Lunch", "Cake", "You"] },
+  { role: "Filmed on location at", names: [`${site.street}, ${site.town}`] },
+  { role: "Photography", names: ["1911 Coffee Co."] },
+  { role: "Website", names: ["Eva Cameron"] },
+];
 ---
-<footer class="footer">
-  <div class="wrap inner">
-    <Roundel size={72} tone="cream" title="1911 Coffee Co." />
-    <p class="name" aria-hidden="true">{site.name}</p>
-    <p class="addr">{site.street} · {site.town} · {site.postcode} · <a href={`tel:${site.phoneHref}`}>{site.phone}</a></p>
-    <ul class="links">
-      {site.socials.map((s) => <li><a href={s.href} rel="noopener">{s.name}</a></li>)}
-    </ul>
-    <div class="base">
-      <p>© {new Date().getFullYear()} 1911 Coffee Co Ltd</p>
-      <p>Website by Eva Cameron</p>
+<footer class="credits field-burgundy">
+  <div class="wrap--narrow inner">
+    <div class="seal-wrap" aria-hidden="true"><Seal size={84} /></div>
+    <Wordmark size="lg" tone="cream" />
+    <dl class="roles">
+      {credits.map((c) => (
+        <div><dt class="label">{c.role}</dt><dd>{c.names.join(" · ")}</dd></div>
+      ))}
+    </dl>
+    <div class="essentials">
+      <p class="mono">{site.street} · {site.town} · {site.postcode}</p>
+      <p class="mono"><a href={`tel:${site.phoneHref}`}>{site.phone}</a> · <a href={site.directions} rel="noopener">Directions</a> · <a href={`#${chapters.menu.id}`}>Menu</a></p>
+      <ul class="socials">
+        {site.socials.map((s) => <li><a class="link" href={s.href} rel="noopener">{s.name}</a></li>)}
+      </ul>
     </div>
+    <p class="the-end"><span class="display">The End.</span> <em>(Of the website. The coffee continues.)</em></p>
+    <p class="mono small">© {new Date().getFullYear()} 1911 Coffee Co.</p>
   </div>
 </footer>
 <style>
-  .footer { background: var(--maroon); color: var(--paper); padding: 104px 0 36px; }
-  .inner { display: grid; justify-items: center; gap: 28px; text-align: center; }
-  .name { font-family: var(--font-title); font-size: clamp(26px, 4.4vw, 60px); font-weight: 600; letter-spacing: .06em; line-height: 1; color: var(--orange); white-space: nowrap; }
-  .addr { font-size: 17px; letter-spacing: .04em; }
-  .links { list-style: none; margin: 0; padding: 0; display: flex; gap: 32px; flex-wrap: wrap; justify-content: center; }
-  .links a { font-size: 14px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; }
-  .footer a { color: var(--paper); text-decoration-color: var(--orange); text-decoration-thickness: 2px; text-underline-offset: .4em; }
-  .footer a:hover { color: var(--orange); }
-  .base { display: flex; gap: 32px; flex-wrap: wrap; justify-content: center; margin-top: 56px; font-size: 14px; color: rgb(251 243 234 / .8); }
-  .footer :global(:focus-visible) { outline-color: var(--orange); }
-  @media (max-width: 767px) { .footer { padding-top: 72px; } .addr { font-size: 15px; } }
+  .credits { padding: var(--space-8) 0 var(--space-6); text-align: center; }
+  .inner { display: grid; justify-items: center; gap: var(--space-6); }
+  .seal-wrap { color: var(--custard); }
+  :global(.motion) .seal-wrap :global(svg) { animation: turn 60s linear infinite; }
+  @keyframes turn { to { transform: rotate(360deg); } }
+  .roles { display: grid; gap: var(--space-4); margin: 0; }
+  .roles dt { color: var(--custard); margin-bottom: 4px; }
+  .roles dd { margin: 0; font: italic 400 22px/1.3 var(--font-serif); }
+  .essentials { display: grid; gap: 10px; padding-top: var(--space-5); border-top: 1px solid rgb(248 240 223 / .3); width: 100%; }
+  .socials { list-style: none; display: flex; flex-wrap: wrap; justify-content: center; gap: 0 24px; }
+  .socials .link { color: var(--cream); }
+  .the-end { font-family: var(--font-serif); font-size: 20px; }
+  .the-end .display { font-size: 28px; color: var(--custard); }
+  .small { opacity: .8; }
 </style>

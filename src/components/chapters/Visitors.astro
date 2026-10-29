@@ -1,0 +1,94 @@
+---
+/**
+ * Chapter VII — word from our visitors. Laid out as correspondence: a letter with a stamp that
+ * lands when you hover it, and a newspaper-style clipping for the verified rating. Real quotes
+ * (with permission) render as little notes from reviews.json; none are invented.
+ */
+import Intertitle from "../Intertitle.astro";
+import Seal from "../Seal.astro";
+import reviews from "../../content/reviews.json";
+import { chapters } from "../../content/chapters";
+const c = chapters.visitors;
+const shown = reviews.ratings.filter((r) => r.verified && r.score);
+const elsewhere = reviews.ratings;
+type Quote = { text: string; name: string; source: string; date?: string };
+const quotes = reviews.quotes as Quote[];
+---
+<section id={c.id} class="scene field-cream visitors" aria-labelledby={`${c.id}-title`}>
+  <div class="wrap">
+    <Intertitle no={c.no} label="Correspondence" id={`${c.id}-title`} title="Word from|our _visitors._" />
+    <div class="desk">
+      <article class="letter" data-reveal>
+        <div class="stamp" aria-hidden="true"><Seal size={96} /></div>
+        <p class="mono date">Queen Street, Amble</p>
+        <p class="salute">Dear Reader,</p>
+        <p>We could fill this page with kind words about ourselves, but it seems more proper to let the people who wrote them do the talking.</p>
+        <p>Plenty of visitors have been good enough to leave a review. You'll find them in the places listed opposite, in their own words, unedited by us.</p>
+        <p class="sign">Yours, with a fresh pot on,<br /><span class="display">1911 Coffee Co.</span></p>
+      </article>
+
+      <div class="clippings">
+        {shown.map((r) => (
+          <a class="clipping" href={r.href} rel="noopener" data-reveal style="--i:1">
+            <span class="label src">{r.source}</span>
+            <span class="score"><span class="big">{r.score}</span><span class="of">out of 5</span></span>
+            <span class="mono meta">From {r.count} reviews · as at {r.checked}</span>
+            <span class="read">Read the reviews <span aria-hidden="true">→</span></span>
+          </a>
+        ))}
+        <p class="also" data-reveal style="--i:2">
+          Also on {elsewhere.filter((r) => !shown.includes(r)).map((r, i, a) => <><a href={r.href} rel="noopener">{r.source}</a>{i < a.length - 1 ? ", " : ""}</>)}.
+        </p>
+        {quotes.length > 0 && (
+          <ul class="notes">
+            {quotes.map((q, i) => (
+              <li class="note" data-reveal style={`--i:${i}`}>
+                <blockquote><p>“{q.text}”</p></blockquote>
+                <p class="mono who">— {q.name}, via {q.source}{q.date ? `, ${q.date}` : ""}</p>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+  .desk { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr); gap: clamp(24px, 5vw, 72px); align-items: start; max-width: 1080px; margin-inline: auto; }
+  .letter {
+    position: relative; background: var(--paper); padding: clamp(28px, 4vw, 56px) clamp(24px, 4vw, 56px);
+    display: grid; gap: 1em; font-family: var(--font-serif); font-size: 19px; line-height: 1.6;
+    background-image: repeating-linear-gradient(transparent 0 calc(1.6em - 1px), rgb(175 201 222 / .55) calc(1.6em - 1px) 1.6em);
+    background-position: 0 .3em;
+    box-shadow: 0 24px 50px -30px rgb(51 38 34 / .5);
+    rotate: -.6deg;
+  }
+  .date { font-family: var(--font-mono); font-size: 13px; text-align: right; color: var(--ink-soft); }
+  .salute { font-style: italic; font-size: 24px; }
+  .sign { font-style: italic; }
+  .sign .display { font-style: normal; font-size: 20px; color: var(--cherry); }
+  .stamp {
+    position: absolute; right: 22px; top: -30px; color: var(--cherry);
+    opacity: .2; transform: rotate(-14deg) scale(.92);
+    transition: opacity var(--dur-fast), transform 420ms cubic-bezier(.2, 1.6, .4, 1);
+  }
+  .letter:hover .stamp { opacity: .95; transform: rotate(-8deg) scale(1); }
+  .clippings { display: grid; gap: var(--space-4); }
+  .clipping {
+    display: grid; gap: 10px; padding: var(--space-5); text-decoration: none; color: var(--espresso);
+    background: var(--custard); border-top: var(--double-rule); border-bottom: var(--double-rule);
+    transition: transform var(--dur-mid) var(--ease-settle);
+  }
+  .clipping:hover { transform: rotate(.8deg) translateY(-2px); color: var(--espresso); }
+  .src { font-weight: 600; }
+  .score { display: flex; align-items: baseline; gap: 10px; }
+  .big { font: 300 64px/1 var(--font-serif); }
+  .of { font-family: var(--font-serif); font-style: italic; font-size: 20px; }
+  .read { font: 600 13px/1 var(--font-sans); letter-spacing: var(--tracking-caps); text-transform: uppercase; color: var(--cherry); }
+  .also { font-size: 15px; }
+  .notes { list-style: none; display: grid; gap: var(--space-3); }
+  .note { background: var(--paper); padding: var(--space-4) var(--space-5); }
+  .note blockquote { margin: 0; font: italic 400 19px/1.45 var(--font-serif); }
+  .who { margin-top: 8px; color: var(--ink-soft); }
+  @media (max-width: 900px) { .desk { grid-template-columns: 1fr; } .letter { rotate: 0deg; } }
+</style>
