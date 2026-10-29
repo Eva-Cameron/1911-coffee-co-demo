@@ -1,41 +1,37 @@
 ---
-import Roundel from "./Roundel.astro";
-import Icon from "./Icon.astro";
 import site from "../content/site.json";
-const icons: Record<string, string> = { Instagram: "instagram-logo", Facebook: "facebook-logo", Tripadvisor: "star" };
 ---
 <footer class="footer">
-  <div class="wrap inner">
-    <div class="brand">
-      <Roundel size={64} tone="cream" title="1911 Coffee Co." />
+  <div class="wrap">
+    <p class="name" aria-hidden="true">{site.name}</p>
+    <div class="cols">
       <p>{site.street}<br />{site.town} {site.postcode}</p>
+      <p><a href={`tel:${site.phoneHref}`}>{site.phone}</a></p>
+      <ul>
+        {site.socials.map((s) => <li><a href={s.href} rel="noopener">{s.name}</a></li>)}
+      </ul>
     </div>
-    <ul class="socials">
-      {site.socials.map((s) => (
-        <li><a class="social" href={s.href} rel="noopener"><Icon name={icons[s.name]} size={18} />{s.name}</a></li>
-      ))}
-      <li><a class="social call" href={`tel:${site.phoneHref}`}><Icon name="phone" size={18} />{site.phone}</a></li>
-    </ul>
-  </div>
-  <div class="wrap base">
-    <p>© {new Date().getFullYear()} 1911 Coffee Co Ltd</p>
-    <p>Website by Eva Cameron</p>
+    <div class="base">
+      <p>© {new Date().getFullYear()} 1911 Coffee Co Ltd</p>
+      <p>Website by Eva Cameron</p>
+    </div>
   </div>
 </footer>
 <style>
-  .footer { background: var(--charcoal); color: var(--on-fill); padding: var(--space-6) 0 var(--space-4); }
-  .inner { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-5); padding-bottom: var(--space-5); }
-  .brand { display: flex; align-items: center; gap: var(--space-4); font-size: 15px; line-height: 1.45; }
-  .socials { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--space-2); }
-  .social {
-    display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 14px;
-    border-radius: var(--radius-control); background: rgb(255 235 216 / .1); color: var(--on-fill);
-    text-decoration: none; font-weight: 600; font-size: 14.5px; transition: background .15s;
+  .footer { background: var(--deep); color: var(--on-deep); padding: 96px 0 32px; }
+  .name {
+    font-size: clamp(30px, 8.4vw, 132px); font-weight: 700; line-height: 1; letter-spacing: -.04em;
+    color: var(--orange); white-space: nowrap; margin: 0 0 64px -.05em;
   }
-  .social:hover { background: rgb(255 235 216 / .2); color: var(--on-fill); }
-  .social:active { background: rgb(255 243 228 / .26); }
-  .call { background: var(--cream); color: var(--ink); }
-  .call:hover { background: var(--paper); color: var(--ink); }
-  .base { display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--space-2); padding-top: var(--space-4); font-size: 13.5px; color: rgb(255 235 216 / .8); }
-  .footer :global(:focus-visible) { outline-color: var(--cream); }
+  .cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; font-size: 17px; line-height: 1.5; }
+  .cols ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+  .footer a { color: var(--on-deep); text-decoration-color: var(--orange); text-decoration-thickness: 2px; }
+  .footer a:hover { color: var(--orange); }
+  .base { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-top: 72px; font-size: 14px; color: rgb(246 240 230 / .8); }
+  .footer :global(:focus-visible) { outline-color: var(--orange); }
+  @media (max-width: 767px) {
+    .footer { padding-top: 64px; }
+    .name { margin-bottom: 40px; }
+    .cols { grid-template-columns: 1fr; gap: 20px; }
+  }
 </style>

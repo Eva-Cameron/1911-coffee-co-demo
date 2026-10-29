@@ -1,6 +1,6 @@
 ---
 import hours from "../content/hours.json";
-/* Without JS the badge shows a compact week; the script replaces it with the live status in Europe/London time. */
+/* Without JS the line shows a compact week; the script replaces it with the live status in Europe/London time. */
 const weekday = hours.days.slice(0, 5);
 const sameWeek = weekday.every((d) => d.open === weekday[0].open && d.close === weekday[0].close);
 const fallback = sameWeek
@@ -13,22 +13,12 @@ const fallback = sameWeek
 </p>
 
 <style>
-  .badge {
-    display: inline-flex; align-items: center; gap: 8px;
-    min-height: 44px; padding: 0 14px;
-    border-radius: var(--radius-control);
-    background: var(--paper);
-    border: 0;
-    box-shadow: var(--shadow-card);
-    font: 500 14px/1 var(--font-type);
-  }
-  .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--oak); flex: none; }
-  .badge[data-state="open"] { background: var(--open-tint); border-color: rgb(29 107 58 / .3); color: var(--open); }
-  .badge[data-state="open"] .dot { background: var(--open); box-shadow: 0 0 0 4px rgb(29 107 58 / .18); }
-  .badge[data-state="closed"] { background: var(--ember-tint); border-color: rgb(164 76 23 / .25); color: var(--ember); }
+  .badge { display: inline-flex; align-items: center; gap: 10px; margin: 0; font-size: 17px; color: var(--muted); }
+  .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--oak); flex: none; }
+  .badge[data-state="open"] { color: var(--open); }
+  .badge[data-state="open"] .dot { background: var(--open); }
+  .badge[data-state="closed"] { color: var(--ember); }
   .badge[data-state="closed"] .dot { background: var(--ember); }
-  :global(.motion) .badge[data-state="open"] .dot { animation: pulse 2.4s ease-in-out infinite; }
-  @keyframes pulse { 50% { box-shadow: 0 0 0 7px rgb(29 107 58 / 0); } }
 </style>
 
 <script>
@@ -49,12 +39,12 @@ const fallback = sameWeek
     };
     let text: string, state: string;
     if (today && now >= today.open && now < today.close) {
-      state = "open"; text = `Open now · until ${fmt(today.close)}`;
+      state = "open"; text = `Open now until ${fmt(today.close)}`;
     } else {
       state = "closed";
       const later = today && now < today.open;
       const next = later ? today : days.find((d) => d.day === (iso % 7) + 1) ?? days[0];
-      text = `Closed · opens ${fmt(next.open)}${later ? "" : " " + next.name.slice(0, 3)}`;
+      text = `Closed, opens ${fmt(next.open)}${later ? "" : " " + next.name}`;
     }
     el.dataset.state = state;
     el.querySelector(".text")!.textContent = text;

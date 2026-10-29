@@ -2,8 +2,8 @@
 import Layout from "../layouts/Layout.astro";
 import Header from "../components/Header.astro";
 import Hero from "../components/Hero.astro";
-import Tiles from "../components/Tiles.astro";
 import Story from "../components/Story.astro";
+import Plates from "../components/Plates.astro";
 import Menu from "../components/Menu.astro";
 import Counter from "../components/Counter.astro";
 import Reviews from "../components/Reviews.astro";
@@ -49,9 +49,9 @@ const jsonLd = {
     <Header />
     <main id="main">
       <Hero />
-      <Tiles />
       <Story />
       <Menu />
+      <Plates />
       <Counter />
       <Reviews />
       <FindUs />
@@ -61,17 +61,5 @@ const jsonLd = {
 </Layout>
 
 <style>
-  .frame {
-    position: relative;
-    z-index: 1;
-    width: min(1280px, calc(100% - 80px));
-    margin: 40px auto;
-    border-radius: var(--radius-card);
-    background: var(--cream);
-    overflow: hidden;
-    isolation: isolate;
-  }
-  @media (max-width: 767px) {
-    .frame { width: auto; margin: 26px 18px; border-radius: 10px; }
-  }
+  .frame { position: relative; z-index: 1; background: var(--cream); overflow-x: clip; }
 </style>

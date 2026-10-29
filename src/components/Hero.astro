@@ -1,113 +1,44 @@
 ---
 import { Picture } from "astro:assets";
 import OpenBadge from "./OpenBadge.astro";
-import Icon from "./Icon.astro";
-import latte from "../assets/photos/latte.jpg";
-import breakfast from "../assets/photos/breakfast.jpg";
-import cakes from "../assets/photos/cakes.jpg";
+import shopfront from "../assets/photos/findus.jpg";
 import site from "../content/site.json";
-
-const trio = [
-  { src: latte, alt: "A cappuccino with latte art and a biscuit beside the 1911 brunch menu", label: "Coffee" },
-  { src: breakfast, alt: "A bacon and hash brown bun on a dark plate", label: "Breakfast" },
-  { src: cakes, alt: "A raspberry and coconut sponge on the counter in front of the espresso machine", label: "Bakes" },
-];
 ---
-<section class="hero" aria-labelledby="hero-title">
-  <p class="kicker" data-type>Est. {site.est} · {site.street}, {site.town}</p>
-
-  <h1 id="hero-title" data-type data-type-delay="1500" data-type-speed="70">{site.name}</h1>
-
-  <div class="actions">
-    <OpenBadge />
-    <a class="btn" href="#menu"><Icon name="fork-knife" size={18} />See the menu</a>
-    <a class="btn btn--light" href={site.directions} rel="noopener"><Icon name="navigation-arrow" size={18} />Directions</a>
+<section class="hero wrap" aria-labelledby="hero-title">
+  <div class="intro">
+    <h1 id="hero-title" data-type data-type-delay="400" data-type-speed="80">{site.name}</h1>
+    <p class="lead">Breakfast, homemade bakes and good coffee at {site.street}, {site.town}.</p>
+    <div class="actions">
+      <a class="btn" href="#menu">See the menu</a>
+      <a class="link" href={site.directions} rel="noopener">Directions</a>
+      <OpenBadge />
+    </div>
   </div>
-
-  <div class="trio" role="region" aria-label="Photos from the café" tabindex="0">
-    {trio.map((p, i) => (
-      <figure class={`shot shot-${i}`}>
-        <Picture src={p.src} alt={p.alt} widths={[400, 800]} sizes="(max-width: 767px) 78vw, 300px"
-          formats={["avif", "webp"]} loading="eager" fetchpriority={i < 2 ? "high" : undefined} />
-        <figcaption class="tag">{p.label}</figcaption>
-      </figure>
-    ))}
-  </div>
+  <figure class="shopfront">
+    <Picture src={shopfront} alt="The orange 1911 Coffee Co. shopfront at 28–30 Queen Street, with balloons in the windows"
+      widths={[600, 1000, 1440]} sizes="(max-width: 767px) 100vw, 1240px" formats={["avif", "webp"]}
+      loading="eager" fetchpriority="high" />
+  </figure>
 </section>
 
 <style>
-  .hero {
-    position: relative;
-    display: grid;
-    justify-items: center;
-    text-align: center;
-    gap: var(--space-4);
-    padding: var(--space-6) var(--space-4) var(--space-7);
-    overflow: hidden;
+  .hero { padding-top: 24px; }
+  .intro { display: grid; gap: 20px; justify-items: start; margin-bottom: 36px; }
+  h1 {
+    color: var(--name);
+    font-size: clamp(30px, 8.4vw, 132px);
+    white-space: nowrap;
+    margin-left: -.05em;
   }
-  h1 { position: relative; font-size: clamp(32px, 8.4vw, 104px); white-space: nowrap; letter-spacing: -.03em; }
-
-  .actions { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: var(--space-2); }
-
-  .trio {
-    display: flex;
-    justify-content: center;
-    margin-top: var(--space-5);
-    padding-inline: 28px;
-  }
-  .shot {
-    position: relative;
-    margin: 0;
-    width: 300px;
-    aspect-ratio: 300 / 360;
-    border-radius: var(--radius-photo);
-    overflow: hidden;
-    box-shadow: var(--shadow-photo);
-    background: var(--oak);
-    flex: none;
-    transition: transform .6s var(--ease-out);
-  }
-  .shot img { width: 100%; height: 100%; object-fit: cover; }
-  .shot .tag {
-    position: absolute; left: 10px; bottom: 10px;
-    background: var(--paper); color: var(--ink);
-    box-shadow: var(--shadow-card);
-  }
-  .shot-0 { transform: rotate(-4deg); margin-inline-end: -24px; }
-  .shot-1 { z-index: 2; transform: translateY(-12px); }
-  .shot-2 { transform: rotate(4deg); margin-inline-start: -24px; }
-  .shot:hover { transform: rotate(0) translateY(-8px); z-index: 3; }
-
-  /* dealt onto the counter: the three start stacked in the middle and fan out */
-  :global(.motion) .shot { animation: deal 1s var(--ease-out) backwards; }
-  :global(.motion) .shot-0 { --from: translateX(calc(100% - 24px)) rotate(2deg); animation-delay: .3s; }
-  :global(.motion) .shot-1 { --from: translateY(30px) rotate(-1deg); animation-delay: .15s; }
-  :global(.motion) .shot-2 { --from: translateX(calc(-100% + 24px)) rotate(-2deg); animation-delay: .45s; }
-  @keyframes deal { from { transform: var(--from); opacity: 0; } 30% { opacity: 1; } }
-
-  .hero :global(.sprig) { position: absolute; width: 132px; height: 132px; pointer-events: none; }
-  .hero :global(.sprig-tl) { top: 20px; left: 24px; }
-  .hero :global(.sprig-br) { bottom: 20px; right: 24px; }
-
-  @media (max-width: 1023px) {
-    .shot { width: 250px; }
-  }
+  .lead { font-size: 22px; line-height: 1.4; max-width: 40ch; color: var(--ink); }
+  .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 28px; }
+  .shopfront { margin: 0; aspect-ratio: 16 / 8.6; overflow: hidden; background: var(--wash); }
+  .shopfront :global(img) { width: 100%; height: 100%; object-fit: cover; object-position: 50% 42%; }
+  :global(.motion) .shopfront :global(img) { animation: settle 2.4s var(--ease-out) both; }
+  @keyframes settle { from { transform: scale(1.06); } }
   @media (max-width: 767px) {
-    .hero { padding-top: var(--space-5); }
-    .hero :global(.sprig) { width: 80px; height: 80px; opacity: .7; }
-    .hero :global(.sprig-tl) { display: none; }
-    .trio {
-      width: 100%;
-      justify-content: flex-start;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      gap: var(--space-3);
-      padding: var(--space-3) var(--space-4) var(--space-4);
-      margin-top: var(--space-2);
-      scrollbar-width: none;
-    }
-    .trio::-webkit-scrollbar { display: none; }
-    .shot, .shot-0, .shot-1, .shot-2 { width: 78vw; transform: none; margin: 0; scroll-snap-align: center; }
-    :global(.motion) .shot { animation: none; }
+    .hero { padding-top: 32px; }
+    .intro { gap: 20px; margin-bottom: 32px; }
+    .shopfront { aspect-ratio: 4 / 3.4; }
   }
 </style>

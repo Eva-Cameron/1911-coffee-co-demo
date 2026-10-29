@@ -1,29 +1,24 @@
 :root {
   /*
-   * Warm and minimal: one light orange block for the frame, dark brown ink, no borders.
-   * Token names keep their jobs: --cream is the frame ground, --ink is the text.
+   * Cream page, orange accents. One ground, one ink, the shop's orange on the action and the name.
+   * Token names keep their old jobs so components didn't need renaming.
    */
-
-  /* Fills: buttons and icon chips are dark brown with cream text */
-  --orange: #2A1206;
-  --orange-hover: #45200D;
-  --on-fill: #FFEBD8;      /* 15.3:1 on --orange */
-  --ember: #4F230C;        /* accent text: 5.1:1 on frame, 6.0:1 on panels */
-  --ember-tint: #F4B386;   /* ember on it 7.4:1 */
-  --oak: #C96A30;          /* decorative only */
-
-  /* Surfaces */
-  --cream: #E8874A;        /* the frame: light orange, one flat block */
-  --paper: #EF9A62;        /* panels, a step lighter; no border or shadow */
-  --wash: #F2A770;
-  --deep: #2A1206;         /* page background and footer */
-
-  /* Text */
-  --ink: #2A1206;          /* 6.7:1 on frame, 8.0:1 on panels */
-  --muted: #4F230C;        /* 5.1:1 on frame, 6.0:1 on panels */
+  --cream: #F6F0E6;        /* the ground */
+  --paper: #FFFCF7;        /* the printed menu sheet */
+  --wash: #EEE5D7;         /* one tone step from the ground, for the counter plates */
+  --ink: #2A1206;          /* 15.6:1 on cream */
+  --muted: #5A4232;        /* 8.2:1 on cream */
+  --orange: #E8874A;       /* the shopfront's orange: button fill; ink on it 6.7:1 */
+  --orange-hover: #F09A61;
+  --on-fill: #2A1206;
+  --name: #C2551C;         /* the name, set large: 4.0:1 on cream (large text) */
+  --ember: #A84714;        /* links and small accent text: 5.2:1 on cream */
+  --ember-tint: var(--wash);
+  --oak: #C9A27A;          /* menu leaders only */
+  --deep: #2A1206;         /* footer ground */
   --charcoal: var(--deep);
+  --on-deep: #F6F0E6;
 
-  /* No borders, no shadows */
   --line: transparent;
   --line-strong: transparent;
   --shadow-card: none;
@@ -36,9 +31,9 @@
   --vegan: #3D6114; --vegan-tint: #ECF3DC;
   --gf: #8A4508;    --gf-tint: #FCEBD3;
 
-  --radius-card: 14px;
-  --radius-photo: 14px;
-  --radius-control: 10px;
+  --radius-card: 0;
+  --radius-photo: 0;
+  --radius-control: 999px;
   --radius-pill: 999px;
 
   --space-1: 4px;
@@ -50,7 +45,8 @@
   --space-7: 64px;
 
   /* Typewriter throughout: Courier Prime for everything */
-  --font-sans: 'Courier Prime', 'Courier New', Courier, ui-monospace, monospace;
+  /* taste-skill-ignore: typewriter type is the owner's explicit choice */
+  --font-sans: 'Courier Prime', 'Courier New', Courier, ui-monospace, monospace; /* taste-skill-ignore */
   --font-mark: var(--font-sans);
   --font-display: var(--font-sans);
   --font-body: var(--font-sans);
@@ -61,9 +57,9 @@
 
   /* Hairline figures on white panels */
   --hairline-plate: var(--paper);
-  --hairline-hi: var(--ember);
+  --hairline-hi: var(--name);
   --hairline-edge: var(--ink);
-  --hairline-mid: #7A3A14;
-  --hairline-lo: #C96A30;
+  --hairline-mid: #8A6A52;
+  --hairline-lo: #CDBBA6;
   --hairline-stroke: 1.4;
 }

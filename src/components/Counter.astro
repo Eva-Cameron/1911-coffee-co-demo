@@ -9,16 +9,15 @@ const figures = [
   <div class="wrap">
     <header class="section-head">
       <div class="title">
-        <p class="kicker" data-type>No. 03 — On the counter</p>
-        <h2 id="counter-title" data-type data-type-speed="45">Local, and made by hand</h2>
+        <h2 id="counter-title" data-type data-type-speed="45">Made by hand</h2>
       </div>
       <p>Eggs, bacon, bread and milk from suppliers up and down the Northumberland coast. <span class="todo">(Supplier names to confirm.)</span></p>
     </header>
     <div class="figs">
       {figures.map((f, i) => (
-        <figure class="fig card" data-reveal style={`--i:${i}`}>
+        <figure class="fig" data-reveal style={`--i:${i}`}>
           <div class="plate">
-            <span class="read type" data-read-for={f.name} aria-hidden="true">rest</span>
+            <span class="read" data-read-for={f.name} aria-hidden="true">rest</span>
             <div class="stage" data-figure={f.name} data-label={f.label}></div>
           </div>
           <figcaption>
@@ -31,19 +30,15 @@ const figures = [
   </div>
 </section>
 <style>
-  .figs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); }
-  .fig { margin: 0; display: grid; overflow: hidden; }
-  .plate { position: relative; background: var(--paper); border-bottom: 1px solid var(--line); }
-  .read {
-    position: absolute; top: 12px; right: 12px; z-index: 1; pointer-events: none;
-    padding: 5px 9px; border-radius: 6px; background: var(--ink); color: var(--cream);
-    font-size: 12px; line-height: 1;
-  }
-  .stage { width: 100%; aspect-ratio: 5 / 4; max-height: 420px; margin-inline: auto; }
-  figcaption { display: grid; gap: 4px; padding: var(--space-4) var(--space-5); background: var(--wash); }
-  figcaption p { font-size: 14.5px; color: var(--muted); }
+  .figs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+  .fig { margin: 0; display: grid; gap: 18px; }
+  .plate { position: relative; background: var(--wash); display: grid; place-items: center; }
+  .read { position: absolute; top: 16px; right: 18px; z-index: 1; pointer-events: none; font-size: 14px; color: var(--muted); }
+  .stage { width: 100%; aspect-ratio: 5 / 4; max-height: 440px; margin-inline: auto; }
+  figcaption { display: grid; gap: 6px; }
+  figcaption p { font-size: 17px; color: var(--muted); max-width: 44ch; }
   .todo { color: var(--ember); }
-  @media (max-width: 767px) { .figs { grid-template-columns: 1fr; gap: var(--space-3); } figcaption { padding: var(--space-3) var(--space-4); } }
+  @media (max-width: 767px) { .figs { grid-template-columns: 1fr; gap: 40px; } }
 </style>
 <script>
   import "../scripts/figures.ts";

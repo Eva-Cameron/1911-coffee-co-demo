@@ -1,54 +1,32 @@
 ---
 import reviews from "../content/reviews.json";
-import Icon from "./Icon.astro";
 ---
 <section id="reviews" class="reviews section" aria-labelledby="reviews-title">
-  <div class="wrap">
-    <header class="section-head">
-      <div class="title">
-        <p class="kicker" data-type>No. 04 — Kind words</p>
-        <h2 id="reviews-title" data-type data-type-speed="45">What people say</h2>
-      </div>
-      <ul class="badges">
-        {reviews.badges.map((b) => (
-          <li><a class="score" href={b.href} rel="noopener">
-            <span class="num"><Icon name="star" size={16} />{b.score}</span>
-            <span class="lbl">{b.label}</span>
-            <Icon name="arrow-up-right" size={16} class="out" />
-          </a></li>
-        ))}
-      </ul>
-    </header>
-    <div class="quotes">
-      {reviews.quotes.map((q, i) => (
-        <figure class="quote card" data-reveal style={`--i:${i}`}>
-          <p class="stars" role="img" aria-label={`${q.stars} out of 5 stars`}>
-            {Array.from({ length: q.stars }, () => <Icon name="star" size={16} />)}
-          </p>
-          <blockquote><p>{q.text}</p></blockquote>
-          <figcaption><span class="avatar" aria-hidden="true">{q.name[0]}</span>{q.name}</figcaption>
-        </figure>
-      ))}
+  <div class="wrap row">
+    <div class="copy">
+      <h2 id="reviews-title" data-type data-type-speed="45">What people say</h2>
+      <p data-reveal>Read what visitors have written, in their own words.</p>
     </div>
+    <ul class="scores">
+      {reviews.badges.map((b, i) => (
+        <li data-reveal style={`--i:${i + 1}`}>
+          <a href={b.href} rel="noopener">
+            <span class="num">{b.score}</span>
+            <span class="lbl">out of 5 on {b.label}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
   </div>
 </section>
 <style>
-  .badges { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: var(--space-2); justify-content: flex-end; }
-  .score {
-    display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 12px 0 6px;
-    border-radius: var(--radius-control); background: var(--paper); border: 1px solid var(--line-strong);
-    box-shadow: var(--shadow-card); color: var(--ink); text-decoration: none; font-size: 14px;
-    transition: background .15s, box-shadow .15s;
-  }
-  .score:hover { background: var(--wash); box-shadow: var(--shadow-lift); color: var(--ink); }
-  .num { display: inline-flex; align-items: center; gap: 4px; height: 32px; padding: 0 9px; border-radius: 7px; background: var(--ink); color: var(--cream); font-weight: 700; }
-  .num :global(.icon) { color: var(--orange); }
-  .score :global(.out) { color: var(--muted); }
-  .quotes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-4); }
-  .quote { margin: 0; padding: var(--space-5); display: grid; gap: var(--space-3); align-content: start; }
-  .stars { display: flex; gap: 2px; color: var(--orange); }
-  blockquote { margin: 0; font-size: 17px; line-height: 1.45; font-weight: 500; letter-spacing: -.005em; }
-  figcaption { display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 600; color: var(--muted); }
-  .avatar { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: var(--ember-tint); color: var(--ember); font-weight: 700; }
-  @media (max-width: 767px) { .quotes { grid-template-columns: 1fr; gap: var(--space-3); } .badges { justify-content: flex-start; } }
+  .row { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 48px; align-items: end; }
+  .copy { display: grid; gap: 20px; }
+  .copy p { font-size: 17px; max-width: 30ch; }
+  .scores { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+  .scores a { display: grid; gap: 10px; color: var(--ink); text-decoration: none; }
+  .num { font-size: clamp(64px, 3rem + 5vw, 140px); font-weight: 700; line-height: .9; letter-spacing: -.05em; color: var(--name); transition: transform .3s var(--ease-out); }
+  .lbl { font-size: 17px; text-decoration: underline; text-underline-offset: .22em; text-decoration-color: var(--orange); text-decoration-thickness: 2px; }
+  .scores a:hover .num { transform: translateY(-4px); }
+  @media (max-width: 860px) { .row { grid-template-columns: 1fr; } }
 </style>

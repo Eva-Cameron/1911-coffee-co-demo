@@ -1,80 +1,114 @@
 ---
+import { Picture } from "astro:assets";
 import menu from "../content/menu.json";
-import Icon from "./Icon.astro";
-const TAGS: Record<string, { label: string; cls: string }> = {
-  V: { label: "Vegetarian", cls: "veg" },
-  VG: { label: "Vegan", cls: "vegan" },
-  GF: { label: "Gluten free", cls: "gf" },
-};
-const ICONS: Record<string, string> = { Brunch: "egg", Lunch: "fork-knife", Coffee: "coffee", Cakes: "cake" };
+import hours from "../content/hours.json";
+import latte from "../assets/photos/latte.jpg";
+import cakes from "../assets/photos/cakes.jpg";
+const TAGS: Record<string, string> = { V: "Vegetarian", VG: "Vegan", GF: "Gluten free" };
 const price = (p: number) => `£${p.toFixed(2)}`;
+const time = (t: string) => {
+  const [h, m] = t.split(":").map(Number);
+  return `${h % 12 || 12}${m ? ":" + String(m).padStart(2, "0") : ""}${h < 12 ? "am" : "pm"}`;
+};
+const groups: { names: string[]; open: string; close: string }[] = [];
+for (const d of hours.days) {
+  const last = groups.at(-1);
+  if (last && last.open === d.open && last.close === d.close) last.names.push(d.name.slice(0, 3));
+  else groups.push({ names: [d.name.slice(0, 3)], open: d.open, close: d.close });
+}
+const hoursLine = groups.map((g) => `${g.names.length > 1 ? `${g.names[0]}–${g.names.at(-1)}` : g.names[0]} ${time(g.open)}–${time(g.close)}`);
 ---
 <section id="menu" class="menu section" aria-labelledby="menu-title">
-  <div class="wrap">
-    <header class="section-head">
-      <div class="title">
-        <p class="kicker" data-type>No. 02 — The menu</p>
-        <h2 id="menu-title" data-type data-type-speed="45">Made here, every morning</h2>
-      </div>
-      <p>Breakfast until 11:30, then lunch until we close. Ask at the counter about allergens.</p>
-    </header>
-    <ul class="legend" aria-label="Dietary key">
-      {Object.entries(TAGS).map(([k, t]) => <li><span class={`tag ${t.cls}`}>{k}</span>{t.label}</li>)}
-    </ul>
-    <div class="cols">
+  <div class="wrap stage">
+    <div class="plates">
+    <figure class="plate" data-reveal>
+      <Picture src={latte} alt="A cappuccino with latte art and a biscuit beside the 1911 brunch menu" widths={[400, 855]} sizes="(max-width: 860px) 50vw, 500px" formats={["avif", "webp"]} loading="lazy" />
+    </figure>
+    <figure class="plate" data-reveal style="--i:2">
+      <Picture src={cakes} alt="A raspberry and coconut sponge on the counter in front of the espresso machine" widths={[400, 960]} sizes="(max-width: 860px) 50vw, 500px" formats={["avif", "webp"]} loading="lazy" />
+    </figure>
+    </div>
+
+    <article class="sheet">
+      <header class="sheet-head">
+        <h2 id="menu-title" data-type data-type-speed="45">The menu</h2>
+        <p>Breakfast until 11:30, then lunch until we close.</p>
+      </header>
       {menu.map((s) => (
-        <section class="docket card" aria-labelledby={`m-${s.section}`}>
-          <header class="docket-head">
-            <span class="ico"><Icon name={ICONS[s.section] ?? "coffee"} size={20} /></span>
-            <div>
-              <h3 id={`m-${s.section}`}>{s.section}</h3>
-              <p class="note">{s.note}</p>
-            </div>
-          </header>
+        <section class="group" aria-labelledby={`m-${s.section}`}>
+          <h3 id={`m-${s.section}`}>{s.section}</h3>
+          <p class="note">{s.note}</p>
           <dl>
             {s.items.map((it, i) => (
               <div class="menu-row" style={`--i:${i}`}>
                 <dt>
                   <span class="name">{it.name}</span>
-                  {it.tags.map((t) => <abbr class={`tag ${TAGS[t].cls}`} title={TAGS[t].label}>{t}</abbr>)}
+                  {it.tags.map((t) => <abbr title={TAGS[t]}>{t}</abbr>)}
                 </dt>
-                <dd class="price type">{price(it.price)}</dd>
+                <dd class="price">{price(it.price)}</dd>
                 {it.desc && <dd class="desc">{it.desc}</dd>}
               </div>
             ))}
           </dl>
         </section>
       ))}
-    </div>
+      <footer class="sheet-foot">
+        <p>{hoursLine.join(" · ")}</p>
+        <p>V vegetarian · VG vegan · GF gluten free. Ask at the counter about allergens.</p>
+      </footer>
+    </article>
+
+
   </div>
 </section>
+
 <style>
-  .legend { display: flex; flex-wrap: wrap; gap: var(--space-4); list-style: none; margin: 0 0 var(--space-4); padding: 0; font-size: 14px; color: var(--muted); }
-  .legend li { display: inline-flex; align-items: center; gap: 6px; }
-  .cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); }
-  .docket { padding: 0; overflow: hidden; }
-  .docket-head {
-    display: flex; align-items: center; gap: var(--space-3);
-    padding: var(--space-4) var(--space-5);
-    background: var(--wash); border-bottom: 1px solid var(--line);
+  .stage { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 64px; align-items: start; }
+  .plates { display: grid; gap: 24px; position: sticky; top: 24px; }
+  .plate { margin: 0; aspect-ratio: 4 / 4.2; overflow: hidden; background: var(--wash); }
+  .plate :global(img) { width: 100%; height: 100%; object-fit: cover; }
+
+  /* The printed sheet: paper on the cream ground, scalloped top and bottom edges */
+  .sheet {
+    --scallop: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='12'%3E%3Ccircle cx='12' cy='12' r='12' fill='%23FFFCF7'/%3E%3C/svg%3E");
+    position: relative;
+    background: var(--paper);
+    padding: 72px 64px 64px;
+    text-align: center;
+    margin-block: 12px;
   }
-  .ico { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 9px; background: var(--orange); color: var(--on-fill); flex: none; }
-  .note { font-size: 13.5px; color: var(--muted); margin-top: 2px; }
-  dl { margin: 0; padding: var(--space-2) var(--space-5) var(--space-4); }
-  .menu-row { display: grid; grid-template-columns: 1fr auto; align-items: end; padding: 12px 0; border-bottom: 1px solid var(--line); }
-  .menu-row:last-child { border-bottom: 0; }
-  dt { font-weight: 620; display: flex; align-items: center; gap: 6px; }
-  .name { min-width: 0; }
-  dt::after { content: ""; flex: 1 0 24px; border-bottom: 2px dotted var(--oak); margin: 0 8px 5px; align-self: flex-end; }
-  .price { margin: 0; font-variant-numeric: tabular-nums; font-size: 15px; font-weight: 500; }
-  .desc { grid-column: 1 / -1; margin: 3px 0 0; font-size: 14px; color: var(--muted); max-width: 52ch; }
-  .tag { flex: none; height: 20px; padding: 0 6px; font-size: 11px; }
-  .veg { background: var(--veg-tint); color: var(--veg); }
-  .vegan { background: var(--vegan-tint); color: var(--vegan); }
-  .gf { background: var(--gf-tint); color: var(--gf); }
-  abbr.tag { cursor: help; }
+  .sheet::before, .sheet::after {
+    content: ""; position: absolute; left: 0; right: 0; height: 12px;
+    background: var(--scallop) 0 0 / 24px 12px repeat-x;
+  }
+  .sheet::before { top: -12px; }
+  .sheet::after { bottom: -12px; transform: scaleY(-1); }
+
+  .sheet-head { display: grid; gap: 14px; justify-items: center; margin-bottom: 56px; }
+  .sheet-head p { color: var(--muted); font-size: 17px; }
+  .group + .group { margin-top: 56px; }
+  .group h3 { font-size: 22px; }
+  .note { font-size: 14px; color: var(--muted); margin: 6px auto 20px; max-width: 36ch; }
+  dl { margin: 0 auto; max-width: 460px; text-align: left; display: grid; gap: 16px; }
+  .menu-row { display: grid; grid-template-columns: 1fr auto; align-items: end; }
+  dt { display: flex; align-items: baseline; gap: 6px; font-weight: 700; font-size: 17px; }
+  dt::after { content: ""; flex: 1 0 20px; border-bottom: 2px dotted var(--oak); margin: 0 6px 5px; align-self: flex-end; }
+  abbr { flex: none; font-size: 14px; font-weight: 400; color: var(--muted); text-decoration: none; cursor: help; }
+  .price { margin: 0; font-size: 17px; font-variant-numeric: tabular-nums; }
+  .desc { grid-column: 1 / -1; margin: 4px 0 0; font-size: 14px; line-height: 1.45; color: var(--muted); }
+  .sheet-foot { margin-top: 64px; display: grid; gap: 8px; font-size: 14px; color: var(--muted); }
+  .sheet-foot p:first-child { color: var(--ink); font-size: 14px; font-weight: 700; }
+
+  @media (max-width: 860px) {
+    .stage { grid-template-columns: 1fr; gap: 40px; }
+    .plates { position: static; grid-template-columns: 1fr 1fr; gap: 12px; grid-row: 2; }
+    .plate { aspect-ratio: 4 / 5; }
+  }
   @media (max-width: 767px) {
-    .cols { grid-template-columns: 1fr; gap: var(--space-3); }
-    .docket-head, dl { padding-inline: var(--space-4); }
+    .stage { width: calc(100% - 20px); }
+    .sheet { padding: 48px 22px 44px; }
+    dl { max-width: none; }
+    dt { font-size: 17px; }
+    .price { font-size: 17px; }
   }
 </style>
