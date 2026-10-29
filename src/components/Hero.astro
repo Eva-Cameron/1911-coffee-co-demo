@@ -20,10 +20,7 @@ const trio = [
 
   <p class="kicker" data-type>Est. {site.est} · {site.street}, {site.town}</p>
 
-  <div class="title-wrap">
-    <span class="watermark" aria-hidden="true"></span>
-    <h1 id="hero-title" data-type data-type-delay="1500" data-type-speed="55">Breakfast &amp; coffee on Queen Street</h1>
-  </div>
+  <h1 id="hero-title" data-type data-type-delay="1500" data-type-speed="70">{site.name}</h1>
 
   <div class="actions">
     <OpenBadge />
@@ -52,18 +49,7 @@ const trio = [
     padding: var(--space-6) var(--space-4) var(--space-7);
     overflow: hidden;
   }
-  .title-wrap { position: relative; display: grid; place-items: center; }
-  .watermark {
-    position: absolute;
-    font: 800 clamp(170px, 26vw, 340px)/1 var(--font-sans);
-    letter-spacing: -.06em;
-    color: var(--orange);
-    opacity: .1;
-    pointer-events: none;
-    user-select: none;
-  }
-  .watermark::before { content: "1911"; }
-  h1 { position: relative; max-width: 14ch; }
+  h1 { position: relative; font-size: clamp(32px, 8.4vw, 104px); white-space: nowrap; letter-spacing: -.03em; }
 
   .actions { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: var(--space-2); }
 

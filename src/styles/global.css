@@ -10,7 +10,7 @@ html {
 
 body {
   margin: 0;
-  background: var(--charcoal);
+  background: var(--deep) url("/border.svg") 0 0 / 210px 210px;
   color: var(--ink);
   font: 400 16px/1.55 var(--font-sans);
   font-optical-sizing: auto;

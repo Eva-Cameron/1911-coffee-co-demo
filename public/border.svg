@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="320" viewBox="0 0 320 320">
+  <rect width="320" height="320" fill="#5E250A"/>
+  <g stroke="#FFE3C7" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <!-- big coffee bean -->
+    <g transform="translate(62 70) rotate(-30)">
+      <ellipse rx="26" ry="36" fill="#E0763A"/>
+      <path d="M0 -32 C -12 -12, 12 12, 0 32" fill="none"/>
+    </g>
+    <!-- cup with saucer and steam -->
+    <g transform="translate(222 92)" fill="none">
+      <path d="M-34 0 L -28 36 C -25 46, 25 46, 28 36 L 34 0 Z" fill="#FFE3C7"/>
+      <path d="M34 8 C 50 8, 50 28, 30 28"/>
+      <path d="M-46 50 C -16 60, 16 60, 46 50"/>
+      <path d="M-12 -12 C -18 -22, -6 -28, -12 -40"/>
+      <path d="M6 -12 C 0 -22, 12 -28, 6 -40"/>
+    </g>
+    <!-- starburst -->
+    <g transform="translate(250 246)" fill="none">
+      <path d="M0 -30 V 30 M -30 0 H 30 M -21 -21 L 21 21 M 21 -21 L -21 21"/>
+      <circle r="8" fill="#E0763A"/>
+    </g>
+    <!-- coffee branch -->
+    <g transform="translate(96 228) rotate(-20)" fill="none">
+      <path d="M-66 30 C -20 12, 20 -10, 70 -36"/>
+      <path d="M-36 18 C -48 0, -42 -18, -27 -24 C -21 -6, -24 9, -36 18 Z" fill="#E0763A"/>
+      <path d="M-12 9 C 3 24, 24 24, 33 12 C 18 0, 0 0, -12 9 Z" fill="#E0763A"/>
+      <path d="M18 -6 C 9 -24, 18 -42, 33 -45 C 39 -27, 33 -12, 18 -6 Z" fill="#E0763A"/>
+      <circle cx="-3" cy="-6" r="6" fill="#FFE3C7"/>
+      <circle cx="7" cy="-14" r="5" fill="#FFE3C7"/>
+    </g>
+    <!-- small beans and dots -->
+    <g transform="translate(160 160) rotate(25)">
+      <ellipse rx="12" ry="17" fill="#FFE3C7"/>
+      <path d="M0 -15 C -6 -5, 6 5, 0 15" stroke="#5E250A" stroke-width="3" fill="none"/>
+    </g>
+    <circle cx="150" cy="30" r="5" fill="#E0763A"/>
+    <circle cx="20" cy="160" r="5" fill="#E0763A"/>
+    <circle cx="300" cy="170" r="4" fill="#FFE3C7" stroke="none"/>
+    <circle cx="170" cy="300" r="4" fill="#FFE3C7" stroke="none"/>
+  </g>
+</svg>
