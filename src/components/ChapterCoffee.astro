@@ -1,0 +1,53 @@
+---
+import ChapterHead from "./ChapterHead.astro";
+import Plate from "./Plate.astro";
+import latte from "../assets/photos/latte.jpg";
+import menu from "../content/menu.json";
+const drinks = menu.sections.find((s) => s.id === "drinks")!.items;
+---
+<section id="coffee" class="chapter field-mint" aria-labelledby="coffee-title">
+  <div class="wrap split">
+    <div class="copy">
+      <ChapterHead numeral="II" label="The Coffee Department" id="coffee-title" align="start"
+        title="A very good cup of coffee." lede="Poured with considerable care, and set down on a saucer with a little biscuit." />
+      <ul class="drinks">
+        {drinks.map((d, i) => (
+          <li data-reveal style={`--i:${i}`}>
+            <span class="name">{d.name}</span>
+            {d.desc && <span class="desc">{d.desc}</span>}
+          </li>
+        ))}
+      </ul>
+      <p class="label note" data-reveal>The daily ritual · Monday to Saturday from eight</p>
+    </div>
+    <div class="stage">
+      <Plate src={latte} no={3} caption="A latte, a biscuit, the brunch menu" ratio="1500 / 1683" widths={[480, 800, 1200, 1500]}
+        alt="A latte with a pumpkin-face pour, a round biscuit on the saucer, and the 1911 brunch menu beside it on a wooden table" />
+      <p class="tag" aria-hidden="true"><span>One more cup,</span><span>if you please.</span></p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .split { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: clamp(40px, 7vw, 96px); align-items: center; }
+  .drinks { display: grid; gap: 4px; margin-bottom: 28px; }
+  .drinks li { display: grid; gap: 2px; padding: 12px 0; }
+  .drinks li + li { box-shadow: 0 -1px 0 rgb(51 38 34 / .2); }
+  .name { font: 600 var(--step-lead)/1.25 var(--font-head); font-variation-settings: "SOFT" 100; }
+  .desc { color: var(--muted); }
+  .note { color: var(--muted); }
+  .stage { position: relative; }
+  /* A little printed tag tied to the corner of the photograph */
+  .tag {
+    position: absolute; right: -14px; bottom: 58px; display: grid; padding: 12px 16px 12px 22px;
+    background: var(--custard); font: italic 400 17px/1.25 var(--font-head); font-variation-settings: "SOFT" 100, "WONK" 1;
+    clip-path: polygon(12px 0, 100% 0, 100% 100%, 12px 100%, 0 50%);
+    transform: rotate(-3deg);
+  }
+  :global(.motion) .tag { transition: transform .5s var(--ease-stamp); }
+  .stage:hover .tag { transform: rotate(2deg); }
+  @media (max-width: 860px) {
+    .split { grid-template-columns: 1fr; }
+    .tag { right: 4px; }
+  }
+</style>

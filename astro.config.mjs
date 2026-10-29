@@ -6,4 +6,5 @@ import sitemap from "@astrojs/sitemap";
 export default defineConfig({
   site: "https://1911coffee.co.uk",
   integrations: [sitemap()],
+  build: { inlineStylesheets: "always" },
 });

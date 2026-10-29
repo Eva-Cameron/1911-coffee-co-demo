@@ -1,0 +1,50 @@
+---
+import ChapterHead from "./ChapterHead.astro";
+import site from "../content/site.json";
+const notes = [
+  { title: "Ring ahead", text: `Call ${site.phone} to order and skip the wait.`, href: `tel:${site.phoneHref}` },
+  { title: "Take it with you", text: "Everything on the menu is available to take away." },
+  { title: "Keep a table", text: "Call to reserve one. We'll do our best." },
+  { title: "Bring the family", text: "There's a children's menu, and the soup is always gluten free." },
+];
+---
+<section id="welcome-table" class="chapter field-custard" aria-labelledby="table-title">
+  <div class="wrap">
+    <!-- A small cup and saucer, drawn for the site. It rocks, gently. -->
+    <svg class="cup" viewBox="0 0 120 90" aria-hidden="true">
+      <g class="rock">
+        <path d="M30 34 h52 l-5 30 a14 14 0 0 1 -14 12 h-14 a14 14 0 0 1 -14 -12 z" fill="var(--cream)" stroke="var(--espresso)" stroke-width="3" stroke-linejoin="round"/>
+        <path d="M82 40 h6 a9 9 0 0 1 0 18 h-8" fill="none" stroke="var(--espresso)" stroke-width="3" stroke-linecap="round"/>
+        <path d="M33 40 h46" stroke="var(--cherry)" stroke-width="3"/>
+        <path class="steam" d="M48 26 c-6 -6 6 -10 0 -16 M62 26 c-6 -6 6 -10 0 -16" fill="none" stroke="var(--espresso)" stroke-width="2.5" stroke-linecap="round"/>
+      </g>
+      <ellipse cx="56" cy="80" rx="40" ry="6" fill="var(--cream)" stroke="var(--espresso)" stroke-width="3"/>
+    </svg>
+    <ChapterHead numeral="VI" label="A very welcome table" id="table-title"
+      title="Come as you are. We'll put the kettle on." />
+    <ul class="notes">
+      {notes.map((n, i) => (
+        <li data-reveal style={`--i:${i}`}>
+          <span class="label">{String.fromCharCode(97 + i)}.</span>
+          <h3>{n.title}</h3>
+          <p>{n.href ? <a href={n.href}>{n.text}</a> : n.text}</p>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .cup { width: 104px; margin: 0 auto 18px; overflow: visible; }
+  .rock { transform-origin: 56px 76px; }
+  :global(.motion) .rock { animation: rock 3.6s ease-in-out infinite; }
+  :global(.motion) .steam { animation: steam 3.6s ease-in-out infinite; }
+  @keyframes rock { 0%, 100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg); } }
+  @keyframes steam { 50% { opacity: .35; transform: translateY(-3px); } }
+  .notes { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(24px, 3vw, 40px); text-align: center; }
+  .notes li { display: grid; gap: 8px; justify-items: center; align-content: start; }
+  .notes p { max-width: 26ch; }
+  .notes a { color: inherit; }
+  @media (max-width: 900px) { .notes { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 36px; } }
+  @media (max-width: 480px) { .notes { grid-template-columns: 1fr; } }
+</style>

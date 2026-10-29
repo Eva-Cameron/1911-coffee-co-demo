@@ -1,0 +1,53 @@
+---
+import ChapterHead from "./ChapterHead.astro";
+import Plate from "./Plate.astro";
+import bun from "../assets/photos/breakfast.jpg";
+import fruitloaf from "../assets/photos/fruitloaf.jpg";
+import menu from "../content/menu.json";
+type Item = { name: string; desc?: string; price?: number; addons?: { name: string; price: number }[] };
+const breakfast = menu.sections.find((s) => s.id === "breakfast")!.items as Item[];
+const extras = menu.sections.find((s) => s.id === "extras")!.items as Item[];
+const money = (p: number) => `£${p % 1 ? p.toFixed(2) : p}`;
+---
+<section id="breakfast" class="chapter field-blush" aria-labelledby="breakfast-title">
+  <div class="wrap">
+    <ChapterHead numeral="III" label="The Breakfast Department" id="breakfast-title"
+      title="Breakfast is a <em>serious</em> matter." lede="Served from eight, without unnecessary drama. Pancakes until eleven." />
+    <div class="tableau">
+      <Plate src={bun} no={4} caption="Bacon and hash brown bun" ratio="1 / 1" sizes="(max-width: 767px) 100vw, 300px"
+        alt="A bacon and hash brown bun on a dark plate, on a pine table" />
+      <ol class="dishes">
+        {breakfast.map((d, i) => (
+          <li data-reveal style={`--i:${i}`}>
+            <span class="no label">No. {String(i + 1).padStart(2, "0")}</span>
+            <span class="name">{d.name}{d.price != null && <span class="price">{money(d.price)}</span>}</span>
+            {d.desc && <span class="desc">{d.desc}</span>}
+            {d.addons && <span class="addons">{d.addons.map((a) => `+ ${a.name.toLowerCase()} ${money(a.price)}`).join(" · ")}</span>}
+          </li>
+        ))}
+        <li class="extras" data-reveal style={`--i:${breakfast.length}`}>
+          <span class="no label">Extras</span>
+          <span class="desc">{extras.map((e) => `${e.name} ${money(e.price!)}`).join(" · ")}</span>
+        </li>
+      </ol>
+      <Plate src={fruitloaf} no={5} caption="Toasted fruit bread, butter, jam" ratio="1 / 1" sizes="(max-width: 767px) 100vw, 300px" i={1}
+        alt="Two slices of toasted fruit bread on a dark plate with pots of butter and jam" />
+    </div>
+  </div>
+</section>
+
+<style>
+  .tableau { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr) minmax(0, 1fr); gap: clamp(28px, 4vw, 56px); align-items: center; }
+  .dishes { display: grid; gap: 22px; text-align: center; }
+  .dishes li { display: grid; gap: 4px; justify-items: center; }
+  .no { opacity: .75; }
+  .name { font: 600 var(--step-lead)/1.2 var(--font-head); font-variation-settings: "SOFT" 100; }
+  .price { font: 500 15px/1 var(--font-mono); margin-left: 10px; vertical-align: .2em; }
+  .desc, .addons { color: var(--muted); font-size: 15px; }
+  .addons { font-family: var(--font-mono); font-size: 13px; letter-spacing: .02em; }
+  @media (max-width: 900px) {
+    .tableau { grid-template-columns: 1fr 1fr; }
+    .dishes { grid-column: 1 / -1; grid-row: 1; margin-bottom: 16px; }
+  }
+  @media (max-width: 520px) { .tableau { grid-template-columns: 1fr; } }
+</style>

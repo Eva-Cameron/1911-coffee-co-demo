@@ -57,6 +57,6 @@ if (root.classList.contains("motion")) {
     }
   }, { rootMargin: "0px 0px -10% 0px" });
 
-  document.querySelectorAll<HTMLElement>("[data-type], [data-reveal], .ink, .stamp, .menu-row")
+  document.querySelectorAll<HTMLElement>("[data-type], [data-reveal], [data-shutter]")
     .forEach((el) => io.observe(el));
 }

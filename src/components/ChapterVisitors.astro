@@ -1,0 +1,44 @@
+---
+/* Chapter VII: the ratings, sent as postcards. No visitor quotes until each writer has said yes. */
+import ChapterHead from "./ChapterHead.astro";
+import reviews from "../content/reviews.json";
+---
+<section id="visitors" class="chapter field-cream" aria-labelledby="visitors-title">
+  <div class="wrap">
+    <ChapterHead numeral="VII" label="Word from our visitors" id="visitors-title"
+      title="Their words, not ours." lede="We'd rather you read them in full." />
+    <ul class="cards">
+      {reviews.badges.map((b, i) => (
+        <li class="card" data-reveal style={`--i:${i}; --tilt:${i % 2 ? 2 : -2}deg`}>
+          <span class="postmark label" aria-hidden="true">Amble<br />Oct<br />2026</span>
+          <p class="score"><span class="num">{b.score}</span><span class="of">out of five</span></p>
+          <p class="where">{b.count} on {b.label}</p>
+          <a class="link" href={b.href} rel="noopener">Read them on {b.label}</a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .cards { display: grid; grid-template-columns: repeat(2, minmax(0, 420px)); justify-content: center; gap: clamp(28px, 4vw, 56px); }
+  .card {
+    position: relative; display: grid; justify-items: center; gap: 10px; padding: 48px 32px 40px; text-align: center;
+    background: var(--paper); transform: rotate(var(--tilt));
+    box-shadow: 0 0 0 1px rgb(51 38 34 / .08);
+    background-image: linear-gradient(var(--cherry), var(--cherry)), linear-gradient(var(--sky), var(--sky));
+    background-size: 100% 6px, 100% 6px; background-position: 0 0, 0 6px; background-repeat: no-repeat;
+    transition: transform .5s var(--ease-stamp);
+  }
+  .card:hover { transform: rotate(0deg) translateY(-4px); }
+  .postmark {
+    position: absolute; top: 20px; right: 20px; width: 64px; height: 64px; border-radius: 50%;
+    display: grid; place-items: center; text-align: center; font-size: 9px; line-height: 1.2;
+    border: 1.5px solid currentColor; opacity: .55; transform: rotate(12deg);
+  }
+  .score { display: grid; justify-items: center; }
+  .num { font: 600 clamp(72px, 8vw, 112px)/.9 var(--font-head); font-variation-settings: "SOFT" 100; }
+  .of { font-family: var(--font-mono); font-size: 13px; letter-spacing: .14em; text-transform: uppercase; }
+  .where { font: italic 400 var(--step-lead)/1.3 var(--font-head); font-variation-settings: "SOFT" 100; }
+  @media (max-width: 760px) { .cards { grid-template-columns: 1fr; } }
+</style>

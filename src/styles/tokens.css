@@ -1,74 +1,76 @@
 :root {
   /*
-   * A Wes Anderson-ish set: flat pastel fields, one maroon ink everywhere, the shop's orange as
-   * the frame colour. Every text pair below is maroon on a field (8.8:1 or better) or pink on maroon.
+   * "The Wonderfully Ordinary World of 1911": postcard pastels, espresso ink, cherry for actions,
+   * and the shop's own orange for the opening scene. Contrast notes are ink-on-field ratios.
    */
-  --stone: #E3DFD6;       /* the shopfront's pilaster grey, lightened; maroon on it 10.6:1 */
-  --pink: #F4D5CB;
-  --sky: #BCD6E0;
-  --mint: #C6DCCB;
-  --mustard: #EDC86E;
-  --orange: #E8874A;       /* mats, bands, buttons; maroon on it 5.4:1 */
-  --orange-hover: #EF9A62;
-  --maroon: #4A1E1A;
+  --cream: #F8F0DF;        /* the ground; espresso 12.9:1 */
+  --paper: #FFFAF0;        /* the printed menu card */
+  --mint: #A8C5B5;         /* espresso 7.9:1 */
+  --blush: #E8BDB4;        /* espresso 8.6:1 */
+  --custard: #F2D98D;      /* espresso 10.5:1 */
+  --sky: #AFC9DE;          /* espresso 8.5:1 */
+  --orange: #E8874A;       /* the shopfront; espresso 5.5:1 */
+  --stone: #E3DFD6;        /* the shopfront's pilaster grey; mats on the orange field */
+  --cherry: #A83235;       /* actions; cream on it 5.8:1; as text only on cream (5.8:1), custard (4.75:1) */
+  --cherry-deep: #8F2A2D;  /* hover */
+  --burgundy: #51272A;     /* the end credits; cream on it 11:1 */
+  --espresso: #332622;     /* all running text */
+  --muted: #5C4A42;        /* secondary text; 4.5:1 or better on cream, mint, blush, custard, sky — never on orange */
+  --mat: var(--cream);     /* photograph mats on coloured fields */
 
-  /* Old names, mapped so untouched components still work */
-  --cream: var(--stone);
-  --paper: #FBF3EA;        /* the menu card */
-  --wash: var(--sky);
-  --ink: var(--maroon);
-  --muted: #6E3A30;        /* 5.1:1 or better on every field, stone included */
-  --on-fill: var(--maroon);
-  --name: var(--maroon);
-  --ember: var(--maroon);
+  /* Old names, mapped for components that still use them */
+  --ink: var(--espresso);
+  --maroon: var(--burgundy);
+  --on-fill: var(--cream);
+  --charcoal: var(--burgundy);
+  --deep: var(--burgundy);
+  --wash: var(--stone);
+  --oak: #C9A27A;
+  --name: var(--espresso);
+  --ember: var(--cherry);
   --ember-tint: var(--paper);
-  --oak: #C98F6A;
-  --deep: var(--maroon);
-  --charcoal: var(--maroon);
-  --on-deep: var(--paper);
-
-  --line: transparent;
-  --line-strong: transparent;
-  --shadow-card: none;
-  --shadow-lift: none;
-  --shadow-photo: none;
 
   /* Status */
   --open: #1D6B3A;  --open-tint: #E2F2E7;
-  --veg: #1D6B3A;   --veg-tint: #E2F2E7;
-  --vegan: #3D6114; --vegan-tint: #ECF3DC;
-  --gf: #8A4508;    --gf-tint: #FCEBD3;
 
-  --radius-card: 0;
-  --radius-photo: 0;
-  --radius-control: 0;
-  --radius-pill: 999px;
-
-  --space-1: 4px;
-  --space-2: 8px;
-  --space-3: 12px;
-  --space-4: 16px;
-  --space-5: 24px;
-  --space-6: 40px;
-  --space-7: 64px;
-
-  /* Jost: a free face in the Futura mould. Titles in spaced capitals. */
-  --font-sans: 'Jost Variable', 'Futura', 'Century Gothic', ui-sans-serif, sans-serif;
-  /* Poppins SemiBold: a bold geometric close to the lettering painted on the shop's fascia */
-  --font-title: 'Poppins', 'Jost Variable', ui-sans-serif, sans-serif;
-  --font-mark: var(--font-sans);
-  --font-display: var(--font-sans);
+  /* Type */
+  --font-head: 'Fraunces Variable', 'Iowan Old Style', Georgia, serif;
+  --font-sign: 'Limelight', 'Fraunces Variable', Georgia, serif;
+  --font-sans: 'DM Sans Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+  --font-type: var(--font-mono);
+  --font-title: var(--font-head);
+  --font-display: var(--font-head);
   --font-body: var(--font-sans);
-  --font-type: var(--font-sans);
 
-  --ease-out: cubic-bezier(.32, .72, 0, 1);
+  /* Five sizes */
+  --step-small: 13px;                                   /* plate captions, labels */
+  --step-body: clamp(16px, 15px + .25vw, 18px);         /* reading */
+  --step-lead: clamp(19px, 17px + .6vw, 24px);          /* lede, menu items on desktop */
+  --step-head: clamp(34px, 24px + 2.6vw, 60px);         /* chapter headlines */
+  --step-display: clamp(40px, 24px + 5.4vw, 96px);      /* the opening headline */
+
+  /* Space */
+  --gutter: clamp(20px, 4vw, 48px);
+  --chapter-gap: clamp(88px, 10vw, 152px);
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px; --space-5: 24px; --space-6: 40px; --space-7: 64px;
+
+  /* Shape and depth */
+  --radius-card: 0; --radius-photo: 0; --radius-control: 0; --radius-pill: 999px;
+  --chamfer: 14px;                                      /* cut corners on frames, like a printed plate */
+  --line: transparent; --line-strong: transparent;
+  --shadow-card: none; --shadow-lift: none; --shadow-photo: none;
+
+  /* Motion */
+  --ease-out: cubic-bezier(.22, .8, .24, 1);
   --ease-stamp: cubic-bezier(.2, 1.4, .4, 1);
+  --curtain: cubic-bezier(.7, 0, .2, 1);
 
-  /* Hairline figures on white panels */
+  /* Hairline figures */
   --hairline-plate: var(--sky);
-  --hairline-hi: #B5531F;
-  --hairline-edge: var(--ink);
-  --hairline-mid: #8A6A52;
-  --hairline-lo: #CDBBA6;
+  --hairline-hi: var(--cherry);
+  --hairline-edge: var(--espresso);
+  --hairline-mid: #7A5E50;
+  --hairline-lo: #C9B7A6;
   --hairline-stroke: 1.4;
 }
