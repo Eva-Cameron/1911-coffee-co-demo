@@ -51,7 +51,6 @@
   --space-6: 40px;
   --space-7: 64px;
 
-  /* Typewriter throughout: Courier Prime for everything */
   /* Jost: a free face in the Futura mould. Titles in spaced capitals. */
   --font-sans: 'Jost Variable', 'Futura', 'Century Gothic', ui-sans-serif, sans-serif;
   --font-mark: var(--font-sans);
