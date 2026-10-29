@@ -3,6 +3,7 @@
    * A Wes Anderson-ish set: flat pastel fields, one maroon ink everywhere, the shop's orange as
    * the frame colour. Every text pair below is maroon on a field (8.8:1 or better) or pink on maroon.
    */
+  --stone: #C9C2B4;       /* the grey of the shopfront's pilasters and window frames; maroon on it 8.0:1 */
   --pink: #F4D5CB;
   --sky: #BCD6E0;
   --mint: #C6DCCB;
@@ -12,11 +13,11 @@
   --maroon: #4A1E1A;
 
   /* Old names, mapped so untouched components still work */
-  --cream: var(--pink);
+  --cream: var(--stone);
   --paper: #FBF3EA;        /* the menu card */
   --wash: var(--sky);
   --ink: var(--maroon);
-  --muted: #6E3A30;        /* 5.7:1 or better on every pastel field */
+  --muted: #6E3A30;        /* 5.1:1 or better on every field, stone included */
   --on-fill: var(--maroon);
   --name: var(--maroon);
   --ember: var(--maroon);
@@ -24,7 +25,7 @@
   --oak: #C98F6A;
   --deep: var(--maroon);
   --charcoal: var(--maroon);
-  --on-deep: var(--pink);
+  --on-deep: var(--paper);
 
   --line: transparent;
   --line-strong: transparent;
@@ -53,6 +54,8 @@
 
   /* Jost: a free face in the Futura mould. Titles in spaced capitals. */
   --font-sans: 'Jost Variable', 'Futura', 'Century Gothic', ui-sans-serif, sans-serif;
+  /* Questrial: the nearest free match to the lettering painted on the shop's fascia */
+  --font-title: 'Questrial', 'Jost Variable', ui-sans-serif, sans-serif;
   --font-mark: var(--font-sans);
   --font-display: var(--font-sans);
   --font-body: var(--font-sans);

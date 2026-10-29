@@ -31,7 +31,7 @@ const hoursLine = groups.map((g) => `${g.names.length > 1 ? `${g.names[0]}–${g
         <Picture src={latte} alt="A cappuccino with latte art and a biscuit beside the 1911 brunch menu" widths={[400, 855]} sizes="(max-width: 1100px) 45vw, 300px" formats={["avif", "webp"]} loading="lazy" />
       </figure>
 
-      <article class="card" aria-label="Menu card">
+      <article class="card bevel" aria-label="Menu card">
         <p class="band">1911 Coffee Co. · Bill of fare</p>
         {menu.map((s) => (
           <section class="group" aria-labelledby={`m-${s.section}`}>
