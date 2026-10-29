@@ -1,12 +1,8 @@
 {
-  "_note": "PLACEHOLDER quotes. Replace with real reviews, used with the reviewer's permission.",
+  "_note": "Scores to re-check before launch: Tripadvisor showed 4.9 from 163 reviews on 29 Oct 2026; the Google score is unconfirmed. Real quotes can come back once each reviewer has said yes.",
   "badges": [
-    { "score": "4.8", "label": "208 Google reviews", "href": "https://www.google.com/maps/search/?api=1&query=1911+Coffee+Co+Amble" },
-    { "score": "4.9", "label": "Tripadvisor", "href": "https://www.tripadvisor.co.uk/Search?q=1911+Coffee+Co+Amble" }
+    { "score": "4.9", "label": "Tripadvisor", "href": "https://www.tripadvisor.co.uk/Search?q=1911+Coffee+Co+Amble" },
+    { "score": "4.8", "label": "Google", "href": "https://www.google.com/maps/search/?api=1&query=1911+Coffee+Co+Amble" }
   ],
-  "quotes": [
-    { "name": "Placeholder", "stars": 5, "text": "Placeholder review: a real Google review goes here once permission is given." },
-    { "name": "Placeholder", "stars": 5, "text": "Placeholder review: a real Tripadvisor review goes here once permission is given." },
-    { "name": "Placeholder", "stars": 5, "text": "Placeholder review: a third real review goes here once permission is given." }
-  ]
+  "quotes": []
 }

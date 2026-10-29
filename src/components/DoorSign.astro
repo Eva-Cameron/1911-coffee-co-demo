@@ -1,0 +1,149 @@
+---
+import hours from "../content/hours.json";
+/* A chalkboard door sign. It shows Open or Closed; hover, tap or focus turns it over and the week's hours are chalked out letter by letter. */
+const time = (t: string) => {
+  const [h, m] = t.split(":").map(Number);
+  return `${h % 12 || 12}${m ? ":" + String(m).padStart(2, "0") : ""}${h < 12 ? "am" : "pm"}`;
+};
+const groups: { names: string[]; open: string; close: string }[] = [];
+for (const d of hours.days) {
+  const last = groups.at(-1);
+  if (last && last.open === d.open && last.close === d.close) last.names.push(d.name);
+  else groups.push({ names: [d.name], open: d.open, close: d.close });
+}
+const short = (n: string) => n.slice(0, 3);
+const lines = groups.map((g) => `${g.names.length > 1 ? `${short(g.names[0])}–${short(g.names.at(-1)!)}` : short(g.names[0])}  ${time(g.open)}–${time(g.close)}`);
+const spoken = groups.map((g) => `${g.names.length > 1 ? `${g.names[0]} to ${g.names.at(-1)}` : g.names[0]}, ${time(g.open)} to ${time(g.close)}`).join("; ");
+---
+<div class="door-sign" data-door-sign data-hours={JSON.stringify(hours)} data-lines={JSON.stringify(lines)}>
+  <div class="swing">
+  <svg class="hanger" viewBox="0 0 200 56" aria-hidden="true">
+    <path d="M24 54 L100 8 L176 54" fill="none" stroke="#6E5A48" stroke-width="2" stroke-linecap="round" />
+    <circle cx="100" cy="8" r="5" fill="#8C8C86" stroke="#4A4A46" stroke-width="1.5" />
+  </svg>
+  <button class="board" type="button" aria-expanded="false" aria-describedby="sign-hours">
+    <span class="front">
+      <span class="state" data-state-word>Open</span>
+      <span class="sub" data-state-sub>Mon–Sat from 8am</span>
+    </span>
+    <span class="back" aria-hidden="true" data-typed></span>
+    <span class="visually-hidden">Show opening hours</span>
+  </button>
+  </div>
+  <p id="sign-hours" class="visually-hidden">Opening hours: {spoken}.</p>
+</div>
+
+<style>
+  .door-sign { display: grid; justify-items: center; margin-top: 4px; }
+  .hanger { width: 200px; height: 56px; margin-bottom: -12px; position: relative; z-index: 1; }
+  .board {
+    position: relative;
+    width: 300px; height: 168px;
+    padding: 18px 24px;
+    background-color: #2E3430;
+    /* faint chalk dust left by earlier writing */
+    background-image:
+      radial-gradient(ellipse 60% 40% at 30% 35%, rgb(255 255 255 / .06), transparent 70%),
+      radial-gradient(ellipse 50% 35% at 75% 70%, rgb(255 255 255 / .05), transparent 70%);
+    border: 12px ridge #6E4A2E;
+    border-radius: 6px;
+    color: #F1EEE6;
+    cursor: pointer;
+    font: inherit;
+    display: grid; place-items: center;
+  }
+  /* The sign hangs from its nail and never quite stops moving; a hover or tap knocks it into a bigger swing that settles */
+  .swing { display: grid; justify-items: center; transform-origin: 50% 8px; }
+  :global(.motion) .swing { animation: sway 4.5s ease-in-out infinite; }
+  :global(.motion) .door-sign:hover .swing, :global(.motion) .door-sign.knocked .swing { animation: knock 1.8s cubic-bezier(.3, .7, .4, 1), sway 4.5s 1.8s ease-in-out infinite; }
+  @keyframes sway { 0%, 100% { transform: rotate(-1.6deg); } 50% { transform: rotate(1.6deg); } }
+  @keyframes knock {
+    0% { transform: rotate(-1.6deg); }
+    18% { transform: rotate(7deg); }
+    40% { transform: rotate(-4.5deg); }
+    60% { transform: rotate(2.6deg); }
+    80% { transform: rotate(-1.2deg); }
+    100% { transform: rotate(-1.6deg); }
+  }
+  .board:focus-visible { outline: 3px solid var(--maroon); outline-offset: 6px; }
+  .front, .back { grid-area: 1 / 1; display: grid; justify-items: center; align-content: center; gap: 6px; text-align: center; }
+  .state { font-family: 'Fredericka the Great', var(--font-sans); font-size: 52px; line-height: 1; letter-spacing: .02em; }
+  .sub { font-family: 'Schoolbell', var(--font-sans); font-size: 21px; color: #DCDCD2; }
+  .back { font-family: 'Schoolbell', var(--font-sans); font-size: 21px; line-height: 1.45; white-space: pre-line; visibility: hidden; }
+  .board[aria-expanded="true"] .front { visibility: hidden; }
+  .board[aria-expanded="true"] .back { visibility: visible; }
+  .back::after { content: ""; display: inline-block; width: 2px; height: .9em; margin-left: 2px; vertical-align: -.1em; background: currentColor; animation: chalk-caret 1s steps(1) infinite; }
+  .back[data-done]::after { display: none; }
+  @keyframes chalk-caret { 50% { opacity: 0; } }
+  @media (max-width: 767px) {
+    .board { width: 270px; height: 156px; }
+    .state { font-size: 46px; }
+  }
+</style>
+
+<script>
+  type Day = { day: number; name: string; open: string; close: string };
+  const root = document.querySelector<HTMLElement>("[data-door-sign]");
+  if (root) {
+    const board = root.querySelector<HTMLButtonElement>(".board")!;
+    const typed = root.querySelector<HTMLElement>("[data-typed]")!;
+    const lines = JSON.parse(root.dataset.lines!) as string[];
+    const full = lines.join("\n");
+    const { timezone, days } = JSON.parse(root.dataset.hours!) as { timezone: string; days: Day[] };
+    const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    // Front of the sign: Open or Closed, right now, in the shop's own time zone.
+    const parts = Object.fromEntries(
+      new Intl.DateTimeFormat("en-GB", { timeZone: timezone, weekday: "short", hour: "2-digit", minute: "2-digit", hourCycle: "h23" })
+        .formatToParts(new Date()).map((p) => [p.type, p.value]),
+    );
+    const iso = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].indexOf(parts.weekday) + 1;
+    const now = `${parts.hour}:${parts.minute}`;
+    const today = days.find((d) => d.day === iso);
+    const fmt = (t: string) => {
+      const [h, m] = t.split(":").map(Number);
+      return `${h % 12 || 12}${m ? ":" + String(m).padStart(2, "0") : ""}${h < 12 ? "am" : "pm"}`;
+    };
+    const word = root.querySelector<HTMLElement>("[data-state-word]")!;
+    const sub = root.querySelector<HTMLElement>("[data-state-sub]")!;
+    if (today && now >= today.open && now < today.close) {
+      word.textContent = "Open";
+      sub.textContent = `until ${fmt(today.close)}`;
+    } else {
+      const later = today && now < today.open;
+      const next = later ? today : days.find((d) => d.day === (iso % 7) + 1) ?? days[0];
+      word.textContent = "Closed";
+      sub.textContent = `opens ${fmt(next.open)}${later ? "" : " " + next.name}`;
+    }
+
+    // Back of the sign: the hours, chalked out one letter at a time.
+    let timer = 0;
+    const chalk = () => {
+      clearTimeout(timer);
+      typed.removeAttribute("data-done");
+      if (still) { typed.textContent = full; typed.setAttribute("data-done", ""); return; }
+      let count = 0;
+      const step = () => {
+        count++;
+        typed.textContent = full.slice(0, count);
+        if (count < full.length) timer = window.setTimeout(step, full[count - 1] === "\n" ? 180 : 34 + Math.random() * 30);
+        else typed.setAttribute("data-done", "");
+      };
+      typed.textContent = "";
+      timer = window.setTimeout(step, 120);
+    };
+    const knock = () => { root.classList.remove("knocked"); void root.offsetWidth; root.classList.add("knocked"); };
+    const show = () => { if (board.getAttribute("aria-expanded") === "true") return; board.setAttribute("aria-expanded", "true"); knock(); chalk(); };
+    const hide = () => { clearTimeout(timer); board.setAttribute("aria-expanded", "false"); };
+
+    board.addEventListener("pointerenter", (e) => { if (e.pointerType === "mouse") show(); });
+    board.addEventListener("pointerleave", (e) => { if (e.pointerType === "mouse") hide(); });
+    board.addEventListener("focus", () => { if (board.matches(":focus-visible")) show(); });
+    board.addEventListener("blur", hide);
+    board.addEventListener("click", (e) => {
+      // Touch and keyboard: a tap or Enter turns the sign over and back.
+      if ((e as PointerEvent).pointerType === "mouse") return;
+      board.getAttribute("aria-expanded") === "true" ? hide() : show();
+    });
+  }
+</script>

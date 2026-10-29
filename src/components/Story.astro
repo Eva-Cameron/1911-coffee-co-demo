@@ -1,43 +1,39 @@
 ---
 import { Picture } from "astro:assets";
 import story from "../assets/photos/story.jpg";
-import Icon from "./Icon.astro";
 ---
-<section id="story" class="story section" aria-labelledby="story-title">
-  <div class="wrap grid card">
-    <figure class="photo" data-reveal>
-      <Picture src={story} alt="Placeholder for a photo of Joseph behind the oak counter" widths={[600, 1000]} sizes="(max-width: 767px) 100vw, 480px" formats={["avif", "webp"]} loading="lazy" />
-    </figure>
-    <div class="copy">
-      <p class="kicker" data-type>No. 01 — Our story</p>
-      <h2 id="story-title" class="ink">A little orange shop on Queen Street</h2>
-      <!-- DRAFT COPY: replace with Joseph's own words once the story call is done. -->
-      <p>Since 2019, Joseph and the team have been pouring coffee and cooking breakfast behind the hand-painted orange front at 28–30 Queen Street.</p>
-      <p>Everything on the counter is baked in the morning, the breakfast is sourced as close to Amble as we can manage, and the coffee in the cups is the same coffee in the bags on the shelf.</p>
-      <p class="sign type" data-type>— Joseph, 1911 Coffee Co.</p>
-      <ul class="facts">
-        <li><Icon name="storefront" size={18} /><span><strong>Since 2019</strong>Queen Street</span></li>
-        <li><Icon name="leaf" size={18} /><span><strong>Local</strong>Sourced nearby</span></li>
-        <li><Icon name="dog" size={18} /><span><strong>Dogs</strong>Welcome inside</span></li>
-      </ul>
+<section id="story" class="story section field-sky" aria-labelledby="story-title">
+  <div class="wrap">
+    <div class="chapter">
+      <p class="part">Chapter one</p>
+      <h2 id="story-title" data-type data-type-speed="55">The shop on Queen Street</h2>
+    </div>
+    <div class="grid">
+      <figure class="mat photo" data-reveal>
+        <Picture src={story} alt="The 1911 Coffee Co. window logo at dusk, under the café's hanging lights" widths={[600, 832]} sizes="(max-width: 767px) 100vw, 440px" formats={["avif", "webp"]} loading="lazy" />
+      </figure>
+      <div class="letter">
+        <!-- DRAFT COPY: replace with Joseph's own words once the story call is done. -->
+        <p data-reveal style="--i:1">Since 2019 we've been pouring coffee and cooking breakfast behind the orange front at 28–30 Queen Street.</p>
+        <p data-reveal style="--i:2">Everything on the counter is baked that morning. The bacon and sausage come from a local butcher, and the coffee in your cup is the same coffee in the bags on the shelf.</p>
+        <p data-reveal style="--i:3">Pull up a chair and stay as long as you like.</p>
+        <p class="sign" data-reveal style="--i:4">Joseph<span>1911 Coffee Co.</span></p>
+      </div>
     </div>
   </div>
 </section>
 <style>
-  .grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--space-6); align-items: center; padding: var(--space-5); }
-  .photo { margin: 0; border-radius: var(--radius-photo); overflow: hidden; aspect-ratio: 4 / 4.4; }
-  .photo :global(img) { width: 100%; height: 100%; object-fit: cover; }
-  .copy { display: grid; gap: var(--space-3); justify-items: start; max-width: 60ch; }
-  .copy h2 { margin-bottom: var(--space-1); }
-  .copy > p:not(.kicker):not(.sign) { color: var(--muted); }
-  .sign { color: var(--ember); font-size: 14px; }
-  .facts { list-style: none; margin: var(--space-2) 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-2); width: 100%; }
-  .facts li { display: flex; gap: 10px; align-items: center; padding: 12px; border-radius: var(--radius-control); background: var(--wash); border: 1px solid var(--line); }
-  .facts :global(.icon) { color: var(--ember); flex: none; }
-  .facts span { display: grid; font-size: 13px; color: var(--muted); line-height: 1.3; }
-  .facts strong { color: var(--ink); font-size: 15px; font-weight: 680; }
-  @media (max-width: 767px) {
-    .grid { grid-template-columns: 1fr; gap: var(--space-5); padding: var(--space-3); }
-    .facts { grid-template-columns: 1fr; }
+  .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 440px)); justify-content: center; gap: 72px; align-items: center; }
+  .photo { aspect-ratio: 4 / 5; overflow: hidden; }
+  .photo :global(picture) { display: block; height: 100%; }
+  .letter { display: grid; gap: 20px; }
+  .letter p { font-size: 18px; line-height: 1.65; }
+  .sign { display: grid; gap: 6px; margin-top: 12px; font-size: 17px !important; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; }
+  .sign span { font-size: 14px; font-weight: 400; letter-spacing: .08em; text-transform: none; color: var(--muted); }
+  @media (max-width: 860px) {
+    .grid { grid-template-columns: 1fr; gap: 40px; max-width: 520px; margin-inline: auto; }
+    .letter { text-align: center; }
+    .letter p { font-size: 17px; }
+    .photo { padding: 8px; }
   }
 </style>

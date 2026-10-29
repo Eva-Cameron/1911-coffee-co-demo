@@ -1,132 +1,40 @@
 ---
 import { Picture } from "astro:assets";
-import Sprig from "./Sprig.astro";
-import OpenBadge from "./OpenBadge.astro";
-import Icon from "./Icon.astro";
-import latte from "../assets/photos/latte.jpg";
-import breakfast from "../assets/photos/breakfast.jpg";
-import cakes from "../assets/photos/cakes.jpg";
+import DoorSign from "./DoorSign.astro";
+import shopfront from "../assets/photos/findus.jpg";
 import site from "../content/site.json";
-
-const trio = [
-  { src: latte, alt: "Placeholder for a photo of latte art in a 1911 cup", label: "Coffee" },
-  { src: breakfast, alt: "Placeholder for a photo of the 1911 Breakfast", label: "The 1911 Breakfast" },
-  { src: cakes, alt: "Placeholder for a photo of cakes under glass domes on the counter", label: "Bakes" },
-];
 ---
-<section class="hero" aria-labelledby="hero-title">
-  <Sprig class="sprig-tl" />
-  <Sprig class="sprig-br" flip />
-
-  <p class="kicker" data-type>Est. {site.est} · {site.street}, {site.town}</p>
-
-  <div class="title-wrap">
-    <span class="watermark" aria-hidden="true"></span>
-    <h1 id="hero-title" class="ink">Breakfast &amp; coffee on Queen Street</h1>
+<section class="hero wrap" aria-labelledby="hero-title">
+  <div class="chapter">
+    <p class="part">Amble, Northumberland</p>
+    <h1 id="hero-title" data-type data-type-delay="400" data-type-speed="90">{site.name}</h1>
+    <p class="lead">Breakfast, homemade bakes and good coffee at {site.street}. Est. {site.est}.</p>
+    <div class="actions">
+      <a class="btn" href="#menu">See the menu</a>
+      <a class="link" href={site.directions} rel="noopener">Directions</a>
+    </div>
+    <DoorSign />
   </div>
-
-  <div class="actions">
-    <OpenBadge />
-    <a class="btn" href="#menu"><Icon name="fork-knife" size={18} />See the menu</a>
-    <a class="btn btn--light" href={site.directions} rel="noopener"><Icon name="navigation-arrow" size={18} />Directions</a>
-  </div>
-
-  <div class="trio" role="region" aria-label="Photos from the café" tabindex="0">
-    {trio.map((p, i) => (
-      <figure class={`shot shot-${i}`}>
-        <Picture src={p.src} alt={p.alt} widths={[400, 800]} sizes="(max-width: 767px) 78vw, 300px"
-          formats={["avif", "webp"]} loading="eager" fetchpriority={i < 2 ? "high" : undefined} />
-        <figcaption class="tag">{p.label}</figcaption>
-      </figure>
-    ))}
-  </div>
+  <figure class="mat shopfront">
+    <Picture src={shopfront} alt="The orange 1911 Coffee Co. shopfront at 28–30 Queen Street, with balloons in the windows"
+      widths={[600, 1000, 1440]} sizes="(max-width: 767px) 100vw, 980px" formats={["avif", "webp"]}
+      loading="eager" fetchpriority="high" />
+  </figure>
 </section>
 
 <style>
-  .hero {
-    position: relative;
-    display: grid;
-    justify-items: center;
-    text-align: center;
-    gap: var(--space-4);
-    padding: var(--space-6) var(--space-4) var(--space-7);
-    overflow: hidden;
-  }
-  .title-wrap { position: relative; display: grid; place-items: center; }
-  .watermark {
-    position: absolute;
-    font: 800 clamp(170px, 26vw, 340px)/1 var(--font-sans);
-    letter-spacing: -.06em;
-    color: var(--orange);
-    opacity: .1;
-    pointer-events: none;
-    user-select: none;
-  }
-  .watermark::before { content: "1911"; }
-  h1 { position: relative; max-width: 14ch; }
-
-  .actions { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: var(--space-2); }
-
-  .trio {
-    display: flex;
-    justify-content: center;
-    margin-top: var(--space-5);
-    padding-inline: 28px;
-  }
-  .shot {
-    position: relative;
-    margin: 0;
-    width: 300px;
-    aspect-ratio: 300 / 360;
-    border-radius: var(--radius-photo);
-    overflow: hidden;
-    border: 4px solid var(--paper);
-    box-shadow: var(--shadow-photo);
-    background: var(--oak);
-    flex: none;
-    transition: transform .6s var(--ease-out);
-  }
-  .shot img { width: 100%; height: 100%; object-fit: cover; }
-  .shot .tag {
-    position: absolute; left: 10px; bottom: 10px;
-    background: var(--paper); color: var(--ink);
-    box-shadow: var(--shadow-card);
-  }
-  .shot-0 { transform: rotate(-4deg); margin-inline-end: -24px; }
-  .shot-1 { z-index: 2; transform: translateY(-12px); }
-  .shot-2 { transform: rotate(4deg); margin-inline-start: -24px; }
-  .shot:hover { transform: rotate(0) translateY(-8px); z-index: 3; }
-
-  /* dealt onto the counter: the three start stacked in the middle and fan out */
-  :global(.motion) .shot { animation: deal 1s var(--ease-out) backwards; }
-  :global(.motion) .shot-0 { --from: translateX(calc(100% - 24px)) rotate(2deg); animation-delay: .3s; }
-  :global(.motion) .shot-1 { --from: translateY(30px) rotate(-1deg); animation-delay: .15s; }
-  :global(.motion) .shot-2 { --from: translateX(calc(-100% + 24px)) rotate(-2deg); animation-delay: .45s; }
-  @keyframes deal { from { transform: var(--from); opacity: 0; } 30% { opacity: 1; } }
-
-  .hero :global(.sprig) { position: absolute; width: 132px; height: 132px; pointer-events: none; }
-  .hero :global(.sprig-tl) { top: 20px; left: 24px; }
-  .hero :global(.sprig-br) { bottom: 20px; right: 24px; }
-
-  @media (max-width: 1023px) {
-    .shot { width: 250px; }
-  }
+  .hero { padding: 40px 0 120px; }
+  h1 { font-size: clamp(30px, 7.2vw, 104px); white-space: nowrap; }
+  .chapter { gap: 22px; }
+  .lead { font-size: 20px !important; line-height: 1.5; text-wrap: balance; max-width: 34ch !important; }
+  .actions { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 16px 32px; margin-top: 8px; }
+  .shopfront { width: min(100%, 980px); margin-inline: auto; aspect-ratio: 4 / 3; overflow: hidden; }
+  .shopfront :global(picture) { display: block; height: 100%; overflow: hidden; }
+  :global(.motion) .shopfront :global(img) { animation: settle 2.4s var(--ease-out) both; }
+  @keyframes settle { from { transform: scale(1.05); } }
   @media (max-width: 767px) {
-    .hero { padding-top: var(--space-5); }
-    .hero :global(.sprig) { width: 80px; height: 80px; opacity: .7; }
-    .hero :global(.sprig-tl) { display: none; }
-    .trio {
-      width: 100%;
-      justify-content: flex-start;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      gap: var(--space-3);
-      padding: var(--space-3) var(--space-4) var(--space-4);
-      margin-top: var(--space-2);
-      scrollbar-width: none;
-    }
-    .trio::-webkit-scrollbar { display: none; }
-    .shot, .shot-0, .shot-1, .shot-2 { width: 78vw; transform: none; margin: 0; scroll-snap-align: center; }
-    :global(.motion) .shot { animation: none; }
+    .hero { padding: 24px 0 72px; }
+    .lead { font-size: 17px !important; }
+    .shopfront { padding: 8px; }
   }
 </style>

@@ -10,11 +10,12 @@ html {
 
 body {
   margin: 0;
-  background: var(--charcoal);
+  background: var(--cream);
   color: var(--ink);
-  font: 400 16px/1.55 var(--font-sans);
+  font: 400 17px/1.55 var(--font-sans);
   font-optical-sizing: auto;
   -webkit-font-smoothing: antialiased;
+  font-size: 17px;
   text-rendering: optimizeLegibility;
   overflow-x: hidden;
 }
@@ -29,9 +30,41 @@ h1, h2, h3 {
   text-wrap: balance;
   color: var(--ink);
 }
-h1 { font-size: clamp(38px, 5.2vw, 64px); font-weight: 760; line-height: 1; letter-spacing: -.035em; }
-h2 { font-size: clamp(28px, 3vw, 38px); font-weight: 720; line-height: 1.08; letter-spacing: -.025em; }
-h3 { font-size: 19px; font-weight: 680; line-height: 1.2; letter-spacing: -.01em; }
+h1, h2, h3 { text-align: center; }
+h3 { text-transform: uppercase; }
+/* Titles in the fascia's manner: mixed case, wide tracking, a touch heavier than the face's one weight */
+h1, h2 { font-family: var(--font-title); font-weight: 400; -webkit-text-stroke: .018em currentColor; }
+h1 { line-height: 1; letter-spacing: .12em; }
+h2 { font-size: clamp(30px, 1rem + 2.6vw, 50px); line-height: 1.1; letter-spacing: .1em; }
+h3 { font-size: 17px; font-weight: 600; line-height: 1.3; letter-spacing: .16em; }
+
+/* A chapter card: the line that opens each section, centred like a film's title card */
+.chapter { display: grid; justify-items: center; gap: 14px; text-align: center; margin-bottom: 56px; }
+.chapter .part { font-size: 14px; font-weight: 500; letter-spacing: .3em; text-transform: uppercase; }
+.chapter .part::before, .chapter .part::after { content: "—"; margin: 0 .8em; }
+.chapter > p:not(.part) { font-size: 17px; max-width: 46ch; }
+
+/* A field: each section is one flat colour */
+.field-stone { background: var(--stone); }
+.field-sky { background: var(--sky); }
+.field-mint { background: var(--mint); }
+.field-mustard { background: var(--mustard); }
+.field-orange { background: var(--orange); }
+
+/* A mat: photographs sit in a thick flat frame, like a print on a wall */
+.mat {
+  position: relative; margin: 0; padding: 14px; background: var(--orange);
+  /* bevelled like the shopfront's mouldings: lit from the top left, the photo set back into the frame */
+  box-shadow: inset 3px 3px 0 rgb(255 255 255 / .35), inset -3px -3px 0 rgb(74 30 26 / .28);
+}
+.mat::after {
+  content: ""; position: absolute; inset: 14px; pointer-events: none;
+  box-shadow: inset 3px 3px 0 rgb(0 0 0 / .28), inset -2px -2px 0 rgb(255 255 255 / .22);
+}
+@media (max-width: 767px) { .mat::after { inset: 8px; } }
+/* A gentler bevel for paper cards */
+.bevel { box-shadow: inset 2px 2px 0 rgb(255 255 255 / .7), inset -2px -2px 0 rgb(74 30 26 / .12); }
+.mat img { display: block; width: 100%; height: 100%; object-fit: cover; }
 
 p { margin: 0; text-wrap: pretty; }
 
@@ -39,24 +72,17 @@ a { color: var(--ember); text-underline-offset: 3px; text-decoration-thickness: 
 a:hover { color: var(--ink); }
 
 :focus-visible {
-  outline: 3px solid var(--ember);
+  outline: 3px solid var(--maroon);
   outline-offset: 2px;
   border-radius: 6px;
 }
 
 .skip {
-  position: absolute;
-  left: 16px;
-  top: -60px;
-  z-index: 100;
-  padding: 10px 16px;
-  background: var(--paper);
-  color: var(--ink);
-  border-radius: var(--radius-control);
-  box-shadow: var(--shadow-lift);
-  font-weight: 600;
+  position: absolute; left: 16px; top: 16px; z-index: 100;
+  padding: 12px 18px; background: var(--ink); color: var(--cream); font-weight: 700;
+  clip-path: inset(50%); width: 1px; height: 1px; overflow: hidden; white-space: nowrap;
 }
-.skip:focus { top: 16px; }
+.skip:focus { clip-path: none; width: auto; height: auto; overflow: visible; }
 
 .visually-hidden {
   position: absolute !important;
@@ -69,7 +95,7 @@ a:hover { color: var(--ink); }
 
 /* Small caps label */
 .caps {
-  font: 600 13px/1 var(--font-sans);
+  font: 600 14px/1 var(--font-sans);
   letter-spacing: .06em;
   text-transform: uppercase;
 }
@@ -82,25 +108,15 @@ a:hover { color: var(--ink); }
 }
 
 .wrap {
-  width: min(100% - 2 * var(--space-6), 1200px);
+  width: min(100% - 2 * 48px, 1240px);
   margin-inline: auto;
 }
 @media (max-width: 767px) {
-  .wrap { width: calc(100% - 2 * var(--space-4)); }
+  .wrap { width: calc(100% - 2 * 20px); }
 }
 
-.section { padding-block: var(--space-7); }
-@media (max-width: 767px) { .section { padding-block: var(--space-6); } }
-
-/* Section kicker: a filled tag with a typed catalogue number, e.g. "No. 02 — The menu" */
-.kicker {
-  display: inline-block;
-  padding: 5px 10px;
-  border-radius: var(--radius-pill);
-  background: var(--ember-tint);
-  color: var(--ember);
-  font: 500 13px/1.3 var(--font-type);
-}
+.section { padding-block: 120px; }
+@media (max-width: 767px) { .section { padding-block: 72px; } .chapter { margin-bottom: 40px; } .chapter .part { letter-spacing: .18em; } .chapter .part::before, .chapter .part::after { content: none; } }
 
 /* Section head: title and kicker left, supporting line right */
 .section-head {
@@ -116,9 +132,7 @@ a:hover { color: var(--ink); }
 
 .card {
   background: var(--paper);
-  border: 1px solid var(--line);
   border-radius: var(--radius-card);
-  box-shadow: var(--shadow-card);
 }
 
 /* Buttons: filled, with a clear hover and pressed state */
@@ -131,19 +145,23 @@ a:hover { color: var(--ink); }
   padding: 0 18px;
   border: 0;
   border-radius: var(--radius-control);
-  background: var(--orange);
-  color: var(--ink);
+  background: var(--maroon);
+  color: var(--paper);
+  box-shadow: inset 0 2px 0 rgb(255 255 255 / .16), inset 0 -3px 0 rgb(0 0 0 / .35);
   text-decoration: none;
-  font: 650 15px/1 var(--font-sans);
+  font: 600 15px/1 var(--font-sans);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  padding: 0 28px;
+  min-height: 52px;
   cursor: pointer;
-  box-shadow: inset 0 -2px 0 rgb(22 19 15 / .14), 0 1px 2px rgb(22 19 15 / .12);
   transition: background .15s, transform .15s, box-shadow .15s;
 }
-.btn:hover { background: var(--orange-hover); color: var(--ink); }
-.btn:active { transform: translateY(1px); box-shadow: inset 0 1px 2px rgb(22 19 15 / .2); }
-.btn--dark { background: var(--ink); color: var(--cream); box-shadow: inset 0 -2px 0 rgb(0 0 0 / .4), 0 1px 2px rgb(22 19 15 / .2); }
-.btn--dark:hover { background: #2C2722; color: var(--cream); }
-.btn--light { background: var(--paper); color: var(--ink); box-shadow: inset 0 0 0 1px var(--line-strong), 0 1px 2px rgb(22 19 15 / .08); }
+.btn:hover { background: #64302A; color: var(--paper); }
+.btn:active { transform: translateY(1px); box-shadow: inset 0 3px 0 rgb(0 0 0 / .3); }
+.btn--dark { background: var(--deep); color: var(--on-fill); }
+.btn--dark:hover { background: var(--orange-hover); color: var(--on-fill); }
+.btn--light { background: var(--ember-tint); color: var(--ink); }
 .btn--light:hover { background: var(--wash); }
 .btn .icon { flex: none; }
 
@@ -159,3 +177,8 @@ a:hover { color: var(--ink); }
   letter-spacing: .03em;
   text-decoration: none;
 }
+
+/* Plain text link with an arrow, for the second action */
+.link { color: var(--ink); font-weight: 600; letter-spacing: .14em; text-transform: uppercase; font-size: 15px; text-decoration: underline; text-underline-offset: .22em; text-decoration-thickness: 2px; text-decoration-color: var(--orange); }
+.link:hover { color: var(--ember); }
+::selection { background: var(--orange); color: var(--ink); }

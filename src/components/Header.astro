@@ -1,102 +1,60 @@
 ---
 import Roundel from "./Roundel.astro";
 import Icon from "./Icon.astro";
-const links = [
-  { href: "#menu", label: "Menu" },
-  { href: "#story", label: "Our Story" },
-  { href: "#counter", label: "Suppliers" },
-  { href: "#reviews", label: "Reviews" },
-];
+import site from "../content/site.json";
+const left = [{ href: "#story", label: "Our story" }, { href: "#menu", label: "Menu" }];
+const right = [{ href: "#reviews", label: "Reviews" }, { href: "#find-us", label: "Find us" }];
+const links = [...left, ...right];
 ---
-<header class="header">
-  <nav class="left" aria-label="Main">
-    <ul>
-      {links.map((l) => <li><a class="nav-link" href={l.href}>{l.label}</a></li>)}
-    </ul>
+<header class="header wrap">
+  <nav class="side side-left" aria-label="Main">
+    <ul>{left.map((l) => <li><a class="nav-link" href={l.href}>{l.label}</a></li>)}</ul>
   </nav>
-
   <a class="mark" href="/" aria-label="1911 Coffee Co., home">
-    <Roundel size={60} class="stamp" />
+    <Roundel size={64} class="stamp" />
   </a>
-
-  <div class="right">
-    <a class="nav-link find" href="#find-us"><Icon name="map-pin" size={18} />Find us</a>
-    <a class="btn" href="#menu"><Icon name="coffee" size={18} />Today's menu</a>
-    <button class="btn btn--light menu-btn" type="button" aria-expanded="false" aria-controls="sheet">
-      <Icon name="list" weight="bold" size={20} />Menu
-    </button>
-  </div>
+  <nav class="side side-right" aria-label="More">
+    <ul>{right.map((l) => <li><a class="nav-link" href={l.href}>{l.label}</a></li>)}</ul>
+  </nav>
+  <button class="btn menu-btn" type="button" aria-expanded="false" aria-controls="sheet">Menu</button>
 </header>
 
 <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="Site menu" hidden>
   <div class="sheet-top">
     <Roundel size={48} />
-    <button class="btn btn--light close" type="button">
-      <Icon name="x" weight="bold" size={18} />Close
-    </button>
+    <button class="btn close" type="button"><Icon name="x" weight="bold" size={16} />Close</button>
   </div>
   <ul>
-    {links.map((l, i) => <li style={`--i:${i}`}><a href={l.href}>{l.label}<Icon name="arrow-right" weight="bold" size={20} /></a></li>)}
-    <li style="--i:4"><a href="#find-us">Find us<Icon name="arrow-right" weight="bold" size={20} /></a></li>
+    {links.map((l, i) => <li style={`--i:${i}`}><a href={l.href}>{l.label}</a></li>)}
   </ul>
-  <a class="btn sheet-call" href="tel:+441665710706"><Icon name="phone" size={18} />Call 01665 710706</a>
+  <a class="btn sheet-call" href={`tel:${site.phoneHref}`}>Call {site.phone}</a>
 </div>
 
 <style>
-  .header {
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    align-items: center;
-    height: 72px;
-    padding: 0 var(--space-5);
-    position: relative;
-    z-index: 5;
-    border-bottom: 1px solid var(--line);
-  }
-  .left ul { display: flex; gap: 4px; list-style: none; margin: 0; padding: 0; }
-  .nav-link {
-    display: inline-flex; align-items: center; gap: 6px;
-    min-height: 40px; padding: 0 12px;
-    border-radius: var(--radius-control);
-    color: var(--ink); text-decoration: none;
-    font: 600 15px/1 var(--font-sans);
-    transition: background .15s, color .15s;
-  }
-  .nav-link:hover { background: rgb(22 19 15 / .07); color: var(--ink); }
-  .nav-link:active, .nav-link[aria-current] { background: rgb(22 19 15 / .12); }
-  .nav-link :global(.icon) { color: var(--ember); }
+  .header { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; height: 104px; position: relative; z-index: 5; }
+  .side ul { display: flex; gap: 40px; list-style: none; margin: 0; padding: 0; }
+  .side-left ul { justify-content: flex-end; padding-right: 48px; }
+  .side-right ul { justify-content: flex-start; padding-left: 48px; }
+  .nav-link { color: var(--ink); text-decoration: none; font-size: 14px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; padding: 10px 0; text-underline-offset: .5em; text-decoration-thickness: 2px; text-decoration-color: var(--orange); }
+  .nav-link:hover, .nav-link[aria-current] { text-decoration-line: underline; }
   .mark { display: block; border-radius: 50%; }
-  .right { display: flex; justify-content: flex-end; align-items: center; gap: var(--space-2); }
   .menu-btn { display: none; }
 
-  .sheet {
-    position: fixed; inset: 0; z-index: 50;
-    background: var(--cream);
-    padding: var(--space-4);
-    display: flex; flex-direction: column; gap: var(--space-5);
-  }
+  .sheet { position: fixed; inset: 0; z-index: 50; background: var(--stone); padding: 20px; display: flex; flex-direction: column; gap: 32px; }
   .sheet[hidden] { display: none; }
   .sheet-top { display: flex; justify-content: space-between; align-items: center; }
-  .sheet ul { list-style: none; margin: 0 0 auto; padding: 0; display: grid; gap: var(--space-2); }
-  .sheet li a {
-    display: flex; justify-content: space-between; align-items: center;
-    min-height: 56px; padding: 0 var(--space-4);
-    background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card);
-    box-shadow: var(--shadow-card);
-    font: 680 22px/1 var(--font-sans); letter-spacing: -.015em;
-    color: var(--ink); text-decoration: none;
-  }
-  .sheet li a :global(.icon) { color: var(--ember); }
-  .sheet li a:active { background: var(--wash); }
-  .sheet-call { width: 100%; min-height: 52px; }
+  .sheet ul { list-style: none; margin: 0 0 auto; padding: 0; display: grid; gap: 4px; text-align: center; }
+  .sheet li a { display: block; padding: 14px 0; font-size: 26px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--ink); text-decoration: none; }
+  .sheet-call { width: 100%; }
   :global(.motion) .sheet:not([hidden]) li { animation: sheet-in .4s var(--ease-out) both; animation-delay: calc(var(--i) * 45ms); }
   @keyframes sheet-in { from { opacity: 0; transform: translateY(10px); } }
 
-  @media (max-width: 1023px) {
-    .left, .find, .right > .btn:not(.menu-btn) { display: none; }
-    .menu-btn { display: inline-flex; }
-    .header { grid-template-columns: auto 1fr; padding: 0 var(--space-4); height: 68px; }
-    .mark :global(svg) { width: 46px; height: 46px; }
+  @media (max-width: 900px) {
+    .side { display: none; }
+    .header { grid-template-columns: auto 1fr auto; height: 80px; }
+    .mark { grid-column: 1; }
+    .menu-btn { display: inline-flex; grid-column: 3; min-height: 44px; padding: 0 18px; }
+    .mark :global(svg) { width: 52px; height: 52px; }
   }
 </style>
 

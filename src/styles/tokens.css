@@ -1,27 +1,37 @@
 :root {
-  /* Brand */
-  --orange: #E07B39;      /* fills & blocks only — never text on cream (2.6:1) */
-  --orange-hover: #D46E2E;/* ink on it 5.35:1 */
-  --ember: #A44C17;       /* accent text & links: 5.79:1 on white, 5.07:1 on cream */
-  --ember-tint: #FBEADD;  /* ember on it 4.94:1 */
-  --oak: #B9874F;         /* decorative only */
+  /*
+   * A Wes Anderson-ish set: flat pastel fields, one maroon ink everywhere, the shop's orange as
+   * the frame colour. Every text pair below is maroon on a field (8.8:1 or better) or pink on maroon.
+   */
+  --stone: #E3DFD6;       /* the shopfront's pilaster grey, lightened; maroon on it 10.6:1 */
+  --pink: #F4D5CB;
+  --sky: #BCD6E0;
+  --mint: #C6DCCB;
+  --mustard: #EDC86E;
+  --orange: #E8874A;       /* mats, bands, buttons; maroon on it 5.4:1 */
+  --orange-hover: #EF9A62;
+  --maroon: #4A1E1A;
 
-  /* Surfaces */
-  --cream: #F6EFE4;       /* the frame: the shop's cups and walls */
-  --paper: #FFFFFF;       /* cards and panels */
-  --wash: #FBF8F3;        /* subtle inset areas */
+  /* Old names, mapped so untouched components still work */
+  --cream: var(--stone);
+  --paper: #FBF3EA;        /* the menu card */
+  --wash: var(--sky);
+  --ink: var(--maroon);
+  --muted: #6E3A30;        /* 5.1:1 or better on every field, stone included */
+  --on-fill: var(--maroon);
+  --name: var(--maroon);
+  --ember: var(--maroon);
+  --ember-tint: var(--paper);
+  --oak: #C98F6A;
+  --deep: var(--maroon);
+  --charcoal: var(--maroon);
+  --on-deep: var(--paper);
 
-  /* Text */
-  --ink: #16130F;         /* 18.5:1 on white, 16.2:1 on cream */
-  --muted: #544C44;       /* 8.4:1 on white, 7.4:1 on cream */
-  --charcoal: var(--ink); /* footer ground and body background */
-
-  /* Lines and depth */
-  --line: rgb(22 19 15 / .10);
-  --line-strong: rgb(22 19 15 / .18);
-  --shadow-card: 0 1px 2px rgb(22 19 15 / .06), 0 2px 8px rgb(22 19 15 / .05);
-  --shadow-lift: 0 2px 4px rgb(22 19 15 / .06), 0 12px 28px rgb(22 19 15 / .12);
-  --shadow-photo: 0 2px 4px rgb(22 19 15 / .08), 0 16px 36px rgb(22 19 15 / .18);
+  --line: transparent;
+  --line-strong: transparent;
+  --shadow-card: none;
+  --shadow-lift: none;
+  --shadow-photo: none;
 
   /* Status */
   --open: #1D6B3A;  --open-tint: #E2F2E7;
@@ -29,9 +39,9 @@
   --vegan: #3D6114; --vegan-tint: #ECF3DC;
   --gf: #8A4508;    --gf-tint: #FCEBD3;
 
-  --radius-card: 14px;
-  --radius-photo: 14px;
-  --radius-control: 10px;
+  --radius-card: 0;
+  --radius-photo: 0;
+  --radius-control: 0;
   --radius-pill: 999px;
 
   --space-1: 4px;
@@ -42,21 +52,23 @@
   --space-6: 40px;
   --space-7: 64px;
 
-  /* One family, varied only by weight and size; mono for labels, prices and times */
-  --font-sans: 'Bricolage Grotesque Variable', ui-sans-serif, system-ui, sans-serif;
+  /* Jost: a free face in the Futura mould. Titles in spaced capitals. */
+  --font-sans: 'Jost Variable', 'Futura', 'Century Gothic', ui-sans-serif, sans-serif;
+  /* Questrial: the nearest free match to the lettering painted on the shop's fascia */
+  --font-title: 'Questrial', 'Jost Variable', ui-sans-serif, sans-serif;
   --font-mark: var(--font-sans);
   --font-display: var(--font-sans);
   --font-body: var(--font-sans);
-  --font-type: 'IBM Plex Mono', ui-monospace, monospace;
+  --font-type: var(--font-sans);
 
   --ease-out: cubic-bezier(.32, .72, 0, 1);
   --ease-stamp: cubic-bezier(.2, 1.4, .4, 1);
 
   /* Hairline figures on white panels */
-  --hairline-plate: var(--paper);
-  --hairline-hi: var(--ember);
+  --hairline-plate: var(--sky);
+  --hairline-hi: #B5531F;
   --hairline-edge: var(--ink);
-  --hairline-mid: #5E564D;
-  --hairline-lo: #B9AFA3;
+  --hairline-mid: #8A6A52;
+  --hairline-lo: #CDBBA6;
   --hairline-stroke: 1.4;
 }
