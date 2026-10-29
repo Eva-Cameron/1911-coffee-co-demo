@@ -2,34 +2,38 @@
 import { Picture } from "astro:assets";
 import breakfast from "../assets/photos/breakfast.jpg";
 import lunch from "../assets/photos/menu.jpg";
+const plates = [
+  { src: breakfast, alt: "A bacon and hash brown bun on a dark plate", caption: "Bacon and hash brown bun" },
+  { src: lunch, alt: "A sandwich with coleslaw and salad on a black slate", caption: "Sandwich, slaw and salad" },
+];
 ---
-<section id="kitchen" class="kitchen section" aria-labelledby="kitchen-title">
-  <div class="wrap pair">
-    <div class="first">
-      <h2 id="kitchen-title" data-type data-type-speed="45">From the kitchen</h2>
-      <p class="intro" data-reveal>Cooked to order, on the plate in front of you a few minutes later.</p>
-      <figure data-reveal style="--i:1">
-        <Picture src={breakfast} alt="A bacon and hash brown bun on a dark plate" widths={[600, 960]} sizes="(max-width: 767px) 100vw, 600px" formats={["avif", "webp"]} loading="lazy" />
-        <figcaption>Bacon and hash brown bun</figcaption>
-      </figure>
+<section id="kitchen" class="kitchen section field-pink" aria-labelledby="kitchen-title">
+  <div class="wrap">
+    <div class="chapter">
+      <p class="part">Chapter three</p>
+      <h2 id="kitchen-title" data-type data-type-speed="55">From the kitchen</h2>
+      <p>Cooked to order and on the table a few minutes later.</p>
     </div>
-    <figure class="second" data-reveal style="--i:2">
-      <Picture src={lunch} alt="A sandwich with coleslaw and salad on a black slate" widths={[600, 960]} sizes="(max-width: 767px) 100vw, 600px" formats={["avif", "webp"]} loading="lazy" />
-      <figcaption>Sandwich with slaw and salad</figcaption>
-    </figure>
+    <div class="pair">
+      {plates.map((p, i) => (
+        <figure data-reveal style={`--i:${i + 1}`}>
+          <div class="mat"><Picture src={p.src} alt={p.alt} widths={[600, 960]} sizes="(max-width: 767px) 100vw, 460px" formats={["avif", "webp"]} loading="lazy" /></div>
+          <figcaption>{p.caption}</figcaption>
+        </figure>
+      ))}
+    </div>
   </div>
 </section>
 <style>
-  .pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 48px; align-items: start; }
-  .first { display: grid; gap: 20px; }
-  .intro { font-size: 17px; max-width: 34ch; margin-bottom: 28px; }
-  figure { margin: 0; display: grid; gap: 14px; }
-  figure :global(picture), figure :global(img) { display: block; }
-  figure :global(img) { width: 100%; aspect-ratio: 1; object-fit: cover; background: var(--wash); }
-  figcaption { font-size: 14px; color: var(--muted); }
-  .second { margin-top: 220px; }
+  .pair { display: grid; grid-template-columns: repeat(2, minmax(0, 460px)); justify-content: center; gap: 56px; }
+  figure { margin: 0; display: grid; gap: 20px; }
+  .mat { aspect-ratio: 1; overflow: hidden; }
+  .mat :global(picture) { display: block; height: 100%; }
+  figcaption { text-align: center; font-size: 14px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; }
+  figure:hover .mat :global(img) { transform: scale(1.03); }
+  .mat :global(img) { transition: transform .6s var(--ease-out); }
   @media (max-width: 767px) {
     .pair { grid-template-columns: 1fr; gap: 40px; }
-    .second { margin-top: 0; }
+    .mat { padding: 8px; }
   }
 </style>

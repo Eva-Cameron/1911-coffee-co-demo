@@ -1,16 +1,15 @@
 ---
+import Roundel from "./Roundel.astro";
 import site from "../content/site.json";
 ---
 <footer class="footer">
-  <div class="wrap">
+  <div class="wrap inner">
+    <Roundel size={88} tone="cream" title="1911 Coffee Co." />
     <p class="name" aria-hidden="true">{site.name}</p>
-    <div class="cols">
-      <p>{site.street}<br />{site.town} {site.postcode}</p>
-      <p><a href={`tel:${site.phoneHref}`}>{site.phone}</a></p>
-      <ul>
-        {site.socials.map((s) => <li><a href={s.href} rel="noopener">{s.name}</a></li>)}
-      </ul>
-    </div>
+    <p class="addr">{site.street} · {site.town} · {site.postcode} · <a href={`tel:${site.phoneHref}`}>{site.phone}</a></p>
+    <ul class="links">
+      {site.socials.map((s) => <li><a href={s.href} rel="noopener">{s.name}</a></li>)}
+    </ul>
     <div class="base">
       <p>© {new Date().getFullYear()} 1911 Coffee Co Ltd</p>
       <p>Website by Eva Cameron</p>
@@ -18,20 +17,15 @@ import site from "../content/site.json";
   </div>
 </footer>
 <style>
-  .footer { background: var(--deep); color: var(--on-deep); padding: 96px 0 32px; }
-  .name {
-    font-size: clamp(30px, 8.4vw, 132px); font-weight: 700; line-height: 1; letter-spacing: -.04em;
-    color: var(--orange); white-space: nowrap; margin: 0 0 64px -.05em;
-  }
-  .cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; font-size: 17px; line-height: 1.5; }
-  .cols ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
-  .footer a { color: var(--on-deep); text-decoration-color: var(--orange); text-decoration-thickness: 2px; }
+  .footer { background: var(--maroon); color: var(--pink); padding: 104px 0 36px; }
+  .inner { display: grid; justify-items: center; gap: 28px; text-align: center; }
+  .name { font-size: clamp(28px, 6vw, 84px); font-weight: 600; letter-spacing: .1em; text-transform: uppercase; line-height: 1; color: var(--orange); white-space: nowrap; }
+  .addr { font-size: 17px; letter-spacing: .04em; }
+  .links { list-style: none; margin: 0; padding: 0; display: flex; gap: 32px; flex-wrap: wrap; justify-content: center; }
+  .links a { font-size: 14px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; }
+  .footer a { color: var(--pink); text-decoration-color: var(--orange); text-decoration-thickness: 2px; text-underline-offset: .4em; }
   .footer a:hover { color: var(--orange); }
-  .base { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-top: 72px; font-size: 14px; color: rgb(246 240 230 / .8); }
+  .base { display: flex; gap: 32px; flex-wrap: wrap; justify-content: center; margin-top: 56px; font-size: 14px; color: rgb(244 213 203 / .8); }
   .footer :global(:focus-visible) { outline-color: var(--orange); }
-  @media (max-width: 767px) {
-    .footer { padding-top: 64px; }
-    .name { margin-bottom: 40px; }
-    .cols { grid-template-columns: 1fr; gap: 20px; }
-  }
+  @media (max-width: 767px) { .footer { padding-top: 72px; } .addr { font-size: 15px; } }
 </style>

@@ -1,23 +1,30 @@
 :root {
   /*
-   * Cream page, orange accents. One ground, one ink, the shop's orange on the action and the name.
-   * Token names keep their old jobs so components didn't need renaming.
+   * A Wes Anderson-ish set: flat pastel fields, one maroon ink everywhere, the shop's orange as
+   * the frame colour. Every text pair below is maroon on a field (8.8:1 or better) or pink on maroon.
    */
-  --cream: #F6F0E6;        /* the ground */
-  --paper: #FFFCF7;        /* the printed menu sheet */
-  --wash: #EEE5D7;         /* one tone step from the ground, for the counter plates */
-  --ink: #2A1206;          /* 15.6:1 on cream */
-  --muted: #5A4232;        /* 8.2:1 on cream */
-  --orange: #E8874A;       /* the shopfront's orange: button fill; ink on it 6.7:1 */
-  --orange-hover: #F09A61;
-  --on-fill: #2A1206;
-  --name: #C2551C;         /* the name, set large: 4.0:1 on cream (large text) */
-  --ember: #A84714;        /* links and small accent text: 5.2:1 on cream */
-  --ember-tint: var(--wash);
-  --oak: #C9A27A;          /* menu leaders only */
-  --deep: #2A1206;         /* footer ground */
-  --charcoal: var(--deep);
-  --on-deep: #F6F0E6;
+  --pink: #F4D5CB;
+  --sky: #BCD6E0;
+  --mint: #C6DCCB;
+  --mustard: #EDC86E;
+  --orange: #E8874A;       /* mats, bands, buttons; maroon on it 5.4:1 */
+  --orange-hover: #EF9A62;
+  --maroon: #4A1E1A;
+
+  /* Old names, mapped so untouched components still work */
+  --cream: var(--pink);
+  --paper: #FBF3EA;        /* the menu card */
+  --wash: var(--sky);
+  --ink: var(--maroon);
+  --muted: #6E3A30;        /* 5.7:1 or better on every pastel field */
+  --on-fill: var(--maroon);
+  --name: var(--maroon);
+  --ember: var(--maroon);
+  --ember-tint: var(--paper);
+  --oak: #C98F6A;
+  --deep: var(--maroon);
+  --charcoal: var(--maroon);
+  --on-deep: var(--pink);
 
   --line: transparent;
   --line-strong: transparent;
@@ -33,7 +40,7 @@
 
   --radius-card: 0;
   --radius-photo: 0;
-  --radius-control: 999px;
+  --radius-control: 0;
   --radius-pill: 999px;
 
   --space-1: 4px;
@@ -45,8 +52,8 @@
   --space-7: 64px;
 
   /* Typewriter throughout: Courier Prime for everything */
-  /* taste-skill-ignore: typewriter type is the owner's explicit choice */
-  --font-sans: 'Courier Prime', 'Courier New', Courier, ui-monospace, monospace; /* taste-skill-ignore */
+  /* Jost: a free face in the Futura mould. Titles in spaced capitals. */
+  --font-sans: 'Jost Variable', 'Futura', 'Century Gothic', ui-sans-serif, sans-serif;
   --font-mark: var(--font-sans);
   --font-display: var(--font-sans);
   --font-body: var(--font-sans);
@@ -56,8 +63,8 @@
   --ease-stamp: cubic-bezier(.2, 1.4, .4, 1);
 
   /* Hairline figures on white panels */
-  --hairline-plate: var(--paper);
-  --hairline-hi: var(--name);
+  --hairline-plate: var(--sky);
+  --hairline-hi: #B5531F;
   --hairline-edge: var(--ink);
   --hairline-mid: #8A6A52;
   --hairline-lo: #CDBBA6;

@@ -2,30 +2,27 @@
 import Roundel from "./Roundel.astro";
 import Icon from "./Icon.astro";
 import site from "../content/site.json";
-const links = [
-  { href: "#menu", label: "Menu" },
-  { href: "#story", label: "Our story" },
-  { href: "#reviews", label: "Reviews" },
-  { href: "#find-us", label: "Find us" },
-];
+const left = [{ href: "#story", label: "Our story" }, { href: "#menu", label: "Menu" }];
+const right = [{ href: "#reviews", label: "Reviews" }, { href: "#find-us", label: "Find us" }];
+const links = [...left, ...right];
 ---
 <header class="header wrap">
-  <a class="mark" href="/" aria-label="1911 Coffee Co., home">
-    <Roundel size={56} class="stamp" />
-  </a>
-  <nav class="nav" aria-label="Main">
-    <ul>
-      {links.map((l) => <li><a class="nav-link" href={l.href}>{l.label}</a></li>)}
-    </ul>
-    <a class="btn" href={`tel:${site.phoneHref}`}>Call {site.phone}</a>
+  <nav class="side side-left" aria-label="Main">
+    <ul>{left.map((l) => <li><a class="nav-link" href={l.href}>{l.label}</a></li>)}</ul>
   </nav>
-  <button class="btn btn--light menu-btn" type="button" aria-expanded="false" aria-controls="sheet">Menu</button>
+  <a class="mark" href="/" aria-label="1911 Coffee Co., home">
+    <Roundel size={64} class="stamp" />
+  </a>
+  <nav class="side side-right" aria-label="More">
+    <ul>{right.map((l) => <li><a class="nav-link" href={l.href}>{l.label}</a></li>)}</ul>
+  </nav>
+  <button class="btn menu-btn" type="button" aria-expanded="false" aria-controls="sheet">Menu</button>
 </header>
 
 <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="Site menu" hidden>
   <div class="sheet-top">
     <Roundel size={48} />
-    <button class="btn btn--light close" type="button"><Icon name="x" weight="bold" size={18} />Close</button>
+    <button class="btn close" type="button"><Icon name="x" weight="bold" size={16} />Close</button>
   </div>
   <ul>
     {links.map((l, i) => <li style={`--i:${i}`}><a href={l.href}>{l.label}</a></li>)}
@@ -34,30 +31,30 @@ const links = [
 </div>
 
 <style>
-  .header { display: flex; align-items: center; justify-content: space-between; height: 84px; position: relative; z-index: 5; }
-  .mark { display: block; border-radius: 50%; }
-  .nav { display: flex; align-items: center; gap: 36px; }
-  .nav ul { display: flex; gap: 28px; list-style: none; margin: 0; padding: 0; }
-  .nav-link { color: var(--ink); text-decoration: none; font-size: 17px; font-weight: 700; padding: 10px 0; text-underline-offset: .3em; text-decoration-thickness: 2px; text-decoration-color: var(--orange); }
+  .header { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; height: 104px; position: relative; z-index: 5; }
+  .side ul { display: flex; gap: 40px; list-style: none; margin: 0; padding: 0; }
+  .side-left ul { justify-content: flex-end; padding-right: 48px; }
+  .side-right ul { justify-content: flex-start; padding-left: 48px; }
+  .nav-link { color: var(--ink); text-decoration: none; font-size: 14px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; padding: 10px 0; text-underline-offset: .5em; text-decoration-thickness: 2px; text-decoration-color: var(--orange); }
   .nav-link:hover, .nav-link[aria-current] { text-decoration-line: underline; }
+  .mark { display: block; border-radius: 50%; }
   .menu-btn { display: none; }
-  .btn--light { background: var(--wash); color: var(--ink); }
-  .btn--light:hover { background: #E6DACA; }
 
-  .sheet { position: fixed; inset: 0; z-index: 50; background: var(--cream); padding: 20px; display: flex; flex-direction: column; gap: 32px; }
+  .sheet { position: fixed; inset: 0; z-index: 50; background: var(--pink); padding: 20px; display: flex; flex-direction: column; gap: 32px; }
   .sheet[hidden] { display: none; }
   .sheet-top { display: flex; justify-content: space-between; align-items: center; }
-  .sheet ul { list-style: none; margin: 0 0 auto; padding: 0; display: grid; gap: 4px; }
-  .sheet li a { display: block; padding: 10px 0; font-size: 34px; font-weight: 700; letter-spacing: -.03em; color: var(--ink); text-decoration: none; }
-  .sheet-call { width: 100%; min-height: 56px; }
+  .sheet ul { list-style: none; margin: 0 0 auto; padding: 0; display: grid; gap: 4px; text-align: center; }
+  .sheet li a { display: block; padding: 14px 0; font-size: 26px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--ink); text-decoration: none; }
+  .sheet-call { width: 100%; }
   :global(.motion) .sheet:not([hidden]) li { animation: sheet-in .4s var(--ease-out) both; animation-delay: calc(var(--i) * 45ms); }
   @keyframes sheet-in { from { opacity: 0; transform: translateY(10px); } }
 
   @media (max-width: 900px) {
-    .nav { display: none; }
-    .menu-btn { display: inline-flex; }
-    .header { height: 76px; }
-    .mark :global(svg) { width: 48px; height: 48px; }
+    .side { display: none; }
+    .header { grid-template-columns: auto 1fr auto; height: 80px; }
+    .mark { grid-column: 1; }
+    .menu-btn { display: inline-flex; grid-column: 3; min-height: 44px; padding: 0 18px; }
+    .mark :global(svg) { width: 52px; height: 52px; }
   }
 </style>
 

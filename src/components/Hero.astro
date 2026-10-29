@@ -5,40 +5,36 @@ import shopfront from "../assets/photos/findus.jpg";
 import site from "../content/site.json";
 ---
 <section class="hero wrap" aria-labelledby="hero-title">
-  <div class="intro">
-    <h1 id="hero-title" data-type data-type-delay="400" data-type-speed="80">{site.name}</h1>
-    <p class="lead">Breakfast, homemade bakes and good coffee at {site.street}, {site.town}.</p>
+  <div class="chapter">
+    <p class="part">Amble, Northumberland</p>
+    <h1 id="hero-title" data-type data-type-delay="400" data-type-speed="90">{site.name}</h1>
+    <p class="lead">Breakfast, homemade bakes and good coffee at {site.street}. Est. {site.est}.</p>
     <div class="actions">
       <a class="btn" href="#menu">See the menu</a>
       <a class="link" href={site.directions} rel="noopener">Directions</a>
-      <OpenBadge />
     </div>
+    <OpenBadge />
   </div>
-  <figure class="shopfront">
+  <figure class="mat shopfront">
     <Picture src={shopfront} alt="The orange 1911 Coffee Co. shopfront at 28–30 Queen Street, with balloons in the windows"
-      widths={[600, 1000, 1440]} sizes="(max-width: 767px) 100vw, 1240px" formats={["avif", "webp"]}
+      widths={[600, 1000, 1440]} sizes="(max-width: 767px) 100vw, 980px" formats={["avif", "webp"]}
       loading="eager" fetchpriority="high" />
   </figure>
 </section>
 
 <style>
-  .hero { padding-top: 24px; }
-  .intro { display: grid; gap: 20px; justify-items: start; margin-bottom: 36px; }
-  h1 {
-    color: var(--name);
-    font-size: clamp(30px, 8.4vw, 132px);
-    white-space: nowrap;
-    margin-left: -.05em;
-  }
-  .lead { font-size: 22px; line-height: 1.4; max-width: 40ch; color: var(--ink); }
-  .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 28px; }
-  .shopfront { margin: 0; aspect-ratio: 16 / 8.6; overflow: hidden; background: var(--wash); }
-  .shopfront :global(img) { width: 100%; height: 100%; object-fit: cover; object-position: 50% 42%; }
+  .hero { padding: 40px 0 120px; }
+  h1 { font-size: clamp(30px, 7.2vw, 104px); white-space: nowrap; }
+  .chapter { gap: 22px; }
+  .lead { font-size: 20px !important; line-height: 1.5; text-wrap: balance; max-width: 34ch !important; }
+  .actions { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 16px 32px; margin-top: 8px; }
+  .shopfront { width: min(100%, 980px); margin-inline: auto; aspect-ratio: 4 / 3; overflow: hidden; }
+  .shopfront :global(picture) { display: block; height: 100%; overflow: hidden; }
   :global(.motion) .shopfront :global(img) { animation: settle 2.4s var(--ease-out) both; }
-  @keyframes settle { from { transform: scale(1.06); } }
+  @keyframes settle { from { transform: scale(1.05); } }
   @media (max-width: 767px) {
-    .hero { padding-top: 32px; }
-    .intro { gap: 20px; margin-bottom: 32px; }
-    .shopfront { aspect-ratio: 4 / 3.4; }
+    .hero { padding: 24px 0 72px; }
+    .lead { font-size: 17px !important; }
+    .shopfront { padding: 8px; }
   }
 </style>

@@ -18,97 +18,99 @@ for (const d of hours.days) {
 }
 const hoursLine = groups.map((g) => `${g.names.length > 1 ? `${g.names[0]}–${g.names.at(-1)}` : g.names[0]} ${time(g.open)}–${time(g.close)}`);
 ---
-<section id="menu" class="menu section" aria-labelledby="menu-title">
-  <div class="wrap stage">
-    <div class="plates">
-    <figure class="plate" data-reveal>
-      <Picture src={latte} alt="A cappuccino with latte art and a biscuit beside the 1911 brunch menu" widths={[400, 855]} sizes="(max-width: 860px) 50vw, 500px" formats={["avif", "webp"]} loading="lazy" />
-    </figure>
-    <figure class="plate" data-reveal style="--i:2">
-      <Picture src={cakes} alt="A raspberry and coconut sponge on the counter in front of the espresso machine" widths={[400, 960]} sizes="(max-width: 860px) 50vw, 500px" formats={["avif", "webp"]} loading="lazy" />
-    </figure>
+<section id="menu" class="menu section field-mint" aria-labelledby="menu-title">
+  <div class="wrap">
+    <div class="chapter">
+      <p class="part">Chapter two</p>
+      <h2 id="menu-title" data-type data-type-speed="55">The menu</h2>
+      <p>Breakfast until 11:30, then lunch until we close.</p>
     </div>
 
-    <article class="sheet">
-      <header class="sheet-head">
-        <h2 id="menu-title" data-type data-type-speed="45">The menu</h2>
-        <p>Breakfast until 11:30, then lunch until we close.</p>
-      </header>
-      {menu.map((s) => (
-        <section class="group" aria-labelledby={`m-${s.section}`}>
-          <h3 id={`m-${s.section}`}>{s.section}</h3>
-          <p class="note">{s.note}</p>
-          <dl>
-            {s.items.map((it, i) => (
-              <div class="menu-row" style={`--i:${i}`}>
-                <dt>
-                  <span class="name">{it.name}</span>
-                  {it.tags.map((t) => <abbr title={TAGS[t]}>{t}</abbr>)}
-                </dt>
-                <dd class="price">{price(it.price)}</dd>
-                {it.desc && <dd class="desc">{it.desc}</dd>}
-              </div>
-            ))}
-          </dl>
-        </section>
-      ))}
-      <footer class="sheet-foot">
-        <p>{hoursLine.join(" · ")}</p>
-        <p>V vegetarian · VG vegan · GF gluten free. Ask at the counter about allergens.</p>
-      </footer>
-    </article>
+    <div class="stage">
+      <figure class="mat plate" data-reveal>
+        <Picture src={latte} alt="A cappuccino with latte art and a biscuit beside the 1911 brunch menu" widths={[400, 855]} sizes="(max-width: 1100px) 45vw, 300px" formats={["avif", "webp"]} loading="lazy" />
+      </figure>
 
+      <article class="card" aria-label="Menu card">
+        <p class="band">1911 Coffee Co. · Bill of fare</p>
+        {menu.map((s) => (
+          <section class="group" aria-labelledby={`m-${s.section}`}>
+            <h3 id={`m-${s.section}`}>{s.section}</h3>
+            <p class="note">{s.note}</p>
+            <dl>
+              {s.items.map((it, i) => (
+                <div class="menu-row" style={`--i:${i}`}>
+                  <dt>
+                    <span class="name">{it.name}</span>
+                    {it.tags.map((t) => <abbr title={TAGS[t]}>{t}</abbr>)}
+                  </dt>
+                  <dd class="price">{price(it.price)}</dd>
+                  {it.desc && <dd class="desc">{it.desc}</dd>}
+                </div>
+              ))}
+            </dl>
+          </section>
+        ))}
+        <footer class="card-foot">
+          <p>{hoursLine.join(" · ")}</p>
+          <p>V vegetarian · VG vegan · GF gluten free. Ask at the counter about allergens.</p>
+        </footer>
+      </article>
 
+      <figure class="mat plate" data-reveal style="--i:2">
+        <Picture src={cakes} alt="A raspberry and coconut sponge on the counter in front of the espresso machine" widths={[400, 960]} sizes="(max-width: 1100px) 45vw, 300px" formats={["avif", "webp"]} loading="lazy" />
+      </figure>
+    </div>
   </div>
 </section>
 
 <style>
-  .stage { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 64px; align-items: start; }
-  .plates { display: grid; gap: 24px; position: sticky; top: 24px; }
-  .plate { margin: 0; aspect-ratio: 4 / 4.2; overflow: hidden; background: var(--wash); }
-  .plate :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .stage { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 620px) minmax(0, 1fr); gap: 48px; align-items: start; }
+  .plate { aspect-ratio: 4 / 5; overflow: hidden; margin-top: 120px; position: sticky; top: 120px; }
+  .plate :global(picture) { display: block; height: 100%; }
 
-  /* The printed sheet: paper on the cream ground, scalloped top and bottom edges */
-  .sheet {
-    --scallop: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='12'%3E%3Ccircle cx='12' cy='12' r='12' fill='%23FFFCF7'/%3E%3C/svg%3E");
+  /* The menu card: cream paper, scalloped top and bottom, an orange band across the head */
+  .card {
+    --scallop: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='12'%3E%3Ccircle cx='12' cy='12' r='12' fill='%23FBF3EA'/%3E%3C/svg%3E");
     position: relative;
     background: var(--paper);
-    padding: 72px 64px 64px;
+    padding: 0 56px 56px;
     text-align: center;
     margin-block: 12px;
   }
-  .sheet::before, .sheet::after {
+  .card::before, .card::after {
     content: ""; position: absolute; left: 0; right: 0; height: 12px;
     background: var(--scallop) 0 0 / 24px 12px repeat-x;
   }
-  .sheet::before { top: -12px; }
-  .sheet::after { bottom: -12px; transform: scaleY(-1); }
-
-  .sheet-head { display: grid; gap: 14px; justify-items: center; margin-bottom: 56px; }
-  .sheet-head p { color: var(--muted); font-size: 17px; }
-  .group + .group { margin-top: 56px; }
-  .group h3 { font-size: 22px; }
-  .note { font-size: 14px; color: var(--muted); margin: 6px auto 20px; max-width: 36ch; }
-  dl { margin: 0 auto; max-width: 460px; text-align: left; display: grid; gap: 16px; }
+  .card::before { top: -12px; }
+  .card::after { bottom: -12px; transform: scaleY(-1); }
+  .band {
+    margin: 0 -56px 52px; padding: 22px 16px;
+    background: var(--orange); color: var(--maroon);
+    font-size: 14px; font-weight: 600; letter-spacing: .3em; text-transform: uppercase;
+  }
+  .group + .group { margin-top: 52px; }
+  .note { font-size: 14px; color: var(--muted); margin: 8px auto 22px; max-width: 36ch; }
+  dl { margin: 0 auto; max-width: 440px; text-align: left; display: grid; gap: 16px; }
   .menu-row { display: grid; grid-template-columns: 1fr auto; align-items: end; }
-  dt { display: flex; align-items: baseline; gap: 6px; font-weight: 700; font-size: 17px; }
+  dt { display: flex; align-items: baseline; gap: 6px; font-weight: 500; font-size: 17px; }
   dt::after { content: ""; flex: 1 0 20px; border-bottom: 2px dotted var(--oak); margin: 0 6px 5px; align-self: flex-end; }
-  abbr { flex: none; font-size: 14px; font-weight: 400; color: var(--muted); text-decoration: none; cursor: help; }
+  abbr { flex: none; font-size: 14px; color: var(--muted); text-decoration: none; cursor: help; }
   .price { margin: 0; font-size: 17px; font-variant-numeric: tabular-nums; }
-  .desc { grid-column: 1 / -1; margin: 4px 0 0; font-size: 14px; line-height: 1.45; color: var(--muted); }
-  .sheet-foot { margin-top: 64px; display: grid; gap: 8px; font-size: 14px; color: var(--muted); }
-  .sheet-foot p:first-child { color: var(--ink); font-size: 14px; font-weight: 700; }
+  .desc { grid-column: 1 / -1; margin: 4px 0 0; font-size: 14px; line-height: 1.5; color: var(--muted); }
+  .card-foot { margin-top: 56px; display: grid; gap: 8px; font-size: 14px; color: var(--muted); }
+  .card-foot p:first-child { color: var(--ink); font-weight: 600; letter-spacing: .06em; }
 
-  @media (max-width: 860px) {
-    .stage { grid-template-columns: 1fr; gap: 40px; }
-    .plates { position: static; grid-template-columns: 1fr 1fr; gap: 12px; grid-row: 2; }
-    .plate { aspect-ratio: 4 / 5; }
+  @media (max-width: 1100px) {
+    .stage { grid-template-columns: 1fr 1fr; gap: 16px; }
+    .card { grid-column: 1 / -1; grid-row: 1; }
+    .plate { grid-row: 2; margin-top: 32px; position: static; }
   }
   @media (max-width: 767px) {
-    .stage { width: calc(100% - 20px); }
-    .sheet { padding: 48px 22px 44px; }
+    .card { padding: 0 20px 44px; }
+    .band { margin: 0 -20px 40px; letter-spacing: .2em; }
     dl { max-width: none; }
-    dt { font-size: 17px; }
-    .price { font-size: 17px; }
+    dt, .price { font-size: 16px; }
+    .plate { padding: 8px; }
   }
 </style>
