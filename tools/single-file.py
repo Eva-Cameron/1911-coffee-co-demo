@@ -28,6 +28,10 @@ for link in re.findall(r'<link rel="stylesheet" href="([^"]+)">', html):
     css = re.sub(r"url\((/_astro/[^)]+\.woff2)\)", lambda match: f"url({data_uri(DIST / match.group(1).lstrip('/'))})", css)
     html = html.replace(f'<link rel="stylesheet" href="{link}">', f"<style>{css}</style>")
 
+# The build inlines its styles, so embed fonts referenced straight from the page as well
+html = re.sub(r',\s*url\([^)]*\.woff\) format\("woff"\)', "", html)
+html = re.sub(r"url\((/_astro/[^)]+\.woff2)\)", lambda match: f"url({data_uri(DIST / match.group(1).lstrip('/'))})", html)
+
 # Each <picture> keeps its wrapper but holds one <img> carrying the largest WebP no wider than MAX_IMAGE_WIDTH
 def flatten_picture(match):
     block = match.group(0)
@@ -54,7 +58,8 @@ html = html.replace("r.src=e,", "r.src=(window.__embedded||{})[e]||e,", 1)
 # Favicon inline; drop links that only make sense on a live host
 html = re.sub(r'<link rel="icon" href="/favicon.svg"[^>]*>', f'<link rel="icon" href="{data_uri(DIST / "favicon.svg")}">', html)
 html = re.sub(r'<link rel="sitemap"[^>]*>', "", html)
+html = re.sub(r'<link rel="preload"[^>]*>', "", html)
 
-leftovers = sorted(set(re.findall(r'(?:src|href)="(/_astro/[^"]+)"', html)))
+leftovers = sorted(set(re.findall(r'(?:src="|href="|url\()(/_astro/[^"\)]+)', html)))
 OUTPUT.write_text(html)
 print(f"{OUTPUT} {OUTPUT.stat().st_size / 1e6:.1f} MB; unresolved local refs: {leftovers or 'none'}")
