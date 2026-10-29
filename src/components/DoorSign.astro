@@ -16,6 +16,7 @@ const lines = groups.map((g) => `${g.names.length > 1 ? `${short(g.names[0])}–
 const spoken = groups.map((g) => `${g.names.length > 1 ? `${g.names[0]} to ${g.names.at(-1)}` : g.names[0]}, ${time(g.open)} to ${time(g.close)}`).join("; ");
 ---
 <div class="door-sign" data-door-sign data-hours={JSON.stringify(hours)} data-lines={JSON.stringify(lines)}>
+  <div class="swing">
   <svg class="hanger" viewBox="0 0 200 56" aria-hidden="true">
     <path d="M24 54 L100 8 L176 54" fill="none" stroke="#6E5A48" stroke-width="2" stroke-linecap="round" />
     <circle cx="100" cy="8" r="5" fill="#8C8C86" stroke="#4A4A46" stroke-width="1.5" />
@@ -28,6 +29,7 @@ const spoken = groups.map((g) => `${g.names.length > 1 ? `${g.names[0]} to ${g.n
     <span class="back" aria-hidden="true" data-typed></span>
     <span class="visually-hidden">Show opening hours</span>
   </button>
+  </div>
   <p id="sign-hours" class="visually-hidden">Opening hours: {spoken}.</p>
 </div>
 
@@ -47,12 +49,22 @@ const spoken = groups.map((g) => `${g.names.length > 1 ? `${g.names[0]} to ${g.n
     border-radius: 6px;
     color: #F1EEE6;
     cursor: pointer;
-    transform-origin: 50% -40px;
-    transition: transform .5s var(--ease-stamp);
     font: inherit;
     display: grid; place-items: center;
   }
-  .board:hover, .board[aria-expanded="true"] { transform: rotate(-2deg); }
+  /* The sign hangs from its nail and never quite stops moving; a hover or tap knocks it into a bigger swing that settles */
+  .swing { display: grid; justify-items: center; transform-origin: 50% 8px; }
+  :global(.motion) .swing { animation: sway 4.5s ease-in-out infinite; }
+  :global(.motion) .door-sign:hover .swing, :global(.motion) .door-sign.knocked .swing { animation: knock 1.8s cubic-bezier(.3, .7, .4, 1), sway 4.5s 1.8s ease-in-out infinite; }
+  @keyframes sway { 0%, 100% { transform: rotate(-1.6deg); } 50% { transform: rotate(1.6deg); } }
+  @keyframes knock {
+    0% { transform: rotate(-1.6deg); }
+    18% { transform: rotate(7deg); }
+    40% { transform: rotate(-4.5deg); }
+    60% { transform: rotate(2.6deg); }
+    80% { transform: rotate(-1.2deg); }
+    100% { transform: rotate(-1.6deg); }
+  }
   .board:focus-visible { outline: 3px solid var(--maroon); outline-offset: 6px; }
   .front, .back { grid-area: 1 / 1; display: grid; justify-items: center; align-content: center; gap: 6px; text-align: center; }
   .state { font-family: 'Fredericka the Great', var(--font-sans); font-size: 52px; line-height: 1; letter-spacing: .02em; }
@@ -66,9 +78,6 @@ const spoken = groups.map((g) => `${g.names.length > 1 ? `${g.names[0]} to ${g.n
   @media (max-width: 767px) {
     .board { width: 270px; height: 156px; }
     .state { font-size: 46px; }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .board, .board:hover, .board[aria-expanded="true"] { transform: none; transition: none; }
   }
 </style>
 
@@ -123,7 +132,8 @@ const spoken = groups.map((g) => `${g.names.length > 1 ? `${g.names[0]} to ${g.n
       typed.textContent = "";
       timer = window.setTimeout(step, 120);
     };
-    const show = () => { if (board.getAttribute("aria-expanded") === "true") return; board.setAttribute("aria-expanded", "true"); chalk(); };
+    const knock = () => { root.classList.remove("knocked"); void root.offsetWidth; root.classList.add("knocked"); };
+    const show = () => { if (board.getAttribute("aria-expanded") === "true") return; board.setAttribute("aria-expanded", "true"); knock(); chalk(); };
     const hide = () => { clearTimeout(timer); board.setAttribute("aria-expanded", "false"); };
 
     board.addEventListener("pointerenter", (e) => { if (e.pointerType === "mouse") show(); });
