@@ -54,8 +54,8 @@
 
   /* Jost: a free face in the Futura mould. Titles in spaced capitals. */
   --font-sans: 'Jost Variable', 'Futura', 'Century Gothic', ui-sans-serif, sans-serif;
-  /* Questrial: the nearest free match to the lettering painted on the shop's fascia */
-  --font-title: 'Questrial', 'Jost Variable', ui-sans-serif, sans-serif;
+  /* Poppins SemiBold: a bold geometric close to the lettering painted on the shop's fascia */
+  --font-title: 'Poppins', 'Jost Variable', ui-sans-serif, sans-serif;
   --font-mark: var(--font-sans);
   --font-display: var(--font-sans);
   --font-body: var(--font-sans);
