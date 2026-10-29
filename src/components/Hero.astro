@@ -17,18 +17,20 @@ import site from "../content/site.json";
   </div>
   <figure class="mat shopfront">
     <Picture src={shopfront} alt="The orange 1911 Coffee Co. shopfront at 28–30 Queen Street, with balloons in the windows"
-      widths={[600, 1000, 1440]} sizes="(max-width: 767px) 100vw, 980px" formats={["avif", "webp"]}
+      widths={[600, 1000, 1570]} sizes="(max-width: 767px) 100vw, 860px" formats={["avif", "webp"]}
       loading="eager" fetchpriority="high" />
   </figure>
 </section>
 
 <style>
-  .hero { padding: 40px 0 120px; }
-  h1 { font-size: clamp(30px, 7.2vw, 104px); white-space: nowrap; }
-  .chapter { gap: 22px; }
-  .lead { font-size: 20px !important; line-height: 1.5; text-wrap: balance; max-width: 34ch !important; }
+  .hero { padding: 24px 0 104px; }
+  h1 { font-size: clamp(28px, 5.4vw, 72px); white-space: nowrap; }
+  .chapter { gap: 22px; margin-bottom: 20px; }
+  .lead { font-size: 19px !important; line-height: 1.5; text-wrap: balance; max-width: 36ch !important; }
   .actions { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 16px 32px; margin-top: 8px; }
-  .shopfront { width: min(100%, 980px); margin-inline: auto; aspect-ratio: 4 / 3; overflow: hidden; }
+  /* On the orange band the mat swaps to the shop's grey */
+  .shopfront { width: min(100%, 860px); margin-inline: auto; aspect-ratio: 1570 / 1130; overflow: hidden; background: var(--stone); }
+  .hero :global(.link) { text-decoration-color: var(--maroon); }
   .shopfront :global(picture) { display: block; height: 100%; overflow: hidden; }
   :global(.motion) .shopfront :global(img) { animation: settle 2.4s var(--ease-out) both; }
   @keyframes settle { from { transform: scale(1.05); } }

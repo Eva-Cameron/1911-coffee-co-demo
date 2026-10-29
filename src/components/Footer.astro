@@ -4,7 +4,7 @@ import site from "../content/site.json";
 ---
 <footer class="footer">
   <div class="wrap inner">
-    <Roundel size={88} tone="cream" title="1911 Coffee Co." />
+    <Roundel size={72} tone="cream" title="1911 Coffee Co." />
     <p class="name" aria-hidden="true">{site.name}</p>
     <p class="addr">{site.street} · {site.town} · {site.postcode} · <a href={`tel:${site.phoneHref}`}>{site.phone}</a></p>
     <ul class="links">
@@ -19,7 +19,7 @@ import site from "../content/site.json";
 <style>
   .footer { background: var(--maroon); color: var(--paper); padding: 104px 0 36px; }
   .inner { display: grid; justify-items: center; gap: 28px; text-align: center; }
-  .name { font-family: var(--font-title); -webkit-text-stroke: .018em currentColor; font-size: clamp(28px, 6vw, 84px); font-weight: 400; letter-spacing: .12em; line-height: 1; color: var(--orange); white-space: nowrap; }
+  .name { font-family: var(--font-title); font-size: clamp(26px, 4.4vw, 60px); font-weight: 600; letter-spacing: .06em; line-height: 1; color: var(--orange); white-space: nowrap; }
   .addr { font-size: 17px; letter-spacing: .04em; }
   .links { list-style: none; margin: 0; padding: 0; display: flex; gap: 32px; flex-wrap: wrap; justify-content: center; }
   .links a { font-size: 14px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; }

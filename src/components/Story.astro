@@ -23,11 +23,11 @@ import story from "../assets/photos/story.jpg";
   </div>
 </section>
 <style>
-  .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 440px)); justify-content: center; gap: 72px; align-items: center; }
+  .grid { display: grid; grid-template-columns: minmax(0, 400px) minmax(0, 440px); justify-content: center; gap: 64px; align-items: center; }
   .photo { aspect-ratio: 4 / 5; overflow: hidden; }
   .photo :global(picture) { display: block; height: 100%; }
   .letter { display: grid; gap: 20px; }
-  .letter p { font-size: 18px; line-height: 1.65; }
+  .letter p { font-size: 17px; line-height: 1.65; }
   .sign { display: grid; gap: 6px; margin-top: 12px; font-size: 17px !important; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; }
   .sign span { font-size: 14px; font-weight: 400; letter-spacing: .08em; text-transform: none; color: var(--muted); }
   @media (max-width: 860px) {
