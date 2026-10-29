@@ -23,19 +23,19 @@ const icons: Record<string, string> = { Instagram: "instagram-logo", Facebook: "
   </div>
 </footer>
 <style>
-  .footer { background: var(--charcoal); color: var(--ink); padding: var(--space-6) 0 var(--space-4); }
-  .inner { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-5); padding-bottom: var(--space-5); border-bottom: 1px solid rgb(255 243 228 / .14); }
+  .footer { background: var(--charcoal); color: var(--on-fill); padding: var(--space-6) 0 var(--space-4); }
+  .inner { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-5); padding-bottom: var(--space-5); }
   .brand { display: flex; align-items: center; gap: var(--space-4); font-size: 15px; line-height: 1.45; }
   .socials { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--space-2); }
   .social {
     display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 14px;
-    border-radius: var(--radius-control); background: rgb(255 243 228 / .1); color: var(--ink);
+    border-radius: var(--radius-control); background: rgb(255 235 216 / .1); color: var(--on-fill);
     text-decoration: none; font-weight: 600; font-size: 14.5px; transition: background .15s;
   }
-  .social:hover { background: rgb(255 243 228 / .2); color: var(--ink); }
+  .social:hover { background: rgb(255 235 216 / .2); color: var(--on-fill); }
   .social:active { background: rgb(255 243 228 / .26); }
-  .call { background: var(--orange); color: var(--on-fill); }
-  .call:hover { background: var(--orange-hover); color: var(--on-fill); }
-  .base { display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--space-2); padding-top: var(--space-4); font-size: 13.5px; color: rgb(255 243 228 / .75); }
-  .footer :global(:focus-visible) { outline-color: var(--orange); }
+  .call { background: var(--cream); color: var(--ink); }
+  .call:hover { background: var(--paper); color: var(--ink); }
+  .base { display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--space-2); padding-top: var(--space-4); font-size: 13.5px; color: rgb(255 235 216 / .8); }
+  .footer :global(:focus-visible) { outline-color: var(--cream); }
 </style>

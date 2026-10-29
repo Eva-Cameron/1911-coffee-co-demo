@@ -1,34 +1,34 @@
 :root {
   /*
-   * Burnt orange throughout. Every surface is a shade of burnt orange and all text is cream,
-   * so the token names keep their jobs: --cream is the frame ground, --ink is the text.
+   * Warm and minimal: one light orange block for the frame, dark brown ink, no borders.
+   * Token names keep their jobs: --cream is the frame ground, --ink is the text.
    */
 
-  /* Fills: buttons, icon chips, tags. Text on them uses --on-fill. */
-  --orange: #FFE3C7;      /* apricot fill; --on-fill on it 9.8:1 */
-  --orange-hover: #FFF3E4;
-  --on-fill: #5E250A;
-  --ember: #FFE2B8;       /* accent text & links: 4.9:1 on frame, 5.9:1 on panels */
-  --ember-tint: #7A3011;  /* ember on it 7.4:1 */
-  --oak: #C9672F;         /* decorative only */
+  /* Fills: buttons and icon chips are dark brown with cream text */
+  --orange: #2A1206;
+  --orange-hover: #45200D;
+  --on-fill: #FFEBD8;      /* 15.3:1 on --orange */
+  --ember: #4F230C;        /* accent text: 5.1:1 on frame, 6.0:1 on panels */
+  --ember-tint: #F4B386;   /* ember on it 7.4:1 */
+  --oak: #C96A30;          /* decorative only */
 
   /* Surfaces */
-  --cream: #A3461A;       /* the frame: burnt orange */
-  --paper: #923D16;       /* cards and panels, a shade deeper */
-  --wash: #873814;        /* inset areas */
-  --deep: #5E250A;        /* page edge and footer */
+  --cream: #E8874A;        /* the frame: light orange, one flat block */
+  --paper: #EF9A62;        /* panels, a step lighter; no border or shadow */
+  --wash: #F2A770;
+  --deep: #2A1206;         /* page background and footer */
 
   /* Text */
-  --ink: #FFF3E4;         /* 5.6:1 on frame, 6.6:1 on panels, 11:1 on deep */
-  --muted: #F7DCC4;       /* 4.6:1 on frame, 5.5:1 on panels */
-  --charcoal: var(--deep); /* footer ground and body background */
+  --ink: #2A1206;          /* 6.7:1 on frame, 8.0:1 on panels */
+  --muted: #4F230C;        /* 5.1:1 on frame, 6.0:1 on panels */
+  --charcoal: var(--deep);
 
-  /* Lines and depth */
-  --line: rgb(255 243 228 / .16);
-  --line-strong: rgb(255 243 228 / .32);
-  --shadow-card: 0 1px 2px rgb(40 14 2 / .18), 0 2px 8px rgb(40 14 2 / .14);
-  --shadow-lift: 0 2px 4px rgb(40 14 2 / .2), 0 12px 28px rgb(40 14 2 / .3);
-  --shadow-photo: 0 2px 4px rgb(40 14 2 / .25), 0 16px 36px rgb(40 14 2 / .4);
+  /* No borders, no shadows */
+  --line: transparent;
+  --line-strong: transparent;
+  --shadow-card: none;
+  --shadow-lift: none;
+  --shadow-photo: none;
 
   /* Status */
   --open: #1D6B3A;  --open-tint: #E2F2E7;
@@ -63,7 +63,7 @@
   --hairline-plate: var(--paper);
   --hairline-hi: var(--ember);
   --hairline-edge: var(--ink);
-  --hairline-mid: #F2C7A2;
-  --hairline-lo: #C7774A;
+  --hairline-mid: #7A3A14;
+  --hairline-lo: #C96A30;
   --hairline-stroke: 1.4;
 }

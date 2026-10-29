@@ -1,6 +1,5 @@
 ---
 import { Picture } from "astro:assets";
-import Sprig from "./Sprig.astro";
 import OpenBadge from "./OpenBadge.astro";
 import Icon from "./Icon.astro";
 import latte from "../assets/photos/latte.jpg";
@@ -9,15 +8,12 @@ import cakes from "../assets/photos/cakes.jpg";
 import site from "../content/site.json";
 
 const trio = [
-  { src: latte, alt: "Placeholder for a photo of latte art in a 1911 cup", label: "Coffee" },
-  { src: breakfast, alt: "Placeholder for a photo of the 1911 Breakfast", label: "The 1911 Breakfast" },
-  { src: cakes, alt: "Placeholder for a photo of cakes under glass domes on the counter", label: "Bakes" },
+  { src: latte, alt: "A cappuccino with latte art and a biscuit beside the 1911 brunch menu", label: "Coffee" },
+  { src: breakfast, alt: "A bacon and hash brown bun on a dark plate", label: "Breakfast" },
+  { src: cakes, alt: "A raspberry and coconut sponge on the counter in front of the espresso machine", label: "Bakes" },
 ];
 ---
 <section class="hero" aria-labelledby="hero-title">
-  <Sprig class="sprig-tl" />
-  <Sprig class="sprig-br" flip />
-
   <p class="kicker" data-type>Est. {site.est} · {site.street}, {site.town}</p>
 
   <h1 id="hero-title" data-type data-type-delay="1500" data-type-speed="70">{site.name}</h1>
@@ -66,7 +62,6 @@ const trio = [
     aspect-ratio: 300 / 360;
     border-radius: var(--radius-photo);
     overflow: hidden;
-    border: 4px solid var(--paper);
     box-shadow: var(--shadow-photo);
     background: var(--oak);
     flex: none;
