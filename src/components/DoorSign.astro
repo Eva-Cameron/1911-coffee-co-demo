@@ -1,6 +1,6 @@
 ---
 import hours from "../content/hours.json";
-/* A small chalk slate. It reads Open or Closed; hover, tap or focus flips it over, and the week's hours type out beneath it. */
+/* A flat card hung on a string. It reads Open or Closed; hover, tap or focus swings and flips it, and the week's hours type out beneath. */
 const time = (t: string) => {
   const [h, m] = t.split(":").map(Number);
   return `${h % 12 || 12}${m ? ":" + String(m).padStart(2, "0") : ""}${h < 12 ? "am" : "pm"}`;
@@ -24,12 +24,18 @@ const spoken = groups.map((g) => `${span(g.names, false)}, ${g.day.closed ? "clo
 ---
 <div class="door-sign" data-door-sign data-hours={JSON.stringify(hours)} data-lines={JSON.stringify(lines)}>
   <button class="sign" type="button" aria-expanded="false" aria-describedby="sign-hours">
+    <span class="swing">
+    <svg class="string" viewBox="0 0 180 46" aria-hidden="true">
+      <path d="M21.5 46 L90 6 L158.5 46" fill="none" stroke="var(--espresso)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="90" cy="6" r="5" fill="var(--espresso)"/>
+    </svg>
     <span class="card">
       <span class="face front">
         <span class="state" data-state-word>Open</span>
         <span class="sub" data-state-sub>Mon–Sat, 8am–3pm</span>
       </span>
       <span class="face back" aria-hidden="true"><span class="state">Hours</span></span>
+    </span>
     </span>
     <span class="visually-hidden">Show opening hours</span>
   </button>
@@ -38,28 +44,34 @@ const spoken = groups.map((g) => `${span(g.names, false)}, ${g.day.closed ? "clo
 </div>
 
 <style>
-  .door-sign { display: grid; justify-items: center; gap: 18px; }
-  .sign { padding: 0; border: 0; background: none; cursor: pointer; perspective: 700px; font: inherit; color: #F1EEE6; }
+  .door-sign { display: grid; justify-items: center; gap: 14px; }
+  .sign { padding: 0; border: 0; background: none; cursor: pointer; font: inherit; color: var(--cream); }
   .sign:focus-visible { outline: 3px solid var(--espresso); outline-offset: 6px; }
-  .card { position: relative; display: block; width: 200px; height: 104px; transform-style: preserve-3d; transition: transform .7s cubic-bezier(.3, 1.3, .5, 1); }
+  /* The whole sign hangs from the nail and swings a little when touched */
+  .swing { display: grid; justify-items: center; transform-origin: 50% 3px; perspective: 600px; }
+  :global(.motion) .sign[aria-expanded="true"] .swing { animation: swing 1.1s cubic-bezier(.3, .7, .4, 1); }
+  @keyframes swing { 20% { transform: rotate(5deg); } 45% { transform: rotate(-3deg); } 70% { transform: rotate(1.5deg); } 100% { transform: rotate(0); } }
+  .string { width: 180px; height: 46px; display: block; margin-bottom: -12px; position: relative; z-index: 1; overflow: visible; }
+  .card { position: relative; display: block; width: 180px; height: 92px; transform-style: preserve-3d; transition: transform .6s cubic-bezier(.3, 1.3, .5, 1); }
   .sign[aria-expanded="true"] .card { transform: rotateY(180deg); }
   .face {
-    position: absolute; inset: 0;
-    display: grid; justify-items: center; align-content: center; gap: 2px;
-    background: #2E3430; border-radius: 4px;
-    box-shadow: inset 2px 2px 0 rgb(255 255 255 / .1), inset -2px -2px 0 rgb(0 0 0 / .35);
-    backface-visibility: hidden;
+    position: absolute; inset: 0; display: grid; justify-items: center; align-content: center; gap: 4px;
+    background: var(--espresso); border-radius: 10px; backface-visibility: hidden;
   }
-  .back { transform: rotateY(180deg); }
-  .state { font-family: 'Schoolbell', var(--font-sans); font-size: 40px; line-height: 1; }
-  .sub { font-family: 'Schoolbell', var(--font-sans); font-size: 18px; color: #DCDCD2; }
+  /* Two punched holes where the string ties on */
+  .face::before, .face::after { content: ""; position: absolute; top: 9px; width: 7px; height: 7px; border-radius: 50%; background: var(--orange); }
+  .face::before { left: 18px; } .face::after { right: 18px; }
+  .back { transform: rotateY(180deg); background: var(--cream); color: var(--espresso); }
+  .back::before, .back::after { background: var(--orange); }
+  .state { font: 700 32px/1 var(--font-head); font-variation-settings: "SOFT" 100; letter-spacing: .01em; }
+  .sub { font: 500 12px/1 var(--font-mono); letter-spacing: .14em; text-transform: uppercase; opacity: .85; }
 
   /* The hours, typed out under the sign; the space is held so nothing below jumps */
   .typed { min-height: calc(2 * 1.5em); margin: 0; font: 500 15px/1.5 var(--font-mono); letter-spacing: .06em; white-space: pre-line; text-align: center; color: var(--espresso); }
   .typed:not(:empty)::after { content: ""; display: inline-block; width: 2px; height: .95em; margin-left: 3px; vertical-align: -.12em; background: currentColor; animation: caret 1s steps(1) infinite; }
   .typed[data-done]::after { display: none; }
   @keyframes caret { 50% { opacity: 0; } }
-  @media (prefers-reduced-motion: reduce) { .card { transition: none; } }
+  @media (prefers-reduced-motion: reduce) { .card { transition: none; } .swing { animation: none !important; } }
 </style>
 
 <script>
