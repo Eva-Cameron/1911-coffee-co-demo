@@ -9,13 +9,13 @@ const lunch = menu.sections.find((s) => s.id === "lunch")!;
 <section id="lunch" class="chapter field-sky" aria-labelledby="lunch-title">
   <div class="wrap split">
     <div class="photos">
-      <Plate class="big" src={sandwich} no={6} caption="Sandwich and slaw" ratio="1 / 1"
+      <Plate class="big" src={sandwich} ratio="1 / 1"
         alt="A sandwich cut in half on a black slate with coleslaw, beetroot and a dressed salad" />
-      <Plate class="small" src={salad} no={7} caption="A fresh salad plate" ratio="1 / 1" sizes="(max-width: 767px) 60vw, 260px" i={1}
+      <Plate class="small" src={salad} ratio="1 / 1" sizes="(max-width: 767px) 60vw, 260px" i={1}
         alt="A salad plate with beetroot, pickled red cabbage, tomato and red onion" />
     </div>
     <div class="copy">
-      <ChapterHead numeral="IV" label="Lunch, please" id="lunch-title" align="start"
+      <ChapterHead label="Lunch" id="lunch-title" align="start"
         title="A little something for the middle of the day." />
       <p class="lede" data-reveal>{lunch.note}</p>
       <ul class="kinds">
@@ -31,10 +31,8 @@ const lunch = menu.sections.find((s) => s.id === "lunch")!;
 
 <style>
   .split { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: clamp(40px, 7vw, 96px); align-items: center; }
-  .photos { position: relative; padding-bottom: 18%; }
+  .photos { position: relative; padding-bottom: 22%; }
   .photos :global(.big) { width: 82%; }
-  .photos :global(.big figcaption) { text-align: left; max-width: 62%; }
-  .photos :global(.small figcaption) { text-align: right; }
   .photos :global(.small) { position: absolute; right: 0; bottom: 0; width: 46%; }
   .lede { font-size: var(--step-lead); line-height: 1.45; margin-bottom: 20px; max-width: 40ch; }
   .kinds { display: grid; margin-bottom: 26px; }

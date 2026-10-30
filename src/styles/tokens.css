@@ -11,6 +11,8 @@
   --sky: #AFC9DE;          /* espresso 8.5:1 */
   --orange: #E8874A;       /* the shopfront; espresso 5.5:1 */
   --stone: #E3DFD6;        /* the shopfront's pilaster grey; mats on the orange field */
+  --orange-ink: #A9481A;   /* orange as text: 5.1:1 on cream, 5.6:1 on paper */
+  --orange-light: #F09A62; /* button hover; espresso 6.6:1 */
   --cherry: #A83235;       /* actions; cream on it 5.8:1; as text only on cream (5.8:1), custard (4.75:1) */
   --cherry-deep: #8F2A2D;  /* hover */
   --burgundy: #51272A;     /* the end credits; cream on it 11:1 */

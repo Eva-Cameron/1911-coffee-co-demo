@@ -38,8 +38,6 @@ const spoken = groups.map((g) => `${span(g.names, false)}, ${g.day.closed ? "clo
 </div>
 
 <style>
-  /* Fredericka the Great (OFL), cut down to the letters of Open, Closed and Hours. */
-  @font-face { font-family: 'Fredericka the Great'; src: url('../assets/fonts/fredericka-sign.woff2') format('woff2'); font-display: swap; }
   .door-sign { display: grid; justify-items: center; gap: 18px; }
   .sign { padding: 0; border: 0; background: none; cursor: pointer; perspective: 700px; font: inherit; color: #F1EEE6; }
   .sign:focus-visible { outline: 3px solid var(--espresso); outline-offset: 6px; }
@@ -53,7 +51,7 @@ const spoken = groups.map((g) => `${span(g.names, false)}, ${g.day.closed ? "clo
     backface-visibility: hidden;
   }
   .back { transform: rotateY(180deg); }
-  .state { font-family: 'Fredericka the Great', var(--font-sans); font-size: 38px; line-height: 1; }
+  .state { font-family: 'Schoolbell', var(--font-sans); font-size: 40px; line-height: 1; }
   .sub { font-family: 'Schoolbell', var(--font-sans); font-size: 18px; color: #DCDCD2; }
 
   /* The hours, typed out under the sign; the space is held so nothing below jumps */

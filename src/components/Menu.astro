@@ -1,11 +1,16 @@
 ---
-/* Chapter VIII: the printed bill of fare, set from menu.json. Prices only where the café has printed them. */
+/* The menu card, set from menu.json. Prices only where the café has printed them. */
 import ChapterHead from "./ChapterHead.astro";
 import Wordmark from "./Wordmark.astro";
 import menu from "../content/menu.json";
 import site from "../content/site.json";
 type Item = { name: string; desc?: string; price?: number; addons?: { name: string; price: number }[] };
 const money = (p: number) => `£${p % 1 ? p.toFixed(2) : p}`;
+const list = (names: string[]) => names.length > 1 ? `${names.slice(0, -1).join(", ")} or ${names.at(-1)}` : names[0];
+const addons = (all: { name: string; price: number }[]) =>
+  new Set(all.map((a) => a.price)).size === 1
+    ? `Add ${list(all.map((a) => a.name.toLowerCase()))}, ${money(all[0].price)} each`
+    : `Add ${all.map((a) => `${a.name.toLowerCase()} ${money(a.price)}`).join(", ")}`;
 const left = ["breakfast", "extras", "bakes", "children"];
 const cols = [
   menu.sections.filter((s) => left.includes(s.id)),
@@ -14,13 +19,13 @@ const cols = [
 ---
 <section id="menu" class="chapter field-mint" aria-labelledby="menu-title">
   <div class="wrap">
-    <ChapterHead numeral="VIII" label="The Menu" id="menu-title"
+    <ChapterHead label="Menu" id="menu-title"
       title="Everything, written down." lede="Breakfast from eight. Lunch until we close at three." />
 
     <article class="card" aria-label="The menu card" data-reveal>
       <header class="top">
         <Wordmark size="md" />
-        <p class="label">Bill of fare · {site.street}, {site.town}</p>
+        <p class="label">{site.street}, {site.town}</p>
       </header>
       <div class="cols">
         {cols.map((col) => (
@@ -37,7 +42,7 @@ const cols = [
                         {it.price != null && <><span class="lead" aria-hidden="true"></span><span class="price">{money(it.price)}</span></>}
                       </p>
                       {it.desc && <p class="desc">{it.desc}</p>}
-                      {it.addons && <p class="addons">Add {it.addons.map((a) => `${a.name.toLowerCase()} ${money(a.price)}`).join(", ")}</p>}
+                      {it.addons && <p class="addons">{addons(it.addons)}</p>}
                     </li>
                   ))}
                 </ul>
@@ -62,11 +67,11 @@ const cols = [
     clip-path: polygon(var(--chamfer) 0, calc(100% - var(--chamfer)) 0, 100% var(--chamfer), 100% calc(100% - var(--chamfer)), calc(100% - var(--chamfer)) 100%, var(--chamfer) 100%, 0 calc(100% - var(--chamfer)), 0 var(--chamfer));
     outline: 1px solid rgb(51 38 34 / .25); outline-offset: -14px;
   }
-  .top { display: grid; justify-items: center; gap: 14px; text-align: center; padding-bottom: 28px; margin-bottom: 36px; border-bottom: 3px double rgb(51 38 34 / .4); color: var(--cherry); }
+  .top { display: grid; justify-items: center; gap: 14px; text-align: center; padding-bottom: 28px; margin-bottom: 36px; border-bottom: 3px double rgb(51 38 34 / .4); color: var(--orange-ink); }
   .top .label { color: var(--espresso); }
   .cols { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 6vw, 72px); }
   .group + .group { margin-top: 36px; }
-  h3 { font-size: clamp(22px, 2.2vw, 28px); color: var(--cherry); margin-bottom: 6px; }
+  h3 { font-size: clamp(22px, 2.2vw, 28px); color: var(--orange-ink); margin-bottom: 6px; }
   .note { font-size: 15px; color: var(--muted); font-style: italic; margin-bottom: 10px; }
   ul { display: grid; gap: 12px; margin-top: 10px; }
   .row { display: flex; align-items: baseline; gap: 8px; }
@@ -74,7 +79,7 @@ const cols = [
   .lead { flex: 1; border-bottom: 1.5px dotted rgb(51 38 34 / .45); transform: translateY(-4px); min-width: 20px; }
   .price { font-family: var(--font-mono); font-size: 15px; }
   .desc { font-size: 15px; color: var(--muted); }
-  .addons { font: 13px/1.5 var(--font-mono); color: var(--muted); }
+  .addons { font-size: 15px; font-style: italic; color: var(--muted); }
   .foot { display: grid; justify-items: center; gap: 14px; text-align: center; margin-top: 44px; padding-top: 28px; border-top: 3px double rgb(51 38 34 / .4); }
   .foot p:first-child { font: italic 400 var(--step-lead)/1.4 var(--font-head); font-variation-settings: "SOFT" 100; max-width: 40ch; }
   @media (max-width: 720px) { .cols { grid-template-columns: 1fr; } .card { outline-offset: -8px; } }

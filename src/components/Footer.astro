@@ -1,45 +1,32 @@
 ---
-/* End credits: burgundy ground, the wordmark large, the people and places who made it, then Fin. */
+/* The footer in the shop's own colours: orange ground, espresso type, the wordmark and the essentials. */
 import Wordmark from "./Wordmark.astro";
 import site from "../content/site.json";
-const credits = [
-  ["Coffee, breakfast and lunch", site.name],
-  ["Location", `${site.street}, ${site.town}, ${site.postcode}`],
-  ["Telephone", site.phone],
-  ["Photography", "1911 Coffee Co."],
-  ["Website", "Eva Cameron"],
-];
 ---
-<footer class="credits" style="--wm-ground: var(--burgundy)">
+<footer class="footer" style="--wm-ground: var(--orange)">
   <div class="wrap inner">
-    <p class="label">The end credits</p>
     <Wordmark size="lg" />
-    <dl data-reveal>
-      {credits.map(([role, who]) => (
-        <div><dt class="label">{role}</dt><dd>{role === "Telephone" ? <a href={`tel:${site.phoneHref}`}>{who}</a> : who}</dd></div>
-      ))}
-    </dl>
+    <p class="addr">{site.street}, {site.town}, {site.postcode}<br /><a href={`tel:${site.phoneHref}`}>{site.phone}</a></p>
+    <p class="hours">Monday to Saturday, 8am to 3pm · Closed Sunday</p>
     <ul class="links">
       {site.socials.map((s) => <li><a href={s.href} rel="noopener">{s.name}</a></li>)}
     </ul>
-    <p class="fin" aria-hidden="true">Fin.</p>
-    <p class="small">© {new Date().getFullYear()} 1911 Coffee Co Ltd</p>
+    <div class="base">
+      <p>© {new Date().getFullYear()} 1911 Coffee Co Ltd</p>
+      <p>Website by Eva Cameron</p>
+    </div>
   </div>
 </footer>
 
 <style>
-  .credits { background: var(--burgundy); color: var(--cream); padding: clamp(80px, 10vw, 128px) 0 40px; }
-  .inner { display: grid; justify-items: center; gap: 32px; text-align: center; }
-  .credits :global(.wordmark) { color: var(--custard); }
-  dl { display: grid; gap: 18px; margin-top: 12px; }
-  dl div { display: grid; gap: 4px; }
-  dt { opacity: .7; }
-  dd { font: 400 var(--step-lead)/1.3 var(--font-head); font-variation-settings: "SOFT" 100; }
+  .footer { background: var(--orange); color: var(--espresso); padding: clamp(72px, 9vw, 112px) 0 36px; }
+  .inner { display: grid; justify-items: center; gap: 26px; text-align: center; }
+  .addr { font: 400 var(--step-lead)/1.5 var(--font-head); font-variation-settings: "SOFT" 100; }
+  .hours { font: 500 14px/1.4 var(--font-mono); letter-spacing: .06em; }
   .links { display: flex; gap: 32px; flex-wrap: wrap; justify-content: center; }
-  .links a { font: 500 13px/1 var(--font-mono); letter-spacing: .18em; text-transform: uppercase; }
-  .credits a { color: var(--cream); text-decoration-color: var(--custard); text-decoration-thickness: 2px; text-underline-offset: .4em; }
-  .credits a:hover { color: var(--custard); }
-  .credits :global(:focus-visible) { outline-color: var(--custard); }
-  .fin { font: italic 400 clamp(48px, 6vw, 80px)/1 var(--font-head); font-variation-settings: "SOFT" 100; color: var(--blush); margin-top: 24px; }
-  .small { font-size: 13px; opacity: .75; }
+  .links a { font: 600 14px/1 var(--font-sans); letter-spacing: .14em; text-transform: uppercase; }
+  .footer a { color: var(--espresso); text-decoration-color: var(--espresso); text-decoration-thickness: 2px; text-underline-offset: .35em; }
+  .footer a:hover { color: var(--espresso); text-decoration-thickness: 3px; }
+  .footer :global(:focus-visible) { outline-color: var(--espresso); }
+  .base { display: flex; gap: 28px; flex-wrap: wrap; justify-content: center; margin-top: 24px; padding-top: 22px; border-top: 1px solid rgb(51 38 34 / .35); width: min(100%, 640px); font-size: 14px; }
 </style>

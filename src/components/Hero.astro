@@ -7,7 +7,6 @@ import site from "../content/site.json";
 <section class="hero" aria-labelledby="hero-title">
   <div class="wrap">
     <div class="intro">
-      <p class="label intro-fade" style="--d:150ms">Scene one <span aria-hidden="true">·</span> {site.street}, {site.town}</p>
       <h1 id="hero-title">
         <span class="visually-hidden">{site.name}, {site.town}. </span>
         <span class="intro-line" style="--d:200ms">A very good day</span>
@@ -21,24 +20,18 @@ import site from "../content/site.json";
       <div class="intro-fade" style="--d:900ms"><DoorSign /></div>
     </div>
 
-    <Plate class="shopfront intro-mask" src={shopfront} no={1} caption="The shopfront, 28–30 Queen Street" eager shutter={false}
+    <Plate class="shopfront intro-mask" src={shopfront} eager shutter={false}
       alt="The orange 1911 Coffee Co. shopfront at 28–30 Queen Street, seen straight on, with balloons in both windows"
       ratio="1570 / 1130" sizes="(max-width: 767px) 100vw, 900px" widths={[600, 1000, 1570]} />
-
-    <a class="next label intro-fade" style="--d:1300ms" href="#welcome">Chapter I <span class="arrow" aria-hidden="true">↓</span></a>
   </div>
 </section>
 
 <style>
-  .hero { background: var(--orange); padding: 8px 0 56px; --mat: var(--stone); --wm-ground: var(--orange); }
+  .hero { background: var(--orange); padding: 24px 0 72px; --wm-ground: var(--orange); }
   .intro { display: grid; justify-items: center; text-align: center; gap: 22px; margin-bottom: 40px; }
   h1 { max-width: 12ch; }
   h1 em { font-weight: 500; }
   .lead { font-size: var(--step-lead); line-height: 1.45; max-width: 36ch; }
   .actions { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 16px 32px; }
   .hero :global(.shopfront) { width: min(100%, 900px); margin-inline: auto; }
-  .next { display: flex; gap: 10px; justify-content: center; margin-top: 40px; color: var(--espresso); text-decoration: none; }
-  .arrow { display: inline-block; }
-  :global(.motion) .arrow { animation: bob 2.4s ease-in-out 2s infinite; }
-  @keyframes bob { 50% { transform: translateY(5px); } }
 </style>
