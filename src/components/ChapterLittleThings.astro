@@ -1,58 +1,40 @@
 ---
-/* Chapter V: a strip of film. Two photographs and two Hairline figures you can play with, frame by frame. */
+/* Two photographs and two Hairline figures you can play with, in a simple row of squares. */
 import { Picture } from "astro:assets";
 import ChapterHead from "./ChapterHead.astro";
 import cakes from "../assets/photos/cakes.jpg";
 import soup from "../assets/photos/soup.jpg";
-const frames = [
-  { kind: "photo", src: cakes, no: 8, caption: "Cake on the counter", alt: "A raspberry and coconut sponge on the counter, the espresso machine behind it" },
-  { kind: "figure", name: "cups", no: 9, caption: "Move along the row to lift a cup", label: "A drawing of a row of coffee cups on saucers. The cup under the pointer lifts off its saucer." },
-  { kind: "photo", src: soup, no: 10, caption: "Soup of the day, always gluten free", alt: "A bowl of golden soup with a bread roll and a pot of butter on a dark plate" },
-  { kind: "figure", name: "dome", no: 11, caption: "Raise the dome", label: "A drawing of a cake stand under a glass dome. Moving the pointer up raises the dome off the cake." },
+const tiles = [
+  { kind: "photo", src: cakes, alt: "A raspberry and coconut sponge on the counter, the espresso machine behind it" },
+  { kind: "figure", name: "cups", label: "A drawing of a row of coffee cups on saucers. The cup under the pointer lifts off its saucer." },
+  { kind: "photo", src: soup, alt: "A bowl of golden soup with a bread roll and a pot of butter on a dark plate" },
+  { kind: "figure", name: "dome", label: "A drawing of a cake stand under a glass dome. Moving the pointer up raises the dome off the cake." },
 ] as const;
 ---
-<section id="little-things" class="chapter little field-cream" aria-labelledby="little-title">
+<section id="little-things" class="chapter field-cream" aria-labelledby="little-title">
   <div class="wrap">
-    <ChapterHead numeral="V" label="The little things" id="little-title"
+    <ChapterHead label="Cakes and soup" id="little-title"
       title="Please take your time." lede="A biscuit on the saucer. Cake under the counter lights. Soup that is always gluten free." />
-  </div>
-  <div class="strip" role="region" aria-label="A strip of photographs and drawings" tabindex="0">
-    <ol class="frames">
-      {frames.map((f, i) => (
-        <li class="frame" data-reveal style={`--i:${i}`}>
-          <div class="window">
-            {f.kind === "photo"
-              ? <Picture src={f.src} alt={f.alt} widths={[400, 700]} sizes="(max-width: 767px) 72vw, 300px" formats={["avif", "webp"]} loading="lazy" />
-              : <div class="stage" data-figure={f.name} data-label={f.label}><span class="read" data-read-for={f.name} aria-hidden="true"></span></div>}
-          </div>
-          <p class="label cap"><span>Plate {f.no}.</span> {f.caption}</p>
+    <ul class="tiles">
+      {tiles.map((t, i) => (
+        <li class="tile" data-reveal style={`--i:${i}`}>
+          {t.kind === "photo"
+            ? <Picture src={t.src} alt={t.alt} widths={[400, 700]} sizes="(max-width: 767px) 50vw, 260px" formats={["avif", "webp"]} loading="lazy" />
+            : <div class="stage" data-figure={t.name} data-label={t.label}><span class="read" data-read-for={t.name} aria-hidden="true"></span></div>}
         </li>
       ))}
-    </ol>
+    </ul>
   </div>
 </section>
 
 <style>
-  .little { padding-bottom: 0; }
-  /* The film: an espresso band with sprocket holes top and bottom */
-  .strip {
-    --hole: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='14'%3E%3Crect x='7' y='3' width='14' height='8' rx='2' fill='%23F8F0DF'/%3E%3C/svg%3E");
-    background: var(--espresso) var(--hole) 0 6px / 28px 14px repeat-x;
-    padding: 34px 0 30px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none;
-    position: relative;
-  }
-  .strip::after { content: ""; position: absolute; left: 0; right: 0; bottom: 6px; height: 14px; background: var(--hole) 0 0 / 28px 14px repeat-x; pointer-events: none; }
-  .strip::-webkit-scrollbar { display: none; }
-  .frames { display: flex; gap: 22px; width: max-content; margin-inline: auto; padding: 0 var(--gutter); }
-  .frame { width: clamp(240px, 22vw, 300px); display: grid; gap: 12px; scroll-snap-align: center; }
-  .window { aspect-ratio: 1; overflow: hidden; background: var(--sky); position: relative; }
-  .window :global(img) { width: 100%; height: 100%; object-fit: cover; transition: transform .9s var(--ease-out); }
-  .frame:hover .window :global(img) { transform: scale(1.04); }
+  .tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(14px, 2vw, 24px); }
+  .tile { aspect-ratio: 1; overflow: hidden; background: var(--stone); position: relative; }
+  .tile :global(img) { width: 100%; height: 100%; object-fit: cover; transition: transform .9s var(--ease-out); }
+  .tile:hover :global(img) { transform: scale(1.04); }
   .stage { width: 100%; height: 100%; }
   .read { position: absolute; top: 10px; right: 12px; z-index: 1; font: 500 12px/1 var(--font-mono); color: var(--espresso); pointer-events: none; }
-  .cap { color: var(--cream); text-align: center; }
-  .cap span { opacity: .75; }
-  @media (max-width: 767px) { .frame { width: 72vw; } }
+  @media (max-width: 767px) { .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 </style>
 
 <script>

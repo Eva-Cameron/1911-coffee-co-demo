@@ -1,10 +1,10 @@
 ---
-/* A chapter's title card: a typed label with its numeral, a thin double rule, the headline, an optional lede. */
-interface Props { numeral: string; label: string; title: string; id: string; lede?: string; align?: "center" | "start"; }
+/* A section heading: a small label, a thin double rule, the headline, an optional lede. */
+interface Props { numeral?: string; label: string; title: string; id: string; lede?: string; align?: "center" | "start"; }
 const { numeral, label, title, id, lede, align = "center" } = Astro.props;
 ---
 <header class:list={["head", `head--${align}`]}>
-  <p class="label" data-reveal><span class="numeral">{numeral}</span><span class="dot" aria-hidden="true">·</span>{label}</p>
+  <p class="label" data-reveal>{label}</p>
   <span class="rule" aria-hidden="true" data-reveal style="--i:1"></span>
   <h2 id={id} data-reveal style="--i:2" set:html={title} />
   {lede && <p class="lede" data-reveal style="--i:3">{lede}</p>}
@@ -14,9 +14,6 @@ const { numeral, label, title, id, lede, align = "center" } = Astro.props;
   .head { display: grid; gap: 18px; margin-bottom: clamp(40px, 5vw, 64px); }
   .head--center { justify-items: center; text-align: center; }
   .head--start { justify-items: start; text-align: left; }
-  .label { display: inline-flex; align-items: baseline; gap: .6em; }
-  .numeral { font-family: var(--font-sign); font-size: 1.5em; letter-spacing: .06em; }
-  .dot { opacity: .6; }
   h2 { max-width: 18ch; }
   .lede { font-size: var(--step-lead); line-height: 1.45; max-width: 38ch; }
 </style>
